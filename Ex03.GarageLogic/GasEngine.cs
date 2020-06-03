@@ -11,7 +11,7 @@ namespace Ex03.GarageLogic
         private float m_CurrentAmountOfFuelInLitters;
         private float m_MaximumAmountOfFuelInLitters;
 
-        protected GasEngine()
+        public GasEngine()
         {
 
         }

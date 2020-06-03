@@ -11,12 +11,13 @@ namespace Ex03.GarageLogic
 
          private Engine m_Engine;
          private static readonly int sr_NumOfWheels = 4;
-        public Car(string i_LicenseNumber) : base(i_LicenseNumber)
+        public Car(string i_LicenseNumber,Engine i_Engine) : base(i_LicenseNumber)
         {
             for (int i = 0; i < sr_NumOfWheels; i++)
             {
                 Wheels.Add(new Wheel(32));
             }
+
 
             m_MemberInfoStr.Add("A color");
             m_MemberInfoStr.Add("Number of doors");

@@ -25,23 +25,23 @@ namespace Ex03.GarageLogic
                switch(i_EVehicleType)
                {
                     case eVehicleType.GasCar:
-                         generatedVehicle = new Car(i_LicenseNum);
+                         generatedVehicle = new Car(i_LicenseNum,new GasEngine());
                          break;
 
                     case eVehicleType.GasBike:
-                         generatedVehicle = new Bike(i_LicenseNum);
+                         generatedVehicle = new Bike(i_LicenseNum, new GasEngine());
                          break;
 
                     case eVehicleType.Truck:
-                         generatedVehicle = new Truck(i_LicenseNum);
+                         generatedVehicle = new Truck(i_LicenseNum,new GasEngine());
                          break;
 
                     case eVehicleType.ElectricCar:
-                         generatedVehicle = new ElectricBike(i_LicenseNum);
+                         generatedVehicle = new Car(i_LicenseNum,new ElectricEngine());
                          break;
 
                     case eVehicleType.ElectricBike:
-                         generatedVehicle = new ElectricBike(i_LicenseNum);
+                         generatedVehicle = new Bike(i_LicenseNum,new GasEngine());
                          break;
                }
           
