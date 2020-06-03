@@ -4,21 +4,48 @@ using System.Text;
 
 namespace Ex03.GarageLogic
 {
-     public class Bike:GasVehicle
+     public class Bike:Vehicle
      {
           private eLicenseType m_ELicenseType;
           private int m_EngineVelocity;
-          
-          // Optional
+
+          private Engine m_Engine;
           private readonly string[] m_LicenseTypeStrings = { "A", "A1", "AA", "B" };
 
-          public enum eLicenseType
+          public Bike(string i_LicenseNumber) : base(i_LicenseNumber)
+          {
+            Wheels.Add(new Wheel(30));
+            Wheels.Add(new Wheel(30));
+
+            m_MemberInfoStr.Add("A license type");
+            m_MemberInfoStr.Add("An engine Velocity");
+          }
+
+
+
+        public enum eLicenseType
           {
                A,
                A1,
                Aa,
                B 
           }
+
+        public bool IsLicenseTypeValid(string i_LicenseType)
+        {
+            bool isValid = false;
+            foreach(string type in m_LicenseTypeStrings)
+            {
+                if(type.Equals(i_LicenseType) == true)
+                {
+                    isValid = true;
+                    break;
+                }
+               
+            }
+
+            return isValid;
+        }
 
           public eLicenseType LicenseType
           {

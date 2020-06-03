@@ -7,7 +7,7 @@ namespace Ex03.GarageLogic
      public class Garage
      {
           private Dictionary<int, Vehicle> m_Vehicles                  = null;
-          private Dictionary<Vehicle, string[]> m_VehiclesOwnerDetails = null;
+          private Dictionary<int, string[]> m_VehiclesOwnerDetails = null;
           private enumarations.eVehicleStatus[] m_EVehicleStatus       = null;
          
           public Dictionary<int, Vehicle> Vehicles

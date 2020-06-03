@@ -34,12 +34,11 @@
   <ItemGroup>
     <Compile Include="Bike.cs" />
     <Compile Include="Car.cs" />
-    <Compile Include="ElectricBike.cs" />
-    <Compile Include="ElectricCar.cs" />
-    <Compile Include="ElectricVehicle.cs" />
+    <Compile Include="ElectricEngine.cs" />
+    <Compile Include="Engine.cs" />
     <Compile Include="enumarations.cs" />
     <Compile Include="Garage.cs" />
-    <Compile Include="GasVehicle.cs" />
+    <Compile Include="GasEngine.cs" />
     <Compile Include="Instance.cs" />
     <Compile Include="Truck.cs" />
     <Compile Include="ValueOutOfRangeException.cs" />

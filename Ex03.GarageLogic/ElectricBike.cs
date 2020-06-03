@@ -9,7 +9,16 @@ namespace Ex03.GarageLogic
           private Bike.eLicenseType m_ELicenseType;
           private int m_EngineVelocity;
 
-          public Bike.eLicenseType ELicenseType
+          public ElectricBike(string i_LicenseNumber) : base(i_LicenseNumber)
+          {
+              Wheels.Add(new Wheel(30));
+              Wheels.Add(new Wheel(30));
+              MaxBatteryLifeInHours = (float)1.2;
+
+            m_MemberInfoStr.Add("A license type");
+            m_MemberInfoStr.Add("An engine Velocity");
+        }
+        public Bike.eLicenseType ELicenseType
           {
                get
                {

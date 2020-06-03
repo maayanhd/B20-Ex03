@@ -10,7 +10,16 @@ namespace Ex03.GarageLogic
           private float m_CurrentWheelPressure;
           private float m_MaximalWheelPressure;
 
+          public Wheel(float i_MaxPressure)
+          {
+              m_CurrentWheelPressure = 0;
+              m_MaximalWheelPressure = i_MaxPressure;
+          }
 
+          public Wheel()
+          {
+              m_CurrentWheelPressure = 0;
+          }
           public string Manufacturor
           {
                get
@@ -25,7 +34,7 @@ namespace Ex03.GarageLogic
 
           }
 
-          public float CurrentWheelPressure
+        public float CurrentWheelPressure
           {
                get
                {
@@ -53,14 +62,21 @@ namespace Ex03.GarageLogic
 
           }
 
-          public virtual bool IsAirPressureValid()
+          public bool IsAirPressureToAddIsValid(float i_AirToAdd)
           {
-               return m_CurrentWheelPressure >= 0;
+              return i_AirToAdd <=m_MaximalWheelPressure - m_CurrentWheelPressure;
           }
 
           public void Inflate(float i_AirToAdd)
           {
-
+              if(IsAirPressureToAddIsValid(i_AirToAdd))
+              {
+                  m_CurrentWheelPressure += i_AirToAdd;
+              }
+              else
+              {
+                  throw new ValueOutOfRangeException(m_MaximalWheelPressure - m_CurrentWheelPressure,0);
+              }
           }
 
      }
