@@ -4,51 +4,51 @@ using System.Text;
 
 namespace Ex03.GarageLogic
 {
-
-    public class Instance
+     static public class Instance
      {
-        private readonly List<string> r_VehicleTypesStr = new List<string> { "Car", "Bike", "Truck", "ElectricCar", "ElectricBike" };
+          internal static readonly List<string> r_VehicleTypesStr = new List<string> { "Car", "Bike", "Truck", "ElectricCar", "ElectricBike" };
 
-        public enum eVehicleType
+          //****************Vehicle types list******************//  
+          public enum eVehicleType
           {
-               GasCar, 
+               GasCar,
                GasBike,
-               Truck, 
-               ElectricCar, 
+               Truck,
+               ElectricCar,
                ElectricBike
           }
-           
-          public Vehicle Generate(eVehicleType i_EVehicleType,string i_LicenseNum)
+
+          static public Vehicle GenerateInstance(eVehicleType i_EVehicleType, string i_LicenseNum)
           {
                Vehicle generatedVehicle = null;
 
-               switch(i_EVehicleType)
+               switch (i_EVehicleType)
                {
                     case eVehicleType.GasCar:
-                         generatedVehicle = new Car(i_LicenseNum,new GasEngine());
+                         generatedVehicle = new Car(i_LicenseNum, new GasEngine(60, GasEngine.eFuelType.Octan96));
                          break;
 
                     case eVehicleType.GasBike:
-                         generatedVehicle = new Bike(i_LicenseNum, new GasEngine());
+                         generatedVehicle = new Bike(i_LicenseNum, new GasEngine(7, GasEngine.eFuelType.Octan95));
                          break;
 
                     case eVehicleType.Truck:
-                         generatedVehicle = new Truck(i_LicenseNum,new GasEngine());
+                         generatedVehicle = new Truck(i_LicenseNum, new GasEngine(120, GasEngine.eFuelType.Soler));
                          break;
 
                     case eVehicleType.ElectricCar:
-                         generatedVehicle = new Car(i_LicenseNum,new ElectricEngine());
+                         generatedVehicle = new Car(i_LicenseNum, new ElectricEngine((float)2.1));
                          break;
 
                     case eVehicleType.ElectricBike:
-                         generatedVehicle = new Bike(i_LicenseNum,new GasEngine());
+                         generatedVehicle = new Bike(i_LicenseNum, new ElectricEngine((float)1.2));
                          break;
                }
-          
+
                return generatedVehicle;
 
           }
-     
+
      }
 
 }

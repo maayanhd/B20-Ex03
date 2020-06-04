@@ -4,7 +4,7 @@ using System.Text;
 
 namespace Ex03.GarageLogic
 {
-     public class Bike:Vehicle
+     public sealed class Bike : Vehicle
      {
           private eLicenseType m_ELicenseType;
           private int m_EngineVelocity;
@@ -12,40 +12,77 @@ namespace Ex03.GarageLogic
           private Engine m_Engine;
           private readonly string[] m_LicenseTypeStrings = { "A", "A1", "AA", "B" };
 
-          public Bike(string i_LicenseNumber) : base(i_LicenseNumber)
+          public Bike(string i_LicenseNumber, Engine i_Engine) : base(i_LicenseNumber)
           {
-            Wheels.Add(new Wheel(30));
-            Wheels.Add(new Wheel(30));
-
-            m_MemberInfoStr.Add("A license type");
-            m_MemberInfoStr.Add("An engine Velocity");
+               Wheels.Add(new Wheel(30));
+               Wheels.Add(new Wheel(30));
+               ManageMemberInfo();
           }
 
+          public override void ManageMemberInfo()
+          {
+               m_MemberInfoStr.Add("A license type");
+               m_MemberInfoStr.Add("An engine Velocity");
+          }
 
-
-        public enum eLicenseType
+          public enum eLicenseType
           {
                A,
                A1,
                Aa,
-               B 
+               B
           }
 
-        public bool IsLicenseTypeValid(string i_LicenseType)
-        {
-            bool isValid = false;
-            foreach(string type in m_LicenseTypeStrings)
-            {
-                if(type.Equals(i_LicenseType) == true)
-                {
-                    isValid = true;
-                    break;
-                }
-               
-            }
+          public override bool IsCurrentMemberValid(int i_NumOfField, string i_InputStr)
+          {
+               bool isMemberValid = false;
 
-            return isValid;
-        }
+               if (base.IsCurrentMemberValid(i_NumOfField, i_InputStr))
+               {
+                    // The number of cases of vehicle is 3 + 2 * numofwheels  
+
+                    switch (i_NumOfField - (3 + 2 * this.Wheels.Count))
+                    {
+                         case 1:
+                              isMemberValid = IsLicenseNumValid(i_InputStr);
+                              break;
+                         case 2:
+                              isMemberValid = float.TryParse(i_InputStr, out float io_EngineVelocity) == true ? IsEngineVelocityValid(io_EngineVelocity) : false;
+                              break;
+                         case 3:
+                              isMemberValid = float.TryParse(i_InputStr, out float io_AmountOfMaterial) == true ? BikeEngine.IsAmountsOfSourcePowerMaterialValid(io_AmountOfMaterial) : false;
+                              break;
+                         case 4:
+                              isMemberValid = Wheels[io_NumOfWheelBasedOnField].IsManufactorerValid(i_InputStr);
+                              break;
+                         case 5:
+                              isMemberValid = float.TryParse(i_InputStr, out float o_AirPressure) == true ? Wheels[io_NumOfWheelBasedOnField].IsAirPressureIsValid(o_AirPressure) : false;
+                              break;
+                    }
+
+               }
+
+               return isMemberValid;
+
+          }
+
+
+          public bool IsLicenseTypeValid(string i_LicenseType)
+          {
+               bool isValid = false;
+
+               foreach (string type in m_LicenseTypeStrings)
+               {
+                    if (type.Equals(i_LicenseType) == true)
+                    {
+                         isValid = true;
+                         break;
+                    }
+
+               }
+
+               return isValid;
+          }
 
           public eLicenseType LicenseType
           {
@@ -61,6 +98,20 @@ namespace Ex03.GarageLogic
 
           }
 
+          public Engine BikeEngine
+          {
+               get
+               {
+                    return m_Engine;
+               }
+
+               set
+               {
+                    m_Engine = value;
+               }
+
+          }
+
           public int EngineVelocity
           {
                get
@@ -70,7 +121,7 @@ namespace Ex03.GarageLogic
 
                set
                {
-                    m_EngineVelocity=value;
+                    m_EngineVelocity = value;
                }
 
           }
@@ -84,10 +135,9 @@ namespace Ex03.GarageLogic
 
           }
 
-          public static bool CheckEngineVelocityValidity(float i_EngineVelocity)
+          public static bool IsEngineVelocityValid(float i_EngineVelocity)
           {
-               // Do we get a maximal value of engine velocity?
-               return i_EngineVelocity > 0; 
+               return i_EngineVelocity > 0;
           }
 
      }
