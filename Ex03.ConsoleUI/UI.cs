@@ -39,18 +39,18 @@ using Ex03.GarageLogic;
 
 namespace Ex03.ConsoleUI
 {
-     public class UI
+     static public class UI
      {
-          public static void OpenGarageForBusiness()
+          internal static void OpenGarageForBusiness()
           {
                Garage MyGarage = new Garage();
 
-               
+               AddVehicle();
           }
 
           //****************Functionality******************//  
 
-          public void AddVehicle()
+          internal static void AddVehicle()
           {
               Console.WriteLine("Please choose the type of vehicle you would like to enter the garage:" + Environment.NewLine);
 
@@ -62,12 +62,12 @@ namespace Ex03.ConsoleUI
 
           }
 
-          public void ProceedToNextStepOfProcess()
+          internal static void ProceedToNextStepOfProcess()
           {
                Garage.countProcessSteps++;
           }
           //****************Input Methods******************//  
-          public int GetTypeOption()
+          internal static int GetTypeOption()
           {
                string numOptionString = null;
                int numOption;
@@ -82,13 +82,16 @@ namespace Ex03.ConsoleUI
                return numOption;
           }
 
-          public string GetLicenseNumStr()
+          internal static string GetLicenseNumStr()
           {
                string licenseNumStr = null;
 
                do
                {
-                    Console.WriteLine(string.Format("Please enter {0}: {1}", Instance.sr_InitialsMemberInfoDetails[Garage.countProcessSteps]));
+                    Console.WriteLine(string.Format("Please enter {0}: {1}", 
+                         Instance.sr_InitialsMemberInfoDetails[Garage.countProcessSteps],
+                         Environment.NewLine));
+
                     licenseNumStr = Console.ReadLine();
 
                } while (IsLicenseNumValid(licenseNumStr) == false);
@@ -98,7 +101,7 @@ namespace Ex03.ConsoleUI
           }
 
           //****************Validation Methods******************//  
-          public bool IsLicenseNumValid(string i_LicenseNum)
+          internal static bool IsLicenseNumValid(string i_LicenseNum)
           {
                bool isValid = false;
 
@@ -118,19 +121,21 @@ namespace Ex03.ConsoleUI
                return isValid;
 
           }
-                   
-          public bool OptionIsValid(string i_optionNumString, out int o_OptionNum)
+
+          internal static bool OptionIsValid(string i_optionNumString, out int o_OptionNum)
           {
                return int.TryParse(i_optionNumString, out o_OptionNum) == true && o_OptionNum >= 1 && o_OptionNum <= Instance.sr_VehicleTypesStr.Count;
           }
 
 
           //****************Console Output******************//  
-          public void PrintVehicleTypeMenu(List<string> VehicleTypeStrings)
+          internal static void PrintVehicleTypeMenu(List<string> VehicleTypeStrings)
           {
+               int optionNum = 1;
                foreach (string typeOfVehicle in VehicleTypeStrings)
                {
                     Console.WriteLine(string.Format("{0}. {1}{2}",
+                         optionNum++,
                          typeOfVehicle,
                          Environment.NewLine));
                }
