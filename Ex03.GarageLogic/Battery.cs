@@ -23,9 +23,9 @@ namespace Ex03.GarageLogic
                i_CurrentVehicle.EnergyLeftInPercents = RemainingBatteryLifeInHours / MaxBatteryLifeInHours;
           }
 
-          public void Reload(int i_HoursToCharge)
+          public void Reload(float i_HoursToCharge)
           {
-               if (IsTotalAmountOfChargingWithinLimit((float)i_HoursToCharge) == false)
+               if (IsTotalAmountOfChargingWithinLimit(i_HoursToCharge) == false)
                {
                     throw new ValueOutOfRangeException(m_MaxBatteryLifeInHours - m_RemainingBatteryLifeInHours, 0, "You exceeded the possible range of charging battery" + Environment.NewLine);
                }

@@ -7,86 +7,105 @@ namespace Ex03.GarageLogic
      public sealed class Car : Vehicle
      {
           // new access modifier to update flow chart
-          private readonly eColor r_EColor;
+          private eColor r_EColor;
 
           private int m_NumOfDoors;
-          private Engine m_Engine;
-          private static readonly int sr_NumOfWheels = 4;
+
+          
 
           // new field to update flow chart
           private readonly string[] r_ColorStrings = {"Red", "White", "Black", "Silver"};  
 
-          public Car(string i_LicenseNumber, Engine i_Engine) : base(i_LicenseNumber)
+          public Car(string i_LicenseNumber, Engine i_Engine) : base(i_Engine,i_LicenseNumber)
           {
-               ManageMemberInfo();
-
-               for (int i = 0; i < sr_NumOfWheels; i++)
-               {
-                    Wheels.Add(new Wheel(32));
-               }
-
-               m_Engine = i_Engine;
+            NumOfWheels = 4;
+            ManageMemberInfo();
+            m_Engine = i_Engine;
           }
+
+          
 
           public override void ManageMemberInfo()
           {
+               NumOfBaseMembers = NumOfWheels * 2 + 2;
                base.ManageMemberInfo();
+               AddWheels();
                m_MemberInfoStr.Add("A color");
                m_MemberInfoStr.Add("Number of doors");
-               manageEngineMemberInfoStr();
-               m_MemberInfoStr.Add("wheel's manufacturer");
-               m_MemberInfoStr.Add("current air pressure in wheel");
           }
-
-          public void manageEngineMemberInfoStr()
-          {
-               GasEngine gasEngine = m_Engine as GasEngine;
-               Battery battery = m_Engine as Battery;
-
-               if (gasEngine != null)
-               {
-                    m_MemberInfoStr.Add(gasEngine.CurrentAmountInfoStr);
-               }
-
-               if (battery != null)
-               {
-                    m_MemberInfoStr.Add(battery.RemainingBatteryLifeInfoStr);
-               }
-
-          }
+          
 
           //****************Validation Methods******************//  
-          public override bool IsCurrentMemberValid(int i_NumOfField, string i_InputStr)
+          public override bool TryAssignMember(int i_NumOfField, string i_InputStr)
           {
                bool isMemberValid = false;
 
-               if (base.IsCurrentMemberValid(i_NumOfField, i_InputStr))
+               if(i_NumOfField < NumOfBaseMembers)
                {
-                    // The number of cases of vehicle is 3 + 2 * numofwheels  
+                   isMemberValid = base.TryAssignMember(i_NumOfField, i_InputStr);
+               }
+               else
+               {
+                       switch(i_NumOfField - NumOfBaseMembers)
+                       {
+                           case 0:
+                               isMemberValid = IsColorValid(i_InputStr);
+                               if(isMemberValid == true)
+                               {
+                                   AssignColor(i_InputStr);
+                               }
 
-                    switch (i_NumOfField - (3 + 2 * this.Wheels.Count))
-                    {
-                         case 1:
-                              isMemberValid = IsColorValid(i_InputStr);
-                              break;
-                         case 2:
-                              isMemberValid = int.TryParse(i_InputStr, out int io_NumOfDoors) == true ? IsNumOfDoorsValid(io_NumOfDoors) : false;
-                              break;
-                         case 3:
-                              isMemberValid = float.TryParse(i_InputStr, out float io_AmountOfMaterial) == true ? CarEngine.IsAmountsOfSourcePowerMaterialValid(io_AmountOfMaterial) : false;
-                              break;
-                    }
+                               break;
+                           case 1:
+                               isMemberValid = int.TryParse(i_InputStr, out int io_NumOfDoors) == true
+                                                   ? IsNumOfDoorsValid(io_NumOfDoors)
+                                                   : false;
+                               if(isMemberValid == true)
+                               {
+                                   AssignNumOfDoors(i_InputStr);
+                               }
+
+                               break;
+                           case 2:
+                               isMemberValid = float.TryParse(i_InputStr, out float io_AmountOfMaterial) == true
+                                                   ? CarEngine.IsAmountsOfSourcePowerMaterialValid(io_AmountOfMaterial)
+                                                   : false;
+                               if(isMemberValid == true)
+                               {
+                                   if(m_Engine is GasEngine)
+                                   {
+                                       (m_Engine as GasEngine).ReFuel(
+                                           io_AmountOfMaterial,
+                                           (m_Engine as GasEngine).FuelType);
+                                   }
+                                   else
+                                   {
+                                       (m_Engine as Battery).Reload(io_AmountOfMaterial);
+                                   }
+                               }
+
+                               break;
+                       }
 
                }
-
                return isMemberValid;
 
           }
           
           // new method to update flow chart
-          public bool IsColorValid(string ColorString)
+          public bool IsColorValid(string i_ColorString)
           {
-               return ColorString.Equals(ColorStrings[(int)EColor]);
+              bool isValid = false;
+              foreach(string color in Enum.GetNames(typeof(eColor)))
+              {
+                  isValid = i_ColorString.Equals(color);
+                  if(isValid == true)
+                  {
+                      break;
+                  }
+              }
+
+              return isValid;
           }
               
 
@@ -106,29 +125,46 @@ namespace Ex03.GarageLogic
 
           // New- update in flow chart
           //****************Assigning Methods******************//  
-          void AssignNumOfDoors(string i_NumOfDoors)
+          public void AssignNumOfDoors(string i_NumOfDoors)
           {
-               if (int.TryParse(i_NumOfDoors, out int io_numOfDoors)==false)
+              int numOfDoors=0;
+               if (int.TryParse(i_NumOfDoors, out numOfDoors) ==false)
                {
                     throw new FormatException("Please enter a whole number" + Environment.NewLine);
                }
-               else if (IsNumOfDoorsValid(io_numOfDoors))
+               else if (IsNumOfDoorsValid(numOfDoors)==false)
                {
                     throw new ValueOutOfRangeException(2, 5, "the number of doors must be a whole number from 2 to 5" + Environment.NewLine);
                }
                else
                {
-                    NumOfDoors = io_numOfDoors;
+                    NumOfDoors = numOfDoors;
                }
                
           }
 
+          public void AssignColor(string i_Color)
+          {
+              if(IsColorValid(i_Color))
+              {
+                  r_EColor = (eColor)(Enum.Parse(typeof(eColor), i_Color));
+              }
+              else
+              {
+                  throw  new FormatException("Color not found");
+              }
+          }
+          
           //****************Properties******************//  
           public eColor EColor
           {
                get
                {
                     return r_EColor;
+               }
+               set
+               {
+                   r_EColor = value;
                }
 
           }
@@ -142,7 +178,7 @@ namespace Ex03.GarageLogic
 
                set
                {
-                    NumOfDoors = value;
+                    m_NumOfDoors = value;
                }
 
           }

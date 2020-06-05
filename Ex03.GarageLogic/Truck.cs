@@ -9,37 +9,36 @@ namespace Ex03.GarageLogic
           private bool m_IsCarryingDangerousMaterials;
           private float m_CarryingSize;
           private static readonly int sr_NumOfWheels = 16;
-          private GasEngine m_Engine;
 
-          public Truck(string i_LicenseNumber, GasEngine i_GasEngine) : base(i_LicenseNumber)
+          public Truck(string i_LicenseNumber, GasEngine i_GasEngine) : base(i_GasEngine,i_LicenseNumber)
           {
                base.ManageMemberInfo();
-
+               NumOfWheels = 16;
                for (int i = 0; i < sr_NumOfWheels; i++)
                {
                     Wheels.Add(new Wheel(28));
                }
 
-               m_Engine = i_GasEngine;
-               m_Engine.FuelType = GasEngine.eFuelType.Soler;
-               m_Engine.MaximumAmountOfFuelInLitters = 120;
+               ((GasEngine)MyEngine).FuelType = GasEngine.eFuelType.Soler;
+               ((GasEngine)MyEngine).MaximumAmountOfFuelInLitters = 120;
 
           }
 
           public override void ManageMemberInfo()
           {
+               NumOfBaseMembers = NumOfWheels * 2 + 2;
                base.ManageMemberInfo();
+               AddWheels();
                m_MemberInfoStr.Add("whether the truck carrying dangerous materials");
-               m_MemberInfoStr.Add("whether the truck carrying dangerous materials");
-               m_MemberInfoStr.Add(m_Engine.CurrentAmountInfoStr);
+               m_MemberInfoStr.Add(((GasEngine)MyEngine).CurrentAmountInfoStr);
           }
 
           //****************Validations Methods******************//  
-          public override bool IsCurrentMemberValid(int i_NumOfField, string i_InputStr)
+          public override bool TryAssignMember(int i_NumOfField, string i_InputStr)
           {
                bool isMemberValid = false;
 
-               if (base.IsCurrentMemberValid(i_NumOfField, i_InputStr))
+               if (base.TryAssignMember(i_NumOfField, i_InputStr))
                {
                     // The number of cases of vehicle is 3 + 2 * numofwheels  
 
@@ -52,7 +51,7 @@ namespace Ex03.GarageLogic
                               isMemberValid = float.TryParse(i_InputStr, out float io_CarryingSize) == true ? IsCarryingSizeValid(io_CarryingSize) : false;
                               break;
                          case 3:
-                              isMemberValid = float.TryParse(i_InputStr, out float io_AmountOfMaterial) == true ? TruckEngine.IsAmountsOfSourcePowerMaterialValid(io_AmountOfMaterial) : false;
+                              isMemberValid = float.TryParse(i_InputStr, out float io_AmountOfMaterial) == true ? ((GasEngine)MyEngine).IsAmountsOfSourcePowerMaterialValid(io_AmountOfMaterial) : false;
                               break;
                     }
 
@@ -128,19 +127,7 @@ namespace Ex03.GarageLogic
 
           }
 
-          public GasEngine TruckEngine
-          {
-               get
-               {
-                    return m_Engine;
-               }
 
-               set
-               {
-                    m_Engine = value;
-               }
-
-          }
 
      }
 

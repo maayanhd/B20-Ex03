@@ -8,23 +8,23 @@ namespace Ex03.GarageLogic
      {
           private eLicenseType m_ELicenseType;
           private int m_EngineVelocity;
-          private Engine m_Engine;
           private readonly string[] m_LicenseTypeStrings = { "A", "A1", "AA", "B" };
 
-          public Bike(string i_LicenseNumber, Engine i_Engine) : base(i_LicenseNumber)
+          public Bike(string i_LicenseNumber, Engine i_Engine) : base(i_Engine,i_LicenseNumber)
           {
+               NumOfWheels = 2;
                ManageMemberInfo();
-               Wheels.Add(new Wheel(30));
-               Wheels.Add(new Wheel(30));
           }
 
           public override void ManageMemberInfo()
           {
-               base.ManageMemberInfo();
-               m_MemberInfoStr.Add("A license type");
-               m_MemberInfoStr.Add("An engine Velocity");
+              NumOfBaseMembers = NumOfWheels * 2 + 2;
+              base.ManageMemberInfo();
+              AddWheels();
+              m_MemberInfoStr.Add("A license type");
+              m_MemberInfoStr.Add("An engine Velocity");
+              
           }
-
           public enum eLicenseType
           {
                A,
@@ -34,55 +34,69 @@ namespace Ex03.GarageLogic
           }
 
           //****************Validation Methods******************//  
-          public override bool IsCurrentMemberValid(int i_NumOfField, string i_InputStr)
+          public override bool TryAssignMember(int i_NumOfField, string i_InputStr)
           {
                bool isMemberValid = false;
 
-               if (base.IsCurrentMemberValid(i_NumOfField, i_InputStr))
+               if (i_NumOfField<NumOfBaseMembers)
                {
-                    // The number of cases of vehicle is 3 + 2 * numofwheels  
+                   isMemberValid = base.TryAssignMember(i_NumOfField, i_InputStr);
+               }
+               else
+               {
+                   switch(i_NumOfField - NumOfBaseMembers)
+                   {
 
-                    switch (i_NumOfField - (3 + 2 * this.Wheels.Count) + 1)
-                    {
-                         //case 1:
-                         //     isMemberValid = IsLicenseNumValid(i_InputStr);
-                         //     break;
-                         case 2:
-                              isMemberValid = float.TryParse(i_InputStr, out float io_EngineVelocity) == true ? IsEngineVelocityValid(io_EngineVelocity) : false;
-                              break;
-                         case 3:
-                              isMemberValid = float.TryParse(i_InputStr, out float io_AmountOfMaterial) == true ? BikeEngine.IsAmountsOfSourcePowerMaterialValid(io_AmountOfMaterial) : false;
-                              break;
-                    }
+                       case 0:
+
+                           isMemberValid = IsLicenseTypeValid(i_InputStr);
+                           if (isMemberValid == true)
+                           {
+                               AssignLicenseType(i_InputStr);
+                           }
+                           break;
+                        
+                       case 1:
+                           isMemberValid = float.TryParse(i_InputStr, out float io_EngineVelocity) == true
+                                               ? IsEngineVelocityValid(io_EngineVelocity)
+                                               : false;
+                           if (isMemberValid == true)
+                           {
+                               AssignEngineVelocity(i_InputStr);
+                           }
+                           break;
+                }
 
                }
 
                return isMemberValid;
 
           }
-
-          public bool IsLicenseTypeValid(string i_LicenseType, out eLicenseType o_LicenseType)
+          public void AssignLicenseType(string i_LicenseType)
           {
-               bool isValid = false;
-
-               // Starting the type as initial -1 value
-               o_LicenseType = (eLicenseType)(eLicenseType.A - 1);
-
-               foreach (string type in m_LicenseTypeStrings)
-               {
-                    // as long as we didn't find a matching type
-                    o_LicenseType++;
-
-                    if (type.Equals(i_LicenseType) == true)
-                    {
-                         isValid = true;
-                         break;
-                    }
-
-               }
-
-               return isValid;
+              if (IsLicenseTypeValid(i_LicenseType))
+              {
+                  m_ELicenseType = (eLicenseType)(Enum.Parse(typeof(eLicenseType), i_LicenseType));
+              }
+              else
+              {
+                  throw new FormatException("Incorrect license type");
+              }
           }
+        public bool IsLicenseTypeValid(string i_LicenseType)
+          {
+            bool isValid = false;
+            foreach (string type in Enum.GetNames(typeof(eLicenseType)))
+            {
+                isValid = i_LicenseType.Equals(type);
+                if (isValid == true)
+                {
+                    break;
+                }
+            }
+
+            return isValid;
+        }
 
           public bool IsEngineVelocityValid(float i_EngineVelocity)
           {
@@ -91,20 +105,9 @@ namespace Ex03.GarageLogic
 
           // New- update in flow chart
           //****************Assigning Methods******************//  
-          void AssignLicenseType(string i_LicenseType)
-          {
-               if (IsLicenseTypeValid(i_LicenseType, out eLicenseType o_ELicenseType) == true)
-               {
-                    LicenseType = o_ELicenseType;         
-               }
-               else 
-               {
-                    throw new FormatException("Please enter only one of the following: A, A1, AA, B" + Environment.NewLine);
-               }
 
-          }
 
-          void AssignmEngineVelocity(string i_EngineVelocity)
+          void AssignEngineVelocity(string i_EngineVelocity)
           {
 
                if (int.TryParse(i_EngineVelocity, out int io_EngineVelocity) == false)
@@ -152,19 +155,6 @@ namespace Ex03.GarageLogic
 
           }
 
-          public Engine BikeEngine
-          {
-               get
-               {
-                    return m_Engine;
-               }
-
-               set
-               {
-                    m_Engine = value;
-               }
-
-          }
 
           public string[] LicenseTypeStrings
           {

@@ -4,13 +4,10 @@ using System.Text;
 
 namespace Ex03.GarageLogic
 {
-     static public class Instance
+     public static class Instance
      {
           public static readonly List<string> sr_VehicleTypesStr = new List<string> { "Car", "Bike", "Truck", "ElectricCar", "ElectricBike" };
-          
-          // New - update flow chart 
-          public static readonly List<string> sr_InitialsMemberInfoDetails = new List<string> {"License Number", "Type Of Vehicle"};
-                    
+
           //****************Vehicle types list******************//  
           public enum eVehicleType
           {
@@ -21,9 +18,9 @@ namespace Ex03.GarageLogic
                ElectricBike
 
           }
-          
 
-          static public Vehicle GenerateInstance(eVehicleType i_EVehicleType, string i_LicenseNum)
+
+        static public Vehicle GenerateInstance(eVehicleType i_EVehicleType, string i_LicenseNum)
           {
                Vehicle generatedVehicle = null;
 

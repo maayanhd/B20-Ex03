@@ -48,17 +48,51 @@ namespace Ex03.ConsoleUI
                AddVehicle();
           }
 
-          //****************Functionality******************//  
+        //****************Functionality******************//  
+        public static bool IsLicenseNumValid(string i_LicenseNum)
+        {
+            bool isValid = false;
 
-          internal static void AddVehicle()
+            if (i_LicenseNum.Length == 8)
+            {
+                isValid = true;
+                foreach (char ch in i_LicenseNum)
+                {
+                    if (char.IsDigit(ch) == false)
+                    {
+                        isValid = false;
+                        break;
+                    }
+                }
+            }
+
+            return isValid;
+
+        }
+        internal static void AddVehicle()
           {
               Console.WriteLine("Please choose the type of vehicle you would like to enter the garage:" + Environment.NewLine);
 
                int numOption     = GetTypeOption();
                string licenseNum = GetLicenseNumStr();
-
+               
                // Need to fix access to class of instance and static members in general
-               Instance.GenerateInstance((Instance.eVehicleType)numOption - 1, licenseNum);
+               Vehicle newVehicle = Instance.GenerateInstance((Instance.eVehicleType)numOption - 1, licenseNum);
+
+               for(int i = 0; i < newVehicle.MemberInfoStrings.Count; i++)
+               {
+                   bool fieldIsValid = false;
+                   while(fieldIsValid == false)
+                   {
+                       Console.WriteLine(string.Format("Please enter {0}", newVehicle.MemberInfoStrings[i]));
+                       string inputStr = Console.ReadLine();
+                       fieldIsValid = newVehicle.TryAssignMember(i, inputStr);
+                       if(fieldIsValid == false)
+                       {
+                           Console.WriteLine("Wrong input, please try again");
+                       }
+                   }
+               }
 
           }
 
@@ -88,11 +122,8 @@ namespace Ex03.ConsoleUI
 
                do
                {
-                    Console.WriteLine(string.Format("Please enter {0}: {1}",
-                         Instance.sr_InitialsMemberInfoDetails[Garage.countProcessSteps - 1],
-                         Environment.NewLine));
-
-                    licenseNumStr = Console.ReadLine();
+                   Console.WriteLine("Please enter a license number of the vehicle: ");
+                   licenseNumStr = Console.ReadLine();
 
                } while (IsLicenseNumValid(licenseNumStr) == false);
 
@@ -101,26 +132,7 @@ namespace Ex03.ConsoleUI
           }
 
           //****************Validation Methods******************//  
-          internal static bool IsLicenseNumValid(string i_LicenseNum)
-          {
-               bool isValid = false;
-
-               if (i_LicenseNum.Length == 8)
-               {
-                    isValid = true;
-                    foreach (char ch in i_LicenseNum)
-                    {
-                         if (char.IsDigit(ch) == false)
-                         {
-                              isValid = false;
-                              break;
-                         }
-                    }
-               }
-
-               return isValid;
-
-          }
+          
 
           internal static bool OptionIsValid(string i_optionNumString, out int o_OptionNum)
           {

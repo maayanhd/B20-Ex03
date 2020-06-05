@@ -7,26 +7,48 @@ namespace Ex03.GarageLogic
 {
      public abstract class Vehicle
      {
-          private readonly string r_LicenseNum;
-          private string m_Model;
-          private float m_EnergyLeftInPercents;
-          private readonly List<Wheel> r_Wheels;
+          protected readonly string r_LicenseNum;
+          protected string m_Model;
+          protected float m_EnergyLeftInPercents;
+          protected readonly List<Wheel> r_Wheels;
+          protected int m_NumOfWheels;
+          
+          public Engine m_Engine;
+
           protected List<string> m_MemberInfoStr;
+          protected  int m_NumOfBaseMembers;
 
-          protected Vehicle(string i_LicenseNumber)
+          protected Vehicle(Engine i_Engine,string i_LicenseNumber)
           {
-
+               m_Engine = i_Engine;
+               m_MemberInfoStr = new List<string>();
                r_LicenseNum = i_LicenseNumber;
                r_Wheels = new List<Wheel>();
-               ManageMemberInfo();
           }
 
           public virtual void ManageMemberInfo()
           {
-               m_MemberInfoStr = new List<string> { "License Number", "Type Of Vehicle", "A model" };
+               m_MemberInfoStr.Add("A model");
+               manageEngineMemberInfoStr();
           }
 
-          public virtual bool IsCurrentMemberValid(int i_NumOfField, string i_InputStr)
+          public void manageEngineMemberInfoStr()
+          {
+              GasEngine gasEngine = m_Engine as GasEngine;
+              Battery battery = m_Engine as Battery;
+
+              if (gasEngine != null)
+              {
+                  m_MemberInfoStr.Add(gasEngine.CurrentAmountInfoStr);
+              }
+
+              if (battery != null)
+              {
+                  m_MemberInfoStr.Add(battery.RemainingBatteryLifeInfoStr);
+              }
+
+          }
+        public virtual bool TryAssignMember(int i_NumOfField, string i_InputStr)
           {
                bool isMemberValid = false;
                int io_IndexOfWheelBasedOnField = i_NumOfField;
@@ -35,24 +57,38 @@ namespace Ex03.GarageLogic
 
                switch (i_NumOfField)
                {
-                    //case 1:
-                    //     isMemberValid = IsLicenseNumValid(i_InputStr);
-                    //     break;
-                    //case 2:
-                    //     isMemberValid = int.TryParse(i_InputStr, out int option) == true ? IsTypeOfVehicleValid(option) : false;
-                    //     break;
-                         // Maybe starting from case 3 !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
-                    case 3:
+
+                    case 0:
                          isMemberValid = IsModelValid(i_InputStr);
+                         if(isMemberValid == true)
+                         {
+                             AssignModel(i_InputStr);
+                         }
                          break;
-                    case 4:
+                    case 1:
+                        isMemberValid = float.TryParse(i_InputStr, out float io_AmountOfMaterial) == true ? m_Engine.IsAmountsOfSourcePowerMaterialValid(io_AmountOfMaterial) : false;
+                        if(isMemberValid == true)
+                        {
+                        //// assign
+                        }
+                        break;
+                    case 2:
                          isMemberValid = Wheels[io_IndexOfWheelBasedOnField].IsManufactorerValid(i_InputStr);
+                         if(isMemberValid == true)
+                         {
+                             //assign
+                         }
                          break;
-                    case 5:
+                    case 3:
                          isMemberValid = float.TryParse(i_InputStr, out float o_AirPressure) == true ? Wheels[io_IndexOfWheelBasedOnField].IsAirPressureIsValid(o_AirPressure) : false;
+                         if(isMemberValid == true)
+                         {
+                             //assign
+                         }
                          break;
-                         // vehicle ends in case 3 + 2 * numofwheels  
-               }
+                    
+
+            }
 
                return isMemberValid;
 
@@ -60,21 +96,17 @@ namespace Ex03.GarageLogic
 
           public int GetIndexOfWheelToValidate(int i_CaseNum, ref int io_NumOfWheelBasedOnField)
           {
-               if (i_CaseNum >= 4 && i_CaseNum <= 4 + r_Wheels.Count)
+               if (i_CaseNum >= 2 && i_CaseNum < NumOfBaseMembers)
                {
-                    i_CaseNum = i_CaseNum % 2 == 0 ? 4 : 5;
-                    io_NumOfWheelBasedOnField = io_NumOfWheelBasedOnField - 4 / 2;
+                    i_CaseNum = i_CaseNum % 2 == 0 ? 2 : 3;
+                    io_NumOfWheelBasedOnField = (io_NumOfWheelBasedOnField - 2) / 2;
                }
 
                return i_CaseNum;
           }
 
           //****************Validations Methods******************//  
-          
-          //public bool IsTypeOfVehicleValid(int i_TypeOfVehicle)
-          //{
-          //     return i_TypeOfVehicle > 0 && i_TypeOfVehicle <= Instance.sr_VehicleTypesStr.Count;
-          //}
+         
 
           public bool IsEnergyLeftValid(float i_EnergyLeftInPercents)
           {
@@ -113,8 +145,21 @@ namespace Ex03.GarageLogic
 
                return vehicleString;
           }
+          public void AddWheels()
+          {
+              for (int i = 0; i < NumOfWheels; i++)
+              {
+                  Wheels.Add(new Wheel(32));
+                  m_MemberInfoStr.Add(string.Format(
+                      "{0} wheel's manufacturer",
+                      i + 1));
+                  m_MemberInfoStr.Add(string.Format(
+                      "current air pressure in wheel {0}",
+                      i + 1));
+              }
+          }
 
-          public override int GetHashCode()
+        public override int GetHashCode()
           {
                return int.Parse(r_LicenseNum);
           }
@@ -139,7 +184,7 @@ namespace Ex03.GarageLogic
           // New- update in flow chart
           //****************Assigning Methods******************//  
 
-          void AssignModel(string i_Model)
+          public void AssignModel(string i_Model)
           {
                if (IsModelValid(i_Model) == true)
                {
@@ -152,7 +197,7 @@ namespace Ex03.GarageLogic
 
           }
 
-          void AssignCurrentWheelPressure(string i_CurrentAirPressure, int i_IndexOfWheel)
+          public void AssignCurrentWheelPressure(string i_CurrentAirPressure, int i_IndexOfWheel)
           {
 
                if (float.TryParse(i_CurrentAirPressure, out float io_CurrentAirPressure) == false)
@@ -180,7 +225,17 @@ namespace Ex03.GarageLogic
                }
 
           }
-
+          public Engine MyEngine
+          {
+              get
+              {
+                  return m_Engine;
+              }
+              set
+              {
+                  m_Engine = value;
+              }
+          }
           public string Model
           {
                get
@@ -194,8 +249,31 @@ namespace Ex03.GarageLogic
                }
 
           }
+          public int NumOfWheels
+          {
+              get
+              {
+                  return m_NumOfWheels;
+              }
+              set
+              {
+                  m_NumOfWheels = value;
+              }
 
-          public float EnergyLeftInPercents
+          }
+          public int NumOfBaseMembers
+          {
+              get
+              {
+                  return m_NumOfBaseMembers;
+              }
+              set
+              {
+                  m_NumOfBaseMembers = value;
+              }
+
+          }
+        public float EnergyLeftInPercents
           {
                get
                {
