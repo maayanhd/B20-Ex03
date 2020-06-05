@@ -41,11 +41,11 @@ namespace Ex03.GarageLogic
                {
                     // The number of cases of vehicle is 3 + 2 * numofwheels  
 
-                    switch (i_NumOfField - (3 + 2 * this.Wheels.Count))
+                    switch (i_NumOfField - (3 + 2 * this.Wheels.Count) + 1)
                     {
-                         case 1:
-                              isMemberValid = IsLicenseNumValid(i_InputStr);
-                              break;
+                         //case 1:
+                         //     isMemberValid = IsLicenseNumValid(i_InputStr);
+                         //     break;
                          case 2:
                               isMemberValid = float.TryParse(i_InputStr, out float io_EngineVelocity) == true ? IsEngineVelocityValid(io_EngineVelocity) : false;
                               break;

@@ -35,12 +35,13 @@ namespace Ex03.GarageLogic
 
                switch (i_NumOfField)
                {
-                    case 1:
-                         isMemberValid = IsLicenseNumValid(i_InputStr);
-                         break;
-                    case 2:
-                         isMemberValid = int.TryParse(i_InputStr, out int option) == true ? IsTypeOfVehicleValid(option) : false;
-                         break;
+                    //case 1:
+                    //     isMemberValid = IsLicenseNumValid(i_InputStr);
+                    //     break;
+                    //case 2:
+                    //     isMemberValid = int.TryParse(i_InputStr, out int option) == true ? IsTypeOfVehicleValid(option) : false;
+                    //     break;
+                         // Maybe starting from case 3 !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
                     case 3:
                          isMemberValid = IsModelValid(i_InputStr);
                          break;
@@ -69,39 +70,18 @@ namespace Ex03.GarageLogic
           }
 
           //****************Validations Methods******************//  
-
-          public bool IsTypeOfVehicleValid(int i_TypeOfVehicle)
-          {
-               return i_TypeOfVehicle > 0 && i_TypeOfVehicle <= Instance.r_VehicleTypesStr.Count;
-          }
+          
+          //public bool IsTypeOfVehicleValid(int i_TypeOfVehicle)
+          //{
+          //     return i_TypeOfVehicle > 0 && i_TypeOfVehicle <= Instance.sr_VehicleTypesStr.Count;
+          //}
 
           public bool IsEnergyLeftValid(float i_EnergyLeftInPercents)
           {
                return i_EnergyLeftInPercents <= 100 && i_EnergyLeftInPercents >= 0;
           }
 
-          public bool IsLicenseNumValid(string i_LicenseNum)
-          {
-               bool isValid = false;
-
-               if (i_LicenseNum.Length == 8)
-               {
-                    isValid = true;
-                    foreach (char ch in i_LicenseNum)
-                    {
-                         if (char.IsDigit(ch) == false)
-                         {
-                              isValid = false;
-                              break;
-                         }
-                    }
-               }
-
-               return isValid;
-
-          }
-
-          public bool IsModelValid(string i_Model)
+                  public bool IsModelValid(string i_Model)
           {
                bool isValid = false;
                if (i_Model.Length != 0)

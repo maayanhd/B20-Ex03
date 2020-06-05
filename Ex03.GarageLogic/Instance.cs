@@ -6,8 +6,11 @@ namespace Ex03.GarageLogic
 {
      static public class Instance
      {
-          internal static readonly List<string> r_VehicleTypesStr = new List<string> { "Car", "Bike", "Truck", "ElectricCar", "ElectricBike" };
-
+          public static readonly List<string> sr_VehicleTypesStr = new List<string> { "Car", "Bike", "Truck", "ElectricCar", "ElectricBike" };
+          
+          // New - update flow chart 
+          public static readonly List<string> sr_InitialsMemberInfoDetails = new List<string> {"License Number", "Type Of Vehicle"};
+                    
           //****************Vehicle types list******************//  
           public enum eVehicleType
           {
@@ -16,7 +19,9 @@ namespace Ex03.GarageLogic
                Truck,
                ElectricCar,
                ElectricBike
+
           }
+          
 
           static public Vehicle GenerateInstance(eVehicleType i_EVehicleType, string i_LicenseNum)
           {

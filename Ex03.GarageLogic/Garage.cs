@@ -10,6 +10,9 @@ namespace Ex03.GarageLogic
           private readonly Dictionary<int, string[]> r_VehiclesOwnerDetails = null;
           private readonly Dictionary<int, eVehicleStat> r_VehicleStatus = null;
 
+          //New- update flow chart
+          public static int countProcessSteps = 3;
+
           public Garage()
           {
                r_Vehicles = new Dictionary<int, Vehicle>();
@@ -114,6 +117,15 @@ namespace Ex03.GarageLogic
                }
 
           }
+
+          public int CountProcessSteps
+          {
+               get
+               {
+                    return countProcessSteps;
+               }
+          }
+
      }
 }
 

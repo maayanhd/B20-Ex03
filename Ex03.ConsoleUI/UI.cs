@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Text;
+using Ex03.GarageLogic;
 
 /// For us
 // communication with user -
@@ -38,14 +39,102 @@ using System.Text;
 
 namespace Ex03.ConsoleUI
 {
-     using GarageLogic;
-     internal class UI
+     public class UI
      {
           public static void OpenGarageForBusiness()
           {
                Garage MyGarage = new Garage();
 
                
+          }
+
+          //****************Functionality******************//  
+
+          public void AddVehicle()
+          {
+              Console.WriteLine("Please choose the type of vehicle you would like to enter the garage:" + Environment.NewLine);
+
+               int numOption     = GetTypeOption();
+               string licenseNum = GetLicenseNumStr();
+
+               // Need to fix access to class of instance and static members in general
+               Instance.GenerateInstance((Instance.eVehicleType)numOption, licenseNum);
+
+          }
+
+          public void ProceedToNextStepOfProcess()
+          {
+               Garage.countProcessSteps++;
+          }
+          //****************Input Methods******************//  
+          public int GetTypeOption()
+          {
+               string numOptionString = null;
+               int numOption;
+
+               do
+               {
+                    PrintVehicleTypeMenu(Instance.sr_VehicleTypesStr);
+                    numOptionString = Console.ReadLine();
+               }
+               while (OptionIsValid(numOptionString, out numOption) == false);
+
+               return numOption;
+          }
+
+          public string GetLicenseNumStr()
+          {
+               string licenseNumStr = null;
+
+               do
+               {
+                    Console.WriteLine(string.Format("Please enter {0}: {1}", Instance.sr_InitialsMemberInfoDetails[Garage.countProcessSteps]));
+                    licenseNumStr = Console.ReadLine();
+
+               } while (IsLicenseNumValid(licenseNumStr) == false);
+
+               return licenseNumStr;
+
+          }
+
+          //****************Validation Methods******************//  
+          public bool IsLicenseNumValid(string i_LicenseNum)
+          {
+               bool isValid = false;
+
+               if (i_LicenseNum.Length == 8)
+               {
+                    isValid = true;
+                    foreach (char ch in i_LicenseNum)
+                    {
+                         if (char.IsDigit(ch) == false)
+                         {
+                              isValid = false;
+                              break;
+                         }
+                    }
+               }
+
+               return isValid;
+
+          }
+                   
+          public bool OptionIsValid(string i_optionNumString, out int o_OptionNum)
+          {
+               return int.TryParse(i_optionNumString, out o_OptionNum) == true && o_OptionNum >= 1 && o_OptionNum <= Instance.sr_VehicleTypesStr.Count;
+          }
+
+
+          //****************Console Output******************//  
+          public void PrintVehicleTypeMenu(List<string> VehicleTypeStrings)
+          {
+               foreach (string typeOfVehicle in VehicleTypeStrings)
+               {
+                    Console.WriteLine(string.Format("{0}. {1}{2}",
+                         typeOfVehicle,
+                         Environment.NewLine));
+               }
+
           }
 
      }
