@@ -37,11 +37,11 @@ namespace Ex03.GarageLogic
                          break;
 
                     case eVehicleType.ElectricCar:
-                         generatedVehicle = new Car(i_LicenseNum, new ElectricEngine((float)2.1));
+                         generatedVehicle = new Car(i_LicenseNum, new Battery((float)2.1));
                          break;
 
                     case eVehicleType.ElectricBike:
-                         generatedVehicle = new Bike(i_LicenseNum, new ElectricEngine((float)1.2));
+                         generatedVehicle = new Bike(i_LicenseNum, new Battery((float)1.2));
                          break;
                }
 

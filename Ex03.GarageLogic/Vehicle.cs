@@ -15,8 +15,9 @@ namespace Ex03.GarageLogic
 
           protected Vehicle(string i_LicenseNumber)
           {
-              r_LicenseNum= i_LicenseNumber;
-              r_Wheels = new List<Wheel>();
+
+               r_LicenseNum = i_LicenseNumber;
+               r_Wheels = new List<Wheel>();
                ManageMemberInfo();
           }
 
@@ -28,9 +29,9 @@ namespace Ex03.GarageLogic
           public virtual bool IsCurrentMemberValid(int i_NumOfField, string i_InputStr)
           {
                bool isMemberValid = false;
-               int io_NumOfWheelBasedOnField = i_NumOfField;
+               int io_IndexOfWheelBasedOnField = i_NumOfField;
 
-               i_NumOfField = GetNumFieldForWheelsMember(i_NumOfField, ref io_NumOfWheelBasedOnField);
+               i_NumOfField = GetIndexOfWheelToValidate(i_NumOfField, ref io_IndexOfWheelBasedOnField);
 
                switch (i_NumOfField)
                {
@@ -38,16 +39,16 @@ namespace Ex03.GarageLogic
                          isMemberValid = IsLicenseNumValid(i_InputStr);
                          break;
                     case 2:
-                         isMemberValid = int.TryParse(i_InputStr, out int option) == true ? IsTypeOfVehicleValid(option) : false; 
+                         isMemberValid = int.TryParse(i_InputStr, out int option) == true ? IsTypeOfVehicleValid(option) : false;
                          break;
                     case 3:
                          isMemberValid = IsModelValid(i_InputStr);
                          break;
                     case 4:
-                         isMemberValid = Wheels[io_NumOfWheelBasedOnField].IsManufactorerValid(i_InputStr);
+                         isMemberValid = Wheels[io_IndexOfWheelBasedOnField].IsManufactorerValid(i_InputStr);
                          break;
                     case 5:
-                         isMemberValid = float.TryParse(i_InputStr, out float o_AirPressure) == true ? Wheels[io_NumOfWheelBasedOnField].IsAirPressureIsValid(o_AirPressure) : false;
+                         isMemberValid = float.TryParse(i_InputStr, out float o_AirPressure) == true ? Wheels[io_IndexOfWheelBasedOnField].IsAirPressureIsValid(o_AirPressure) : false;
                          break;
                          // vehicle ends in case 3 + 2 * numofwheels  
                }
@@ -56,14 +57,14 @@ namespace Ex03.GarageLogic
 
           }
 
-          public int GetNumFieldForWheelsMember(int i_CaseNum, ref int io_NumOfWheelBasedOnField)
+          public int GetIndexOfWheelToValidate(int i_CaseNum, ref int io_NumOfWheelBasedOnField)
           {
                if (i_CaseNum >= 4 && i_CaseNum <= 4 + r_Wheels.Count)
                {
                     i_CaseNum = i_CaseNum % 2 == 0 ? 4 : 5;
                     io_NumOfWheelBasedOnField = io_NumOfWheelBasedOnField - 4 / 2;
                }
-                             
+
                return i_CaseNum;
           }
 
@@ -82,7 +83,6 @@ namespace Ex03.GarageLogic
           public bool IsLicenseNumValid(string i_LicenseNum)
           {
                bool isValid = false;
-               int licenceNumInt;
 
                if (i_LicenseNum.Length == 8)
                {
@@ -103,55 +103,91 @@ namespace Ex03.GarageLogic
 
           public bool IsModelValid(string i_Model)
           {
-              bool isValid = false;
+               bool isValid = false;
+               if (i_Model.Length != 0)
+               {
+                    foreach (char ch in i_Model)
+                    {
+                         isValid = char.IsLetterOrDigit(ch);
 
-              foreach(char ch in i_Model)
-              {
-                  isValid = char.IsLetterOrDigit(ch);
+                         if (isValid == false)
+                         {
+                              break;
+                         }
 
-                  if(isValid == false)
-                  {
-                      break;
-                  }
-
-              }
-
-              return isValid;
+                    }
+               }
+               
+               return isValid;
 
           }
 
           //***********Override of Object Methods*********//  
           public override string ToString()
           {
-              string vehicleString = string.Format(
-                  "Model: {0}{1}Lisence Number: {2}",
-                  Model,
-                  Environment.NewLine,
-                  LicenseNum);
+               string vehicleString = string.Format(
+                   "Model: {0}{1}Lisence Number: {2}",
+                   Model,
+                   Environment.NewLine,
+                   LicenseNum);
 
-              return vehicleString;
+               return vehicleString;
           }
 
           public override int GetHashCode()
           {
                return int.Parse(r_LicenseNum);
           }
-          
+
           public override bool Equals(object i_obj)
           {
-              Vehicle vehicleToCompare = i_obj as Vehicle;
-              bool isEqual = false;
+               Vehicle vehicleToCompare = i_obj as Vehicle;
+               bool isEqual = false;
 
-              if(vehicleToCompare != null)
-              {
-                  isEqual = this.LicenseNum.Equals(vehicleToCompare.LicenseNum);
-              }
-              else
-              {
-                  throw new ArgumentException();
-              }
+               if (vehicleToCompare != null)
+               {
+                    isEqual = this.LicenseNum.Equals(vehicleToCompare.LicenseNum);
+               }
+               else
+               {
+                    throw new ArgumentException();
+               }
 
-              return isEqual;
+               return isEqual;
+          }
+
+          // New- update in flow chart
+          //****************Assigning Methods******************//  
+
+          void AssignModel(string i_Model)
+          {
+               if (IsModelValid(i_Model) == true)
+               {
+                    Model = i_Model;
+               }
+               else
+               {
+                    throw new FormatException("The Model should consist of only letters and digits");
+               }
+
+          }
+
+          void AssignCurrentWheelPressure(string i_CurrentAirPressure, int i_IndexOfWheel)
+          {
+
+               if (float.TryParse(i_CurrentAirPressure, out float io_CurrentAirPressure) == false)
+               {
+                    throw new FormatException("The Manufacturer should consist of only letters");
+               }
+               else if (Wheels[i_IndexOfWheel].IsAirPressureIsValid(io_CurrentAirPressure) == false)
+               {
+                    throw new ValueOutOfRangeException(Wheels[i_IndexOfWheel].MaximalWheelPressure, 0, "Air pressure is out of range");
+               }
+               else
+               {
+                    Wheels[i_IndexOfWheel].CurrentWheelPressure = io_CurrentAirPressure;
+               }
+
           }
 
           //****************Properties******************//  
@@ -170,6 +206,11 @@ namespace Ex03.GarageLogic
                get
                {
                     return m_Model;
+               }
+
+               set
+               {
+                    m_Model = value;
                }
 
           }

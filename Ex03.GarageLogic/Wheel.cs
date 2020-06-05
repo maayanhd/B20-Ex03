@@ -85,6 +85,7 @@ namespace Ex03.GarageLogic
           }
 
           //****************Functionality******************//  
+               
           public void Inflate(float i_AirToAdd)
           {
               if(IsAirPressureIsValid(i_AirToAdd))
@@ -93,8 +94,41 @@ namespace Ex03.GarageLogic
               }
               else
               {
-                  throw new ValueOutOfRangeException(m_MaximalWheelPressure - m_CurrentWheelPressure,0);
+                  throw new ValueOutOfRangeException(m_MaximalWheelPressure - m_CurrentWheelPressure,0 , "The air you're asking to add is out of range");
               }
+
+          }
+          
+          // New- update in flow chart
+          //****************Assigning Methods******************//  
+
+          void AssignManufacturer(string i_Manufacturer)
+          {
+               if (IsManufactorerValid(i_Manufacturer) == true)
+               {
+                    Manufacturor = i_Manufacturer;
+               }
+               else
+               {
+                    throw new FormatException("The Manufacturer should consist only letters");
+               }
+
+          }
+
+          void AssignCurrentWheelPressure(string i_CurrentAirPressure)
+          {
+               if (float.TryParse(i_CurrentAirPressure, out float io_CurrentAirPressure) == false)
+               {
+                    throw new FormatException("The Manufacturer should consist only letters");
+               }
+               else if (IsAirPressureIsValid(io_CurrentAirPressure) == false)
+               {
+                    throw new ValueOutOfRangeException(MaximalWheelPressure, 0, "Air pressure is out of range");
+               }
+               else
+               {
+                    CurrentWheelPressure = io_CurrentAirPressure;
+               }
 
           }
 

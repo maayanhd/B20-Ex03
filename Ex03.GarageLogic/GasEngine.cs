@@ -22,13 +22,13 @@ namespace Ex03.GarageLogic
           //****************Functionality******************//  
           public void ReFuel(float i_FuelToAdd, eFuelType i_EFuelType)
           {
-               if (IsTotalAmountOfFuelWhithinLimit(i_FuelToAdd) == false)
+               if (IsTotalAmountOfFuelWithinLimit(i_FuelToAdd) == false)
                {
-                    throw new ValueOutOfRangeException(m_MaximumAmountOfFuelInLitters - m_CurrentAmountOfFuelInLitters, 0);
+                    throw new ValueOutOfRangeException(m_MaximumAmountOfFuelInLitters - m_CurrentAmountOfFuelInLitters, 0, "You exceeded the amount of fuel to fill a full tank" + Environment.NewLine);
                }
                else if (i_EFuelType != m_EFuelType)
                {
-                    throw new ArgumentException("The fuel type is not matching the vehicle's fuel type");
+                    throw new ArgumentException("The fuel type is not matching the vehicle's fuel type"+Environment.NewLine);
                }
                else
                {
@@ -45,10 +45,10 @@ namespace Ex03.GarageLogic
           //**************Validation Methods***************//  
           public override bool IsAmountsOfSourcePowerMaterialValid(float i_MaterialToCheck)
           {
-               return IsTotalAmountOfFuelWhithinLimit(i_MaterialToCheck);
+               return IsTotalAmountOfFuelWithinLimit(i_MaterialToCheck);
           }
 
-          public bool IsTotalAmountOfFuelWhithinLimit(float i_FuelToAdd)
+          public bool IsTotalAmountOfFuelWithinLimit(float i_FuelToAdd)
           {
                return i_FuelToAdd <= m_MaximumAmountOfFuelInLitters - m_CurrentAmountOfFuelInLitters;
           }

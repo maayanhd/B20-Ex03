@@ -26,12 +26,77 @@ namespace Ex03.GarageLogic
 
           public override void ManageMemberInfo()
           {
-               r_MemberInfoStr.Add("whether the truck carrying dangerous materials");
-               r_MemberInfoStr.Add("whether the truck carrying dangerous materials");
-               r_MemberInfoStr.Add(m_Engine.CurrentAmountInfoStr);
+               m_MemberInfoStr.Add("whether the truck carrying dangerous materials");
+               m_MemberInfoStr.Add("whether the truck carrying dangerous materials");
+               m_MemberInfoStr.Add(m_Engine.CurrentAmountInfoStr);
           }
 
           //****************Validations Methods******************//  
+          public override bool IsCurrentMemberValid(int i_NumOfField, string i_InputStr)
+          {
+               bool isMemberValid = false;
+
+               if (base.IsCurrentMemberValid(i_NumOfField, i_InputStr))
+               {
+                    // The number of cases of vehicle is 3 + 2 * numofwheels  
+
+                    switch (i_NumOfField - (3 + 2 * this.Wheels.Count))
+                    {
+                         case 1:
+                              isMemberValid = i_InputStr.Equals("Yes") == true || i_InputStr.Equals("No");
+                              break;
+                         case 2:
+                              isMemberValid = float.TryParse(i_InputStr, out float io_CarryingSize) == true ? IsCarryingSizeValid(io_CarryingSize) : false;
+                              break;
+                         case 3:
+                              isMemberValid = float.TryParse(i_InputStr, out float io_AmountOfMaterial) == true ? TruckEngine.IsAmountsOfSourcePowerMaterialValid(io_AmountOfMaterial) : false;
+                              break;
+                    }
+
+               }
+
+               return isMemberValid;
+
+          }
+
+          public static bool IsCarryingSizeValid(float i_CarryingSize)
+          {
+
+               return i_CarryingSize > 0;
+
+          }
+
+          // New- update in flow chart
+          //****************Assigning Methods******************//  
+
+          void AssignIsCarryingDangerousMaterials(string i_IsCarryingDangerousMaterials)
+          {
+               if (i_IsCarryingDangerousMaterials.Equals("Yes") == false && i_IsCarryingDangerousMaterials.Equals("No") == false)
+               {
+                    throw new FormatException("Please enter Yes or No only");
+               }
+               else
+               {
+                    IsCarryingDangerousMaterials = i_IsCarryingDangerousMaterials.Equals("Yes") == true;
+               }
+
+          }
+
+          void AssignCarryingSize(string i_CarryingSize)
+          {
+
+               if (float.TryParse(i_CarryingSize, out float io_CarryingSize) == false)
+               {
+                    throw new FormatException("The Carrying size should be a decimal number");
+               }
+               else
+               {
+                    CarryingSize = io_CarryingSize;
+               }
+
+          }
+          
+          //****************Properties******************//  
           public bool IsCarryingDangerousMaterials
           {
                get
@@ -46,14 +111,6 @@ namespace Ex03.GarageLogic
 
           }
 
-          public static bool IsCarryingSizeValid(float i_CarryingSize)
-          {
-
-               return i_CarryingSize > 0;
-
-          }
-
-          //****************Properties******************//  
           public float CarryingSize
           {
                get
@@ -64,6 +121,20 @@ namespace Ex03.GarageLogic
                set
                {
                     m_CarryingSize = value;
+               }
+
+          }
+
+          public GasEngine TruckEngine
+          {
+               get
+               {
+                    return m_Engine;
+               }
+
+               set
+               {
+                    m_Engine = value;
                }
 
           }

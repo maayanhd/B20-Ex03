@@ -4,14 +4,14 @@ using System.Text;
 
 namespace Ex03.GarageLogic
 {
-     public sealed class ElectricEngine : Engine
+     public sealed class Battery : Engine
      {
 
           private float m_RemainingBatteryLifeInHours;
           private float m_MaxBatteryLifeInHours;
           private readonly string m_RemainingBatteryLifeInfoStr;
 
-          public ElectricEngine(float i_MaxBatteryLifeInHours)
+          public Battery(float i_MaxBatteryLifeInHours)
           {
                i_MaxBatteryLifeInHours = m_MaxBatteryLifeInHours;
                m_RemainingBatteryLifeInfoStr = "remaining battery life in hours";
@@ -27,7 +27,7 @@ namespace Ex03.GarageLogic
           {
                if (IsTotalAmountOfChargingWithinLimit((float)i_HoursToCharge) == false)
                {
-                    throw new ValueOutOfRangeException(m_MaxBatteryLifeInHours - m_RemainingBatteryLifeInHours, 0);
+                    throw new ValueOutOfRangeException(m_MaxBatteryLifeInHours - m_RemainingBatteryLifeInHours, 0, "You exceeded the possible range of charging battery" + Environment.NewLine);
                }
                else
                {
@@ -78,7 +78,8 @@ namespace Ex03.GarageLogic
                
           }
 
-          //****************Validation Methods******************//  
+          //****************Validation Methods******************// 
+          
           public bool IsTotalAmountOfChargingWithinLimit(float i_HoursToCharge)
           {
                return i_HoursToCharge <= m_MaxBatteryLifeInHours - m_RemainingBatteryLifeInHours;

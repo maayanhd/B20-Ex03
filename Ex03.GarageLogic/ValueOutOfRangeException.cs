@@ -4,15 +4,19 @@ using System.Text;
 
 namespace Ex03.GarageLogic
 {
-     public class ValueOutOfRangeException:Exception
+     public class ValueOutOfRangeException : Exception
      {
           private float m_MaxValue;
           private float m_MinValue;
 
-          public ValueOutOfRangeException(float i_MaxValue, float i_MinValue)
+          // new- update in flow chart 
+          private readonly string m_NotifyingMessage;
+
+          public ValueOutOfRangeException(float i_MaxValue, float i_MinValue, string i_NotifyingMessage)
           {
-              m_MaxValue = i_MaxValue;
-              m_MinValue = i_MinValue;
+               m_MaxValue = i_MaxValue;
+               m_MinValue = i_MinValue;
+               m_NotifyingMessage = i_NotifyingMessage;
           }
 
           //****************Properties******************//  
@@ -28,7 +32,7 @@ namespace Ex03.GarageLogic
                {
                     m_MaxValue = value;
                }
-               
+
           }
 
           public float MinValue
@@ -43,7 +47,18 @@ namespace Ex03.GarageLogic
                     m_MinValue = value;
                }
           }
+
+          public string NotifyingString
+          {
+               get
+               {
+                    return NotifyingString;
+               }
+
+          }
+
      }
+
 }
 
 

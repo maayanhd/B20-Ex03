@@ -34,7 +34,7 @@
   <ItemGroup>
     <Compile Include="Bike.cs" />
     <Compile Include="Car.cs" />
-    <Compile Include="ElectricEngine.cs" />
+    <Compile Include="Battery.cs" />
     <Compile Include="Engine.cs" />
     <Compile Include="Garage.cs" />
     <Compile Include="GasEngine.cs" />

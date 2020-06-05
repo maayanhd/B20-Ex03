@@ -38,11 +38,16 @@ using System.Text;
 
 namespace Ex03.ConsoleUI
 {
+     using GarageLogic;
      internal class UI
      {
           public static void OpenGarageForBusiness()
           {
+               Garage MyGarage = new Garage();
 
+               
           }
+
      }
+
 }
