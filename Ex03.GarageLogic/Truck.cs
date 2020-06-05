@@ -13,6 +13,8 @@ namespace Ex03.GarageLogic
 
           public Truck(string i_LicenseNumber, GasEngine i_GasEngine) : base(i_LicenseNumber)
           {
+               base.ManageMemberInfo();
+
                for (int i = 0; i < sr_NumOfWheels; i++)
                {
                     Wheels.Add(new Wheel(28));
@@ -21,11 +23,12 @@ namespace Ex03.GarageLogic
                m_Engine = i_GasEngine;
                m_Engine.FuelType = GasEngine.eFuelType.Soler;
                m_Engine.MaximumAmountOfFuelInLitters = 120;
-               ManageMemberInfo();
+
           }
 
           public override void ManageMemberInfo()
           {
+               base.ManageMemberInfo();
                m_MemberInfoStr.Add("whether the truck carrying dangerous materials");
                m_MemberInfoStr.Add("whether the truck carrying dangerous materials");
                m_MemberInfoStr.Add(m_Engine.CurrentAmountInfoStr);

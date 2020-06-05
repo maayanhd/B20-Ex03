@@ -18,17 +18,19 @@ namespace Ex03.GarageLogic
 
           public Car(string i_LicenseNumber, Engine i_Engine) : base(i_LicenseNumber)
           {
+               ManageMemberInfo();
+
                for (int i = 0; i < sr_NumOfWheels; i++)
                {
                     Wheels.Add(new Wheel(32));
                }
 
                m_Engine = i_Engine;
-               ManageMemberInfo();
           }
 
           public override void ManageMemberInfo()
           {
+               base.ManageMemberInfo();
                m_MemberInfoStr.Add("A color");
                m_MemberInfoStr.Add("Number of doors");
                manageEngineMemberInfoStr();

@@ -13,13 +13,14 @@ namespace Ex03.GarageLogic
 
           public Bike(string i_LicenseNumber, Engine i_Engine) : base(i_LicenseNumber)
           {
-               Wheels.Add(new Wheel(30));
-               Wheels.Add(new Wheel(30));
                ManageMemberInfo();
+               Wheels.Add(new Wheel(30));
+               Wheels.Add(new Wheel(30));
           }
 
           public override void ManageMemberInfo()
           {
+               base.ManageMemberInfo();
                m_MemberInfoStr.Add("A license type");
                m_MemberInfoStr.Add("An engine Velocity");
           }
