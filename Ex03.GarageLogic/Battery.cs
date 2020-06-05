@@ -13,7 +13,7 @@ namespace Ex03.GarageLogic
 
           public Battery(float i_MaxBatteryLifeInHours)
           {
-               i_MaxBatteryLifeInHours = m_MaxBatteryLifeInHours;
+               m_MaxBatteryLifeInHours = i_MaxBatteryLifeInHours;
                m_RemainingBatteryLifeInfoStr = "remaining battery life in hours";
           }
 

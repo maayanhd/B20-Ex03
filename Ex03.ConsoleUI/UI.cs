@@ -58,7 +58,7 @@ namespace Ex03.ConsoleUI
                string licenseNum = GetLicenseNumStr();
 
                // Need to fix access to class of instance and static members in general
-               Instance.GenerateInstance((Instance.eVehicleType)numOption, licenseNum);
+               Instance.GenerateInstance((Instance.eVehicleType)numOption - 1, licenseNum);
 
           }
 
@@ -88,8 +88,8 @@ namespace Ex03.ConsoleUI
 
                do
                {
-                    Console.WriteLine(string.Format("Please enter {0}: {1}", 
-                         Instance.sr_InitialsMemberInfoDetails[Garage.countProcessSteps],
+                    Console.WriteLine(string.Format("Please enter {0}: {1}",
+                         Instance.sr_InitialsMemberInfoDetails[Garage.countProcessSteps - 1],
                          Environment.NewLine));
 
                     licenseNumStr = Console.ReadLine();

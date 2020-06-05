@@ -11,7 +11,7 @@ namespace Ex03.GarageLogic
           private readonly Dictionary<int, eVehicleStat> r_VehicleStatus = null;
 
           //New- update flow chart
-          public static int countProcessSteps = 3;
+          public static int countProcessSteps = 1;
 
           public Garage()
           {
