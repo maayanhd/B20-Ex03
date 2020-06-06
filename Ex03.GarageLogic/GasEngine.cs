@@ -18,9 +18,16 @@ namespace Ex03.GarageLogic
                m_MaximumAmountOfFuelInLitters = i_MaximumAmountOfFuelInLitters;
                m_CurrentAmountInfoStr = "current amount of fuel in litters";
           }
-          
-          //****************Functionality******************//  
-          public void ReFuel(float i_FuelToAdd, eFuelType i_EFuelType)
+
+          public override string ToString()
+          {
+            StringBuilder gasEngineStr = new StringBuilder();
+            gasEngineStr.AppendLine(string.Format("Fuel type: {0}", FuelType.ToString()));
+            gasEngineStr.AppendLine(string.Format("Amount of fuel:{0}L from {1}L", CurrentAmountOfFuelInLitters.ToString(),MaximumAmountOfFuelInLitters.ToString()));
+            return gasEngineStr.ToString();
+          }
+       //****************Functionality******************//  
+       public void ReFuel(float i_FuelToAdd, eFuelType i_EFuelType)
           {
                if (IsTotalAmountOfFuelWithinLimit(i_FuelToAdd) == false)
                {

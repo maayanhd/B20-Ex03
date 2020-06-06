@@ -22,8 +22,13 @@ namespace Ex03.GarageLogic
           {
                i_CurrentVehicle.EnergyLeftInPercents = RemainingBatteryLifeInHours / MaxBatteryLifeInHours;
           }
-
-          public void Reload(float i_HoursToCharge)
+          public override string ToString()
+          {
+              StringBuilder batteryStr = new StringBuilder();
+              batteryStr.AppendLine(string.Format("Energy left:{0}H from {1}H", RemainingBatteryLifeInHours.ToString(), MaxBatteryLifeInHours.ToString()));
+              return batteryStr.ToString();
+          }
+        public void Reload(float i_HoursToCharge)
           {
                if (IsTotalAmountOfChargingWithinLimit(i_HoursToCharge) == false)
                {

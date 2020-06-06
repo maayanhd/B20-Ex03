@@ -8,7 +8,6 @@ namespace Ex03.GarageLogic
      {
           private eLicenseType m_ELicenseType;
           private int m_EngineVelocity;
-          private readonly string[] m_LicenseTypeStrings = { "A", "A1", "AA", "B" };
 
           public Bike(string i_LicenseNumber, Engine i_Engine) : base(i_Engine,i_LicenseNumber)
           {
@@ -33,6 +32,14 @@ namespace Ex03.GarageLogic
                B
           }
 
+          public override string ToString()
+          {
+              StringBuilder bikeStr = new StringBuilder(base.ToString());
+              bikeStr.AppendLine(string.Format("License type:{0}", LicenseType.ToString()));
+              bikeStr.AppendLine(string.Format("Engine velocity:{0}", EngineVelocity.ToString()));
+              return bikeStr.ToString();
+
+          }
           //****************Validation Methods******************//  
           public override bool TryAssignMember(int i_NumOfField, string i_InputStr)
           {

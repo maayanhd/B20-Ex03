@@ -48,6 +48,26 @@ namespace Ex03.GarageLogic
               }
 
           }
+
+          public override string ToString()
+          {
+              StringBuilder vehicleStr = new StringBuilder(string.Format(
+                  "License number:{0}{1}Model:{2}{1}",
+                  LicenseNum,
+                  Environment.NewLine,
+                  Model));
+
+              foreach(var Wheel in Wheels)
+              {
+                  vehicleStr.AppendLine(Wheel.ToString());
+              }
+
+              vehicleStr.Append(MyEngine.ToString());
+              
+              return vehicleStr.ToString();
+
+          }
+
         public virtual bool TryAssignMember(int i_NumOfField, string i_InputStr)
           {
                bool isMemberValid = false;
@@ -135,16 +155,6 @@ namespace Ex03.GarageLogic
           }
 
           //***********Override of Object Methods*********//  
-          public override string ToString()
-          {
-               string vehicleString = string.Format(
-                   "Model: {0}{1}Lisence Number: {2}",
-                   Model,
-                   Environment.NewLine,
-                   LicenseNum);
-
-               return vehicleString;
-          }
           public void AddWheels()
           {
               for (int i = 0; i < NumOfWheels; i++)

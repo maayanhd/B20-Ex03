@@ -23,8 +23,23 @@ namespace Ex03.GarageLogic
                ((GasEngine)MyEngine).MaximumAmountOfFuelInLitters = 120;
 
           }
+          public override string ToString()
+          {
+              StringBuilder truckStr = new StringBuilder(base.ToString());
+              if(IsCarryingDangerousMaterials == true)
+              {
+                  truckStr.AppendLine("Is carrying dangerous materials");
+              }
+              else
+              {
+                  truckStr.AppendLine("Is not carrying dangerous materials");
+              }
+              truckStr.AppendLine(string.Format("Carrying size:{0}", CarryingSize.ToString()));
 
-          public override void ManageMemberInfo()
+
+              return truckStr.ToString();
+          }
+        public override void ManageMemberInfo()
           {
                NumOfBaseMembers = NumOfWheels * 2 + 2;
                base.ManageMemberInfo();

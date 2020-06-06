@@ -21,6 +21,34 @@ namespace Ex03.GarageLogic
 
         }
 
+        public static bool IsNameValid(string i_Name)
+        {
+            bool isValid = false;
+            if(i_Name.Length > 0)
+            {
+                foreach(char ch in i_Name)
+                {
+                    if(char.IsLetter(ch) == false)
+                    {
+                        break;
+                    }
+                    else
+                    {
+                        isValid = true;
+                    }
+                }
+            }
+
+            return isValid;
+        }
+
+        public static bool IsPhoneNumberValid(int i_PhoneNum)
+        {
+            bool isValid = false;
+            isValid = i_PhoneNum.ToString().Length == 10;
+
+            return isValid;
+        }
         public Vehicle VehicleInGarage
         {
             get
@@ -41,10 +69,23 @@ namespace Ex03.GarageLogic
             }
             set
             {
+                if(IsNameValid(value)==false)
+                {
+                    throw new ArgumentException();
+                }
                 m_OwnerName = value;
             }
         }
 
+        public override string ToString()
+        {
+            StringBuilder orderInfoStr = new StringBuilder();
+            orderInfoStr.AppendLine(VehicleInGarage.ToString());
+            orderInfoStr.AppendLine(string.Format("Owner name:{0}", Owner));
+            orderInfoStr.AppendLine(string.Format("Owner phone number:{0}", OwnerPhoneNumber));
+
+            return orderInfoStr.ToString();
+        }
         public string OwnerPhoneNumber
         {
             get
@@ -53,6 +94,15 @@ namespace Ex03.GarageLogic
             }
             set
             {
+                int phoneNum;
+                if(int.TryParse(value, out phoneNum) == false)
+                {
+                    throw new FormatException();
+                }
+                else if(IsPhoneNumberValid(phoneNum) == false)
+                {
+                    throw new ArgumentException();
+                }
                 m_OwnerPhoneNumber = value;
             }
         }

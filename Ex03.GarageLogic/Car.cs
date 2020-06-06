@@ -6,15 +6,9 @@ namespace Ex03.GarageLogic
 {
      public sealed class Car : Vehicle
      {
-          // new access modifier to update flow chart
-          private eColor r_EColor;
+         private eColor r_EColor;
 
           private int m_NumOfDoors;
-
-          
-
-          // new field to update flow chart
-          private readonly string[] r_ColorStrings = {"Red", "White", "Black", "Silver"};  
 
           public Car(string i_LicenseNumber, Engine i_Engine) : base(i_Engine,i_LicenseNumber)
           {
@@ -23,8 +17,14 @@ namespace Ex03.GarageLogic
             m_Engine = i_Engine;
           }
 
-          
 
+          public override string ToString()
+          {
+            StringBuilder carStr = new StringBuilder(base.ToString());
+            carStr.AppendLine(string.Format("Color:{0}",EColor.ToString()));
+            carStr.AppendLine(string.Format("Number of doors:{0}", NumOfDoors.ToString()));
+            return carStr.ToString();
+          }
           public override void ManageMemberInfo()
           {
                NumOfBaseMembers = NumOfWheels * 2 + 2;

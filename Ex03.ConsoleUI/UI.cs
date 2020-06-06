@@ -94,14 +94,15 @@ namespace Ex03.ConsoleUI
                     InflateVehicleWheels(io_Garage);
                     break;
                 case 5:
+                    RefuelVehicle(io_Garage);
                     break;
                 case 6:
+                    ChargeVehiclesBattery(io_Garage);
                     break;
                 case 7:
+                    WatchVehicleData(io_Garage);
                     break;
                 case 8:
-                    break;
-                case 9:
                     Environment.Exit(0);
                     break;
 
@@ -112,11 +113,39 @@ namespace Ex03.ConsoleUI
 
         public static void RefuelVehicle(Garage io_Garage)
         {
+            string licenseNumToWatch = GetLicenseNumStr();
+            if (io_Garage.Vehicles.TryGetValue(licenseNumToWatch, out OrderInfo orderToWatch) == true)
+            {
+                Vehicle vehicleToRefuel = orderToWatch.VehicleInGarage;
+                if(vehicleToRefuel.MyEngine is GasEngine)
+                {
+                   // input fuel 
+                }
+                else
+                {
+                    Console.WriteLine("Cannot refuel electric vehicle");
+                }
+            }
+            else
+            {
+                Console.WriteLine("Vehicle not found");
+            }
 
         }
 
         public static void WatchVehicleData(Garage i_Garage)
         {
+            string licenseNumToWatch = GetLicenseNumStr();
+            if(i_Garage.Vehicles.TryGetValue(licenseNumToWatch, out OrderInfo orderToWatch) == true)
+            {
+                Console.WriteLine(orderToWatch.ToString());
+            }
+            else
+            {
+                Console.WriteLine("Vehicle not found");
+            }
+           
+            
 
         }
         public static void ChargeVehiclesBattery(Garage io_Garage)
@@ -216,14 +245,47 @@ namespace Ex03.ConsoleUI
 
         public static string GetNameFromUser()
         {
+            bool inputIsValid = false;
             string name = null;
+            while (inputIsValid == false)
+            {
+                Console.WriteLine("Please enter your name");
+                name = Console.ReadLine();
+                inputIsValid = OrderInfo.IsNameValid(name);
+                if(inputIsValid == false)
+                {
+                    Console.WriteLine("The input should contain only letters");
+                }
+            }
+            
             return name;
         }
 
         public static string GetPhoneNumberFromUser()
         {
-            string phoneNum = null;
-            return phoneNum;
+            string phoneNumStr = null;
+            bool inputIsValid = false;
+            while (inputIsValid == false)
+            {
+                Console.WriteLine("Please enter your phone number");
+                phoneNumStr = Console.ReadLine();
+                inputIsValid = int.TryParse(phoneNumStr, out int phoneNum);
+                if (inputIsValid == false)
+                {
+                    Console.WriteLine("The input should contain only digits");
+                }
+                else
+                {
+                    inputIsValid = OrderInfo.IsPhoneNumberValid(phoneNum);
+                    if(inputIsValid == false)
+                    {
+                        Console.WriteLine("The number must contain 10 digits");
+                    }
+                }
+
+            }
+
+            return phoneNumStr;
 
         }
           internal static void ProceedToNextStepOfProcess()

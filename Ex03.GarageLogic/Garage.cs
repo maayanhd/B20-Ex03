@@ -32,10 +32,11 @@ namespace Ex03.GarageLogic
               if(Vehicles.ContainsKey(i_VehicleToAdd.VehicleInGarage.LicenseNum) == false)
               {
                   Vehicles.Add(i_VehicleToAdd.VehicleInGarage.LicenseNum, i_VehicleToAdd);
+                  VehicleStatus.Add(i_VehicleToAdd.Status,i_VehicleToAdd.VehicleInGarage.LicenseNum);
               }
           }
         //****************Functionality******************//  
-        public bool IsVehicleExistsInGarage(string i_LicenseNumber)
+          public bool IsVehicleExistsInGarage(string i_LicenseNumber)
           {
               return Vehicles.ContainsKey(i_LicenseNumber) == true;
           }
