@@ -6,92 +6,44 @@ namespace Ex03.GarageLogic
 {
      public class Garage
      {
-          private readonly Dictionary<int, Vehicle> r_Vehicles = null;
-          private readonly Dictionary<int, string[]> r_VehiclesOwnerDetails = null;
-          private readonly Dictionary<int, eVehicleStat> r_VehicleStatus = null;
+          private readonly Dictionary<string, OrderInfo> r_Vehicles = null;
+          private readonly Dictionary<eVehicleStat, string> r_VehicleStatus = null;
 
           //New- update flow chart
           public static int countProcessSteps = 1;
 
           public Garage()
           {
-               r_Vehicles = new Dictionary<int, Vehicle>();
-               r_VehiclesOwnerDetails = new Dictionary<int, string[]>();
-               r_VehicleStatus = new Dictionary<int, eVehicleStat>();
+               r_Vehicles = new Dictionary<string, OrderInfo>(); // <License number,Vehicle + owners info>
+               r_VehicleStatus = new Dictionary<eVehicleStat, string>(); // <Vehicle status, lisence number>
 
           }
-
 
           public enum eVehicleStat
           {
-               InRepair,
-               Repaired,
-               Paid
+              InRepair,
+              Repaired,
+              Paid
           }
 
-          // New method - update flow chart 
-          //****************Functionality******************//  
-          public bool IsVehicleExistsInGarage(Vehicle i_VehicleToLook)
-          {
-               int vehicleToLookKey = i_VehicleToLook.GetHashCode();
-
-               return Vehicles.ContainsKey(vehicleToLookKey) == true;
-          }
-
-          public eVehicleStat GetVehicleStatus(Vehicle i_VehicleToCheck)
+          public void AddVehicleToGarage(OrderInfo i_VehicleToAdd)
           {
 
-               if (IsVehicleExistsInGarage(i_VehicleToCheck) == true)
-               {
-                    int vehicleToCheckKey = i_VehicleToCheck.GetHashCode();
-
-                    VehicleStatus.TryGetValue(vehicleToCheckKey, out eVehicleStat o_VehicleStat);
-
-                    return o_VehicleStat;
-               }
-               else
-               {
-                    throw new KeyNotFoundException("No such vehicle in the garage");
-               }
-
+              if(Vehicles.ContainsKey(i_VehicleToAdd.VehicleInGarage.LicenseNum) == false)
+              {
+                  Vehicles.Add(i_VehicleToAdd.VehicleInGarage.LicenseNum, i_VehicleToAdd);
+              }
           }
-
-          public string[] GetVehicleOwnersDetails(Vehicle i_VehicleToCheck)
+        //****************Functionality******************//  
+        public bool IsVehicleExistsInGarage(string i_LicenseNumber)
           {
-               if (IsVehicleExistsInGarage(i_VehicleToCheck) == true)
-               {
-                    int vehicleToCheckKey = i_VehicleToCheck.GetHashCode();
-
-
-                    VehiclesInGarageDetails.TryGetValue(vehicleToCheckKey, out string[] o_OwnersDetails);
-
-                    return o_OwnersDetails;
-               }
-               else
-               {
-                    throw new KeyNotFoundException("No such vehicle owner details in the garage");
-               }
-
+              return Vehicles.ContainsKey(i_LicenseNumber) == true;
           }
-
-          public bool tryToAddVehicle(Vehicle i_VehicleToAdd)
-          {
-               int vehicleToAddKey             = i_VehicleToAdd.GetHashCode();
-               bool isCarHasBeingAddedToGarage = false;
-
-               if (Vehicles.ContainsKey(vehicleToAddKey) == false)
-               {
-                    Vehicles.Add(vehicleToAddKey, i_VehicleToAdd);
-                    VehicleStatus.Add(vehicleToAddKey, eVehicleStat.InRepair);
-                    isCarHasBeingAddedToGarage = true;
-               }
-
-               return isCarHasBeingAddedToGarage;
-
-          }
+        
+        
 
           //****************Properties******************//  
-          public Dictionary<int, Vehicle> Vehicles
+          public Dictionary<string, OrderInfo> Vehicles
           {
                get
                {
@@ -99,17 +51,9 @@ namespace Ex03.GarageLogic
                }
 
           }
+        
 
-          public Dictionary<int, string[]> VehiclesInGarageDetails
-          {
-               get
-               {
-                    return r_VehiclesOwnerDetails;
-               }
-
-          }
-
-          public Dictionary<int, eVehicleStat> VehicleStatus
+          public Dictionary<eVehicleStat, string> VehicleStatus
           {
                get
                {

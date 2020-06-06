@@ -43,12 +43,116 @@ namespace Ex03.ConsoleUI
      {
           internal static void OpenGarageForBusiness()
           {
-               Garage MyGarage = new Garage();
-
-               AddVehicle();
+               Garage currentGarage = new Garage();
+               Menu(currentGarage);
           }
 
-        //****************Functionality******************//  
+        //****************Functionality******************//
+        public static void Menu(Garage io_Garage)
+        {
+            string optionStr;
+            int option;
+            bool inputIsValid = false;
+            Console.WriteLine("Choose one of the options below:");
+            Console.WriteLine("1.Add vehicle");
+            Console.WriteLine("2.View the list of vehicles in the garage");
+            Console.WriteLine("3.Change vehicle status");
+            Console.WriteLine("4.Inflate wheels of a vehicle");
+            Console.WriteLine("5.Refuel a vehicle");
+            Console.WriteLine("6.Charge an electric vehicle battery");
+            Console.WriteLine("7.Get vehicle info by a license number");
+            Console.WriteLine("8.Exit");
+            while(inputIsValid == false)
+            {
+                optionStr = Console.ReadLine();
+                inputIsValid = IsMenuOptionValid(optionStr);
+                if(inputIsValid == true)
+                {
+                    ExecuteChoosedOption(int.Parse(optionStr), io_Garage);
+                }
+                {
+                    Console.WriteLine("Option that specified doesn't exist, please try again");
+                }
+            }
+
+        }
+
+        public static void ExecuteChoosedOption(int i_Option,Garage io_Garage)
+        {
+            switch(i_Option)
+            {
+                case 1:
+                    AddVehicle(io_Garage);
+                    break;
+                case 2:
+                    ShowVehiclesInGarage(io_Garage);
+                    break;
+                case 3:
+                    ChangeVehicleStatus(io_Garage);
+                    break;
+                case 4:
+                    InflateVehicleWheels(io_Garage);
+                    break;
+                case 5:
+                    break;
+                case 6:
+                    break;
+                case 7:
+                    break;
+                case 8:
+                    break;
+                case 9:
+                    Environment.Exit(0);
+                    break;
+
+
+            }
+
+        }
+
+        public static void RefuelVehicle(Garage io_Garage)
+        {
+
+        }
+
+        public static void WatchVehicleData(Garage i_Garage)
+        {
+
+        }
+        public static void ChargeVehiclesBattery(Garage io_Garage)
+        {
+
+
+        }
+        public static void InflateVehicleWheels(Garage io_Garage)
+        {
+
+
+        }
+        public static void ChangeVehicleStatus(Garage io_Garage)
+        {
+
+        }
+        public static void ShowVehiclesInGarage(Garage i_Garage)
+        {
+
+
+        }
+        public static bool IsMenuOptionValid(string i_OptionStr)
+        {
+            bool isValid = false;
+            string[] options = new string[8] { "1", "2", "3", "4", "5", "6", "7", "8" };
+            foreach(string option in options)
+            {
+                if(option.Equals(i_OptionStr))
+                {
+                    isValid = true;
+                    break;
+                }
+            }
+
+            return isValid;
+        }
         public static bool IsLicenseNumValid(string i_LicenseNum)
         {
             bool isValid = false;
@@ -69,33 +173,59 @@ namespace Ex03.ConsoleUI
             return isValid;
 
         }
-        internal static void AddVehicle()
+        internal static void AddVehicle(Garage io_Garage)
           {
               Console.WriteLine("Please choose the type of vehicle you would like to enter the garage:" + Environment.NewLine);
 
                int numOption     = GetTypeOption();
                string licenseNum = GetLicenseNumStr();
                
-               // Need to fix access to class of instance and static members in general
-               Vehicle newVehicle = Instance.GenerateInstance((Instance.eVehicleType)numOption - 1, licenseNum);
-
-               for(int i = 0; i < newVehicle.MemberInfoStrings.Count; i++)
+               if (io_Garage.IsVehicleExistsInGarage(licenseNum) == true)
                {
-                   bool fieldIsValid = false;
-                   while(fieldIsValid == false)
+                   Console.WriteLine("The Vehicle is already in the garage");
+                   OrderInfo orderOfTheVehicle = io_Garage.Vehicles[licenseNum];
+                   orderOfTheVehicle.Status = Garage.eVehicleStat.InRepair;
+               }
+               else
+               {
+                   string ownerName;
+                   string ownerPhoneNum;
+                   Vehicle vehicleToAdd = Instance.GenerateInstance((Instance.eVehicleType)numOption - 1, licenseNum);
+
+                   for(int i = 0; i < vehicleToAdd.MemberInfoStrings.Count; i++)
                    {
-                       Console.WriteLine(string.Format("Please enter {0}", newVehicle.MemberInfoStrings[i]));
-                       string inputStr = Console.ReadLine();
-                       fieldIsValid = newVehicle.TryAssignMember(i, inputStr);
-                       if(fieldIsValid == false)
+                       bool fieldIsValid = false;
+                       while(fieldIsValid == false)
                        {
-                           Console.WriteLine("Wrong input, please try again");
+                           Console.WriteLine(string.Format("Please enter {0}", vehicleToAdd.MemberInfoStrings[i]));
+                           string inputStr = Console.ReadLine();
+                           fieldIsValid = vehicleToAdd.TryAssignMember(i, inputStr);
+                           if(fieldIsValid == false)
+                           {
+                               Console.WriteLine("Wrong input, please try again");
+                           }
                        }
                    }
-               }
 
+                   ownerName = GetNameFromUser();
+                   ownerPhoneNum = GetPhoneNumberFromUser();
+                   io_Garage.AddVehicleToGarage(new OrderInfo(vehicleToAdd,ownerName,ownerPhoneNum));
+                   Console.WriteLine("The Vehicle successfully added to the garage ");
+               }
           }
 
+        public static string GetNameFromUser()
+        {
+            string name = null;
+            return name;
+        }
+
+        public static string GetPhoneNumberFromUser()
+        {
+            string phoneNum = null;
+            return phoneNum;
+
+        }
           internal static void ProceedToNextStepOfProcess()
           {
                Garage.countProcessSteps++;
