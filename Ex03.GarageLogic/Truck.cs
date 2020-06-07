@@ -8,20 +8,14 @@ namespace Ex03.GarageLogic
      {
           private bool m_IsCarryingDangerousMaterials;
           private float m_CarryingSize;
-          private static readonly int sr_NumOfWheels = 16;
 
           public Truck(string i_LicenseNumber, GasEngine i_GasEngine) : base(i_GasEngine,i_LicenseNumber)
           {
-               base.ManageMemberInfo();
-               NumOfWheels = 16;
-               for (int i = 0; i < sr_NumOfWheels; i++)
-               {
-                    Wheels.Add(new Wheel(28));
-               }
-
-               ((GasEngine)MyEngine).FuelType = GasEngine.eFuelType.Soler;
-               ((GasEngine)MyEngine).MaximumAmountOfFuelInLitters = 120;
-
+              NumOfWheels = 16;
+              m_Engine = i_GasEngine;
+              ((GasEngine)MyEngine).MyFuel.FuelType = Fuel.eFuelType.Soler;
+              ((GasEngine)MyEngine).MaximumAmountOfFuelInLitters = 120;
+              ManageMemberInfo();
           }
           public override string ToString()
           {
@@ -45,7 +39,6 @@ namespace Ex03.GarageLogic
                base.ManageMemberInfo();
                AddWheels();
                m_MemberInfoStr.Add("whether the truck carrying dangerous materials");
-               m_MemberInfoStr.Add(((GasEngine)MyEngine).CurrentAmountInfoStr);
           }
 
           //****************Validations Methods******************//  
@@ -53,24 +46,36 @@ namespace Ex03.GarageLogic
           {
                bool isMemberValid = false;
 
-               if (base.TryAssignMember(i_NumOfField, i_InputStr))
+               if (i_NumOfField < NumOfBaseMembers)
                {
-                    // The number of cases of vehicle is 3 + 2 * numofwheels  
-
-                    switch (i_NumOfField - (3 + 2 * this.Wheels.Count))
+                   isMemberValid = base.TryAssignMember(i_NumOfField, i_InputStr);
+               }
+                    
+               switch (i_NumOfField - NumOfBaseMembers)
                     {
-                         case 1:
+                         case 0:
                               isMemberValid = i_InputStr.Equals("Yes") == true || i_InputStr.Equals("No");
+                              if (isMemberValid == true)
+                              {
+                                  AssignIsCarryingDangerousMaterials(i_InputStr);
+                              }
+                              break;
+                         case 1:
+                              isMemberValid = float.TryParse(i_InputStr, out float io_CarryingSize) == true ? IsCarryingSizeValid(io_CarryingSize) : false;
+                              if(isMemberValid == true)
+                              {
+                                AssignCarryingSize(i_InputStr);
+                              }
                               break;
                          case 2:
-                              isMemberValid = float.TryParse(i_InputStr, out float io_CarryingSize) == true ? IsCarryingSizeValid(io_CarryingSize) : false;
-                              break;
-                         case 3:
                               isMemberValid = float.TryParse(i_InputStr, out float io_AmountOfMaterial) == true ? ((GasEngine)MyEngine).IsAmountsOfSourcePowerMaterialValid(io_AmountOfMaterial) : false;
+                              if (isMemberValid == true)
+                              {
+                                  (m_Engine as GasEngine).ReFuel(io_AmountOfMaterial, (m_Engine as GasEngine).MyFuel);
+                              }
                               break;
                     }
 
-               }
 
                return isMemberValid;
 
@@ -78,13 +83,8 @@ namespace Ex03.GarageLogic
 
           public static bool IsCarryingSizeValid(float i_CarryingSize)
           {
-
-               return i_CarryingSize > 0;
-
+              return i_CarryingSize > 0;
           }
-
-          // New- update in flow chart
-          //****************Assigning Methods******************//  
 
           void AssignIsCarryingDangerousMaterials(string i_IsCarryingDangerousMaterials)
           {
@@ -127,6 +127,7 @@ namespace Ex03.GarageLogic
                }
 
           }
+
 
           public float CarryingSize
           {

@@ -6,17 +6,16 @@ namespace Ex03.GarageLogic
 {
      public class Garage
      {
-          private readonly Dictionary<string, OrderInfo> r_Vehicles = null;
-          private readonly Dictionary<eVehicleStat, string> r_VehicleStatus = null;
-
-          //New- update flow chart
-          public static int countProcessSteps = 1;
+          private readonly Dictionary<string, ClientCard> r_Vehicles = null;
+          private readonly Dictionary<eVehicleStat, List<string>> r_VehicleStatus = null;
 
           public Garage()
           {
-               r_Vehicles = new Dictionary<string, OrderInfo>(); // <License number,Vehicle + owners info>
-               r_VehicleStatus = new Dictionary<eVehicleStat, string>(); // <Vehicle status, lisence number>
-
+               r_Vehicles = new Dictionary<string, ClientCard>(); // <License number,Vehicle + owners info>
+               r_VehicleStatus = new Dictionary<eVehicleStat, List<string>>(); // <Vehicle status, lisence number>
+               r_VehicleStatus[eVehicleStat.InRepair] = new List<string>();
+               r_VehicleStatus[eVehicleStat.Paid] = new List<string>();
+               r_VehicleStatus[eVehicleStat.Repaired] = new List<string>();
           }
 
           public enum eVehicleStat
@@ -26,25 +25,46 @@ namespace Ex03.GarageLogic
               Paid
           }
 
-          public void AddVehicleToGarage(OrderInfo i_VehicleToAdd)
+          public static eVehicleStat GetStatusFromInt(int i_Status)
+          {
+              eVehicleStat statusToReturn;
+              switch (i_Status)
+              {
+                  case 0:
+                      statusToReturn = eVehicleStat.InRepair;
+                      break;
+                  case 1:
+                      statusToReturn = eVehicleStat.Repaired;
+                      break;
+                  case 2:
+                      statusToReturn = eVehicleStat.Paid;
+                      break;
+                  default:
+                      throw new ValueOutOfRangeException(2, 0);
+              }
+
+              return statusToReturn;
+          }
+
+        public void AddVehicleToGarage(ClientCard i_VehicleToAdd)
           {
 
-              if(Vehicles.ContainsKey(i_VehicleToAdd.VehicleInGarage.LicenseNum) == false)
+              if(Clients.ContainsKey(i_VehicleToAdd.VehicleInGarage.LicenseNum) == false)
               {
-                  Vehicles.Add(i_VehicleToAdd.VehicleInGarage.LicenseNum, i_VehicleToAdd);
-                  VehicleStatus.Add(i_VehicleToAdd.Status,i_VehicleToAdd.VehicleInGarage.LicenseNum);
+                  Clients.Add(i_VehicleToAdd.VehicleInGarage.LicenseNum, i_VehicleToAdd);
+                  VehicleStatus[i_VehicleToAdd.Status].Add(i_VehicleToAdd.VehicleInGarage.LicenseNum);
+
               }
           }
         //****************Functionality******************//  
           public bool IsVehicleExistsInGarage(string i_LicenseNumber)
           {
-              return Vehicles.ContainsKey(i_LicenseNumber) == true;
+              return Clients.ContainsKey(i_LicenseNumber) == true;
           }
-        
         
 
           //****************Properties******************//  
-          public Dictionary<string, OrderInfo> Vehicles
+          public Dictionary<string, ClientCard> Clients
           {
                get
                {
@@ -52,9 +72,9 @@ namespace Ex03.GarageLogic
                }
 
           }
-        
 
-          public Dictionary<eVehicleStat, string> VehicleStatus
+          
+          public Dictionary<eVehicleStat,List<string>> VehicleStatus
           {
                get
                {
@@ -63,13 +83,6 @@ namespace Ex03.GarageLogic
 
           }
 
-          public int CountProcessSteps
-          {
-               get
-               {
-                    return countProcessSteps;
-               }
-          }
 
      }
 }

@@ -6,17 +6,19 @@ namespace Ex03.GarageLogic
 {
      public sealed class Bike : Vehicle
      {
-          private eLicenseType m_ELicenseType;
+          private License m_BikeLicense;
           private int m_EngineVelocity;
 
           public Bike(string i_LicenseNumber, Engine i_Engine) : base(i_Engine,i_LicenseNumber)
-          {
+        {
+               m_BikeLicense = new License();
                NumOfWheels = 2;
                ManageMemberInfo();
           }
 
           public override void ManageMemberInfo()
           {
+
               NumOfBaseMembers = NumOfWheels * 2 + 2;
               base.ManageMemberInfo();
               AddWheels();
@@ -24,18 +26,12 @@ namespace Ex03.GarageLogic
               m_MemberInfoStr.Add("An engine Velocity");
               
           }
-          public enum eLicenseType
-          {
-               A,
-               A1,
-               Aa,
-               B
-          }
+
 
           public override string ToString()
           {
               StringBuilder bikeStr = new StringBuilder(base.ToString());
-              bikeStr.AppendLine(string.Format("License type:{0}", LicenseType.ToString()));
+              bikeStr.AppendLine(string.Format("License type:{0}", m_BikeLicense.ToString()));
               bikeStr.AppendLine(string.Format("Engine velocity:{0}", EngineVelocity.ToString()));
               return bikeStr.ToString();
 
@@ -55,12 +51,7 @@ namespace Ex03.GarageLogic
                    {
 
                        case 0:
-
-                           isMemberValid = IsLicenseTypeValid(i_InputStr);
-                           if (isMemberValid == true)
-                           {
-                               AssignLicenseType(i_InputStr);
-                           }
+                           isMemberValid = License.TryParse(i_InputStr,out m_BikeLicense);
                            break;
                         
                        case 1:
@@ -72,38 +63,15 @@ namespace Ex03.GarageLogic
                                AssignEngineVelocity(i_InputStr);
                            }
                            break;
-                }
+               }
 
                }
 
                return isMemberValid;
 
           }
-          public void AssignLicenseType(string i_LicenseType)
-          {
-              if (IsLicenseTypeValid(i_LicenseType))
-              {
-                  m_ELicenseType = (eLicenseType)(Enum.Parse(typeof(eLicenseType), i_LicenseType));
-              }
-              else
-              {
-                  throw new FormatException("Incorrect license type");
-              }
-          }
-        public bool IsLicenseTypeValid(string i_LicenseType)
-          {
-            bool isValid = false;
-            foreach (string type in Enum.GetNames(typeof(eLicenseType)))
-            {
-                isValid = i_LicenseType.Equals(type);
-                if (isValid == true)
-                {
-                    break;
-                }
-            }
 
-            return isValid;
-        }
+
 
           public bool IsEngineVelocityValid(float i_EngineVelocity)
           {
@@ -124,7 +92,7 @@ namespace Ex03.GarageLogic
                else if (IsEngineVelocityValid(io_EngineVelocity) == false)
                {
                     // Assuming maximal velocity of engine since not given 
-                    throw new ValueOutOfRangeException(10000, 0, "Engine Velocity must be a positve whole number" + Environment.NewLine);
+                    throw new ValueOutOfRangeException(10000, 0);
                }
                else
                {
@@ -134,19 +102,7 @@ namespace Ex03.GarageLogic
           }
 
           //****************Properties******************//  
-          public eLicenseType LicenseType
-          {
-               get
-               {
-                    return m_ELicenseType;
-               }
-
-               set
-               {
-                    m_ELicenseType = value;
-               }
-
-          }
+         
 
           public int EngineVelocity
           {
@@ -158,16 +114,6 @@ namespace Ex03.GarageLogic
                set
                {
                     m_EngineVelocity = value;
-               }
-
-          }
-
-
-          public string[] LicenseTypeStrings
-          {
-               get
-               {
-                    return m_LicenseTypeStrings;
                }
 
           }

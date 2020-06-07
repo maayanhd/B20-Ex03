@@ -48,7 +48,6 @@ namespace Ex03.GarageLogic
               }
 
           }
-
           public override string ToString()
           {
               StringBuilder vehicleStr = new StringBuilder(string.Format(
@@ -57,9 +56,10 @@ namespace Ex03.GarageLogic
                   Environment.NewLine,
                   Model));
 
-              foreach(var Wheel in Wheels)
+              for(int i=0;i<Wheels.Count;i++)
               {
-                  vehicleStr.AppendLine(Wheel.ToString());
+                  vehicleStr.AppendLine(string.Format("Wheel {0}: ",(i+1).ToString()));
+                  vehicleStr.Append(Wheels[i].ToString());
               }
 
               vehicleStr.Append(MyEngine.ToString());
@@ -82,28 +82,28 @@ namespace Ex03.GarageLogic
                          isMemberValid = IsModelValid(i_InputStr);
                          if(isMemberValid == true)
                          {
-                             AssignModel(i_InputStr);
+                             Model = i_InputStr;
                          }
                          break;
                     case 1:
                         isMemberValid = float.TryParse(i_InputStr, out float io_AmountOfMaterial) == true ? m_Engine.IsAmountsOfSourcePowerMaterialValid(io_AmountOfMaterial) : false;
                         if(isMemberValid == true)
                         {
-                        //// assign
+                          MyEngine.InitializeAmountOfEnergy(io_AmountOfMaterial);
                         }
                         break;
                     case 2:
                          isMemberValid = Wheels[io_IndexOfWheelBasedOnField].IsManufactorerValid(i_InputStr);
                          if(isMemberValid == true)
                          {
-                             //assign
+                             Wheels[io_IndexOfWheelBasedOnField].Manufacturor = i_InputStr;
                          }
                          break;
                     case 3:
                          isMemberValid = float.TryParse(i_InputStr, out float o_AirPressure) == true ? Wheels[io_IndexOfWheelBasedOnField].IsAirPressureIsValid(o_AirPressure) : false;
                          if(isMemberValid == true)
                          {
-                             //assign
+                             Wheels[io_IndexOfWheelBasedOnField].Inflate(o_AirPressure);
                          }
                          break;
                     
@@ -126,14 +126,13 @@ namespace Ex03.GarageLogic
           }
 
           //****************Validations Methods******************//  
-         
 
           public bool IsEnergyLeftValid(float i_EnergyLeftInPercents)
           {
                return i_EnergyLeftInPercents <= 100 && i_EnergyLeftInPercents >= 0;
           }
 
-                  public bool IsModelValid(string i_Model)
+          public bool IsModelValid(string i_Model)
           {
                bool isValid = false;
                if (i_Model.Length != 0)
@@ -141,7 +140,6 @@ namespace Ex03.GarageLogic
                     foreach (char ch in i_Model)
                     {
                          isValid = char.IsLetterOrDigit(ch);
-
                          if (isValid == false)
                          {
                               break;
@@ -169,9 +167,9 @@ namespace Ex03.GarageLogic
               }
           }
 
-        public override int GetHashCode()
+          public override int GetHashCode()
           {
-               return int.Parse(r_LicenseNum);
+              return int.Parse(r_LicenseNum);
           }
 
           public override bool Equals(object i_obj)
@@ -191,32 +189,16 @@ namespace Ex03.GarageLogic
                return isEqual;
           }
 
-          // New- update in flow chart
-          //****************Assigning Methods******************//  
-
-          public void AssignModel(string i_Model)
-          {
-               if (IsModelValid(i_Model) == true)
-               {
-                    Model = i_Model;
-               }
-               else
-               {
-                    throw new FormatException("The Model should consist of only letters and digits");
-               }
-
-          }
-
           public void AssignCurrentWheelPressure(string i_CurrentAirPressure, int i_IndexOfWheel)
           {
 
                if (float.TryParse(i_CurrentAirPressure, out float io_CurrentAirPressure) == false)
                {
-                    throw new FormatException("The Manufacturer should consist of only letters");
+                    throw new FormatException("The value must be a number");
                }
                else if (Wheels[i_IndexOfWheel].IsAirPressureIsValid(io_CurrentAirPressure) == false)
                {
-                    throw new ValueOutOfRangeException(Wheels[i_IndexOfWheel].MaximalWheelPressure, 0, "Air pressure is out of range");
+                    throw new ValueOutOfRangeException(Wheels[i_IndexOfWheel].MaximalWheelPressure, 0);
                }
                else
                {
@@ -250,12 +232,19 @@ namespace Ex03.GarageLogic
           {
                get
                {
-                    return m_Model;
+                    return m_Model; 
                }
 
                set
                {
+               if (IsModelValid(value) == true)
+               {
                     m_Model = value;
+               }
+               else
+               {
+                    throw new FormatException("The Model should consist of only letters and digits");
+               }
                }
 
           }

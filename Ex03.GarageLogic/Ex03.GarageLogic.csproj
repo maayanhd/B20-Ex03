@@ -38,11 +38,14 @@
     <Compile Include="Bike.cs" />
     <Compile Include="Car.cs" />
     <Compile Include="Battery.cs" />
+    <Compile Include="Color.cs" />
     <Compile Include="Engine.cs" />
+    <Compile Include="Fuel.cs" />
     <Compile Include="Garage.cs" />
     <Compile Include="GasEngine.cs" />
     <Compile Include="Instance.cs" />
-    <Compile Include="OrderInfo.cs" />
+    <Compile Include="License.cs" />
+    <Compile Include="ClientCard.cs" />
     <Compile Include="Truck.cs" />
     <Compile Include="ValueOutOfRangeException.cs" />
     <Compile Include="Vehicle.cs" />

@@ -1,41 +1,9 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Globalization;
+using System.Security.Policy;
 using System.Text;
 using Ex03.GarageLogic;
-
-/// For us
-// communication with user -
-
-// #1 overriding ToString methods - as well as Equal and other methods of Object  (for polymorphysm)
-// #2 storing placeholders content for the string format string - for messages for communication with user 
-// #3 leaving the enumeration structure of instance as is with switch architecture 
-// #4 deciding whether the instance class will be static or not- more likely static 
-// #5 UI - checking the validation of input- using logic methods of Logic layer
-
-//strings discussion
-
-// Generating strings - (implemented in) Logic layer (override - #1)
-// Processing the strings (made by user input) into types- #4
-// parsing from string to types -   (implemented in)- the UI layer
-// generating a string - this included in the 
-
-//exception discussion - 
-
-//exception will be thrown at the logic layer
-// This additional to validation checks in the Logic layer- for "Independence" and "Reuseability" of Logic layer
-// UI LAYER- #5 - most likely using boolean variables 
-
-//memory storage in Garage object class-  
-
-// #6 using dictionary<> of int keys (made of string) and objects of vehicles
-// Explanation : - using polymorphism by overriding .GetHashCode() that by default works on reference-  need to make a key from strings represent license number
-// #7 using dictionary<> for driver details of int keys (same logic as #6) and objects of array of 2 strings- name and the other thing describes a driver
-// using enumeration class - optional 
-// adding enum variable for describing the status of a vehicle in the garage- 3 status modes 
-
-// optional readonly for collection!!!
-// Generating only once- suitable for collection of cars and collection of drivers' details mentioned in #7
-
 
 namespace Ex03.ConsoleUI
 {
@@ -44,48 +12,53 @@ namespace Ex03.ConsoleUI
           internal static void OpenGarageForBusiness()
           {
                Garage currentGarage = new Garage();
-               Menu(currentGarage);
+               bool closeApp = false;
+               while(closeApp==false)
+               {
+                   Menu(currentGarage,out closeApp);
+               }
+          }
+          public static void Menu(Garage io_Garage,out bool io_CloseApp)
+          {
+            io_CloseApp = false;
+            string optionStr = null;
+            bool inputIsValid = false;
+
+                Console.WriteLine("Choose one of the options below:");
+                Console.WriteLine("1.Add vehicle");
+                Console.WriteLine("2.View the list of vehicles in the garage");
+                Console.WriteLine("3.Change vehicle status");
+                Console.WriteLine("4.Inflate wheels of a vehicle");
+                Console.WriteLine("5.Refuel a vehicle");
+                Console.WriteLine("6.Charge an electric vehicle battery");
+                Console.WriteLine("7.Get vehicle info by a license number");
+                Console.WriteLine("8.Exit");
+                while(inputIsValid == false)
+                {
+                    optionStr = Console.ReadLine();
+                    inputIsValid = IsOptionValid(optionStr, 8);
+                    if(inputIsValid == true)
+                    {
+                        ExecuteChoosedOption(int.Parse(optionStr), io_Garage,out io_CloseApp);
+                    }
+                    else
+                    {
+                        Console.WriteLine("Option that specified doesn't exist, please try again");
+                    }
+                }
+            
           }
 
-        //****************Functionality******************//
-        public static void Menu(Garage io_Garage)
+        public static void ExecuteChoosedOption(int i_Option,Garage io_Garage,out bool io_CloseApp)
         {
-            string optionStr;
-            int option;
-            bool inputIsValid = false;
-            Console.WriteLine("Choose one of the options below:");
-            Console.WriteLine("1.Add vehicle");
-            Console.WriteLine("2.View the list of vehicles in the garage");
-            Console.WriteLine("3.Change vehicle status");
-            Console.WriteLine("4.Inflate wheels of a vehicle");
-            Console.WriteLine("5.Refuel a vehicle");
-            Console.WriteLine("6.Charge an electric vehicle battery");
-            Console.WriteLine("7.Get vehicle info by a license number");
-            Console.WriteLine("8.Exit");
-            while(inputIsValid == false)
-            {
-                optionStr = Console.ReadLine();
-                inputIsValid = IsMenuOptionValid(optionStr);
-                if(inputIsValid == true)
-                {
-                    ExecuteChoosedOption(int.Parse(optionStr), io_Garage);
-                }
-                {
-                    Console.WriteLine("Option that specified doesn't exist, please try again");
-                }
-            }
-
-        }
-
-        public static void ExecuteChoosedOption(int i_Option,Garage io_Garage)
-        {
+            io_CloseApp = false;
             switch(i_Option)
             {
                 case 1:
                     AddVehicle(io_Garage);
                     break;
                 case 2:
-                    ShowVehiclesInGarage(io_Garage);
+                    WatchGarageDataBase(io_Garage);
                     break;
                 case 3:
                     ChangeVehicleStatus(io_Garage);
@@ -100,10 +73,10 @@ namespace Ex03.ConsoleUI
                     ChargeVehiclesBattery(io_Garage);
                     break;
                 case 7:
-                    WatchVehicleData(io_Garage);
+                    ShowVehicleData(io_Garage);
                     break;
                 case 8:
-                    Environment.Exit(0);
+                    io_CloseApp = true;
                     break;
 
 
@@ -114,12 +87,16 @@ namespace Ex03.ConsoleUI
         public static void RefuelVehicle(Garage io_Garage)
         {
             string licenseNumToWatch = GetLicenseNumStr();
-            if (io_Garage.Vehicles.TryGetValue(licenseNumToWatch, out OrderInfo orderToWatch) == true)
+            if (io_Garage.Clients.TryGetValue(licenseNumToWatch, out ClientCard client) == true)
             {
-                Vehicle vehicleToRefuel = orderToWatch.VehicleInGarage;
+                Vehicle vehicleToRefuel = client.VehicleInGarage;
                 if(vehicleToRefuel.MyEngine is GasEngine)
                 {
-                   // input fuel 
+                    Fuel fuelToFill = null;
+                    float amountOfFuel = GetAmountOfFuelFromUser(vehicleToRefuel.MyEngine as GasEngine);
+                    GetFuelTypeFromUser(out fuelToFill, (vehicleToRefuel.MyEngine as GasEngine).MyFuel);
+                    (vehicleToRefuel.MyEngine as GasEngine).ReFuel(amountOfFuel,fuelToFill);
+                    Console.WriteLine("Refueled successfully");
                 }
                 else
                 {
@@ -133,47 +110,90 @@ namespace Ex03.ConsoleUI
 
         }
 
-        public static void WatchVehicleData(Garage i_Garage)
-        {
-            string licenseNumToWatch = GetLicenseNumStr();
-            if(i_Garage.Vehicles.TryGetValue(licenseNumToWatch, out OrderInfo orderToWatch) == true)
-            {
-                Console.WriteLine(orderToWatch.ToString());
-            }
-            else
-            {
-                Console.WriteLine("Vehicle not found");
-            }
-           
-            
-
-        }
-        public static void ChargeVehiclesBattery(Garage io_Garage)
-        {
-
-
-        }
-        public static void InflateVehicleWheels(Garage io_Garage)
-        {
-
-
-        }
-        public static void ChangeVehicleStatus(Garage io_Garage)
-        {
-
-        }
-        public static void ShowVehiclesInGarage(Garage i_Garage)
-        {
-
-
-        }
-        public static bool IsMenuOptionValid(string i_OptionStr)
+        public static float GetAmountOfFuelFromUser(GasEngine i_EngineToRefuel)
         {
             bool isValid = false;
-            string[] options = new string[8] { "1", "2", "3", "4", "5", "6", "7", "8" };
-            foreach(string option in options)
+            float amountOfFuel = 0;
+            while(isValid == false)
             {
-                if(option.Equals(i_OptionStr))
+                Console.WriteLine("Please enter amount of fuel to add");
+                amountOfFuel = GetFloatFromUser();
+                isValid = i_EngineToRefuel.IsAmountsOfSourcePowerMaterialValid(amountOfFuel);
+                if (isValid == false)
+                {
+                    Console.WriteLine("Cannot add fuel more than the gas tank can hold");
+                }
+
+            }
+
+            return amountOfFuel;
+
+        }
+        public static string GetFuelTypeFromUser(out Fuel io_Fuel, Fuel i_FuelRequired)
+        {
+            bool isValid = false;
+            string fuelType = null;
+            io_Fuel = null;
+            while(isValid == false)
+            {
+                Console.WriteLine("Please enter a fuel type");
+                fuelType = Console.ReadLine();
+                isValid = Fuel.TryParse(fuelType,out io_Fuel);
+                if(isValid == false)
+                { 
+                    Console.WriteLine("Fuel type you mentioned doesn't exist");
+                }
+                else if (io_Fuel.Equals(i_FuelRequired) == false)
+                {
+                    Console.WriteLine("This vehicle uses another type of fuel");
+                    isValid = false;
+                }
+            }
+
+            return fuelType;
+        }
+
+        public static void WatchGarageDataBase(Garage i_Garage)
+        {
+            string choosedOption = null;
+            int optionNum;
+            bool optionIsValid = false;
+            while (optionIsValid == false)
+            {
+                Console.WriteLine("Choose one of the options below:");
+                Console.WriteLine("1.Show all vehicles");
+                Console.WriteLine("2.Show all vehicles that in repair");
+                Console.WriteLine("3.Show all vehicles that repaired");
+                Console.WriteLine("4.Show all vehicles that just paid for the service");
+                choosedOption = Console.ReadLine();
+                optionIsValid = IsOptionValid(choosedOption,4);
+                if(optionIsValid == false)
+                {
+                    Console.WriteLine("Incorrect input");
+                }
+            }
+
+            optionNum = int.Parse(choosedOption);
+            foreach (ClientCard client in i_Garage.Clients.Values)
+            {
+                if(optionNum==1)
+                {
+                    Console.WriteLine(client.VehicleInGarage.LicenseNum);
+                }
+                else if(optionNum-2==(int)client.Status)
+                {
+                    Console.WriteLine(client.VehicleInGarage.LicenseNum);
+                }
+            }
+
+        }
+
+        public static bool IsOptionValid(string i_ChoosedOption,int i_NumOfOptions)
+        {
+            bool isValid = false;
+            for(int i = 1; i <= i_NumOfOptions; i++)
+            {
+                if(i_ChoosedOption.Equals(i.ToString()))
                 {
                     isValid = true;
                     break;
@@ -182,6 +202,154 @@ namespace Ex03.ConsoleUI
 
             return isValid;
         }
+        public static void ChargeVehiclesBattery(Garage io_Garage)
+        {
+            if (FindClientInGarage(io_Garage, out ClientCard clientToWatch) == true)
+            {
+                Vehicle vehicleToCharge = clientToWatch.VehicleInGarage;
+                if (vehicleToCharge.MyEngine is Battery)
+                {
+                    float hoursToCharge = 0;
+                    hoursToCharge = GetHoursToChargeFromUser((Battery)vehicleToCharge.MyEngine);
+                    (vehicleToCharge.MyEngine as Battery).Reload(hoursToCharge);
+                    Console.WriteLine("Charged successfully");
+                }
+                else
+                {
+                    Console.WriteLine("Cannot refuel electric vehicle");
+                }
+            }
+        }
+        public static float GetHoursToChargeFromUser(Battery i_BatteryToCharge)
+        {
+            float hoursToCharge = 0;
+            bool isValid = false;
+
+            while(isValid == false)
+            {
+                Console.WriteLine("Please enter amount of hours to load");
+                hoursToCharge = GetFloatFromUser();
+                isValid = i_BatteryToCharge.IsAmountsOfSourcePowerMaterialValid(hoursToCharge);
+                if (isValid == false)
+                {
+                    Console.WriteLine("Cannot charge more than the capacity of the battery");
+                }
+            }
+
+            return hoursToCharge;
+        }
+
+        public static float GetFloatFromUser()
+        {
+            bool isValid = false;
+            string inputStr;
+            float floatToReturn = 0;
+            while(isValid == false)
+            {
+                inputStr = Console.ReadLine();
+                isValid = float.TryParse(inputStr,out floatToReturn);
+                if(isValid == false)
+                {
+                    Console.WriteLine("The input must be a number");
+                }
+            }
+            return floatToReturn;
+        }
+        public static int GetIntFromUser()
+        {
+            bool isValid = false;
+            string inputStr;
+            int IntToReturn = 0;
+            while (isValid == false)
+            {
+                inputStr = Console.ReadLine();
+                isValid = int.TryParse(inputStr, out IntToReturn);
+                if (isValid == false)
+                {
+                    Console.WriteLine("The input must be an integer");
+                }
+            }
+            return IntToReturn;
+        }
+  
+        public static void InflateVehicleWheels(Garage io_Garage)
+        {
+            if (FindClientInGarage(io_Garage, out ClientCard clientToWatch) == true)
+            {
+                Vehicle currentVehicle = clientToWatch.VehicleInGarage;
+                foreach(Wheel wheel in currentVehicle.Wheels)
+                {
+                    wheel.InflateToMaximum();
+                }
+                Console.WriteLine("All wheels of the vehicle were inflated to the maximum value possible");
+            }
+
+        }
+        public static void ChangeVehicleStatus(Garage io_Garage)
+        {
+            string optionStr = null;
+            bool inputIsValid = false;
+            if (FindClientInGarage(io_Garage,out ClientCard clientToWatch) == true)
+            {
+                while(inputIsValid == false)
+                {
+                    Console.WriteLine("Choose the status you want to set for the vehicle: InRepair, Repaired, Paid ");
+                    Console.WriteLine("1.In repair ");
+                    Console.WriteLine("2.Repaired ");
+                    Console.WriteLine("3.Paid");
+                    optionStr = Console.ReadLine();
+                    inputIsValid = IsOptionValid(optionStr, 3);
+                    if(inputIsValid == false)
+                    {
+                        Console.WriteLine("Invalid choice, please try again");
+                    }
+                    else
+                    {
+                        clientToWatch.Status = Garage.GetStatusFromInt(int.Parse(optionStr) - 1);
+                    }
+                }
+
+            }
+        }
+
+        public static bool FindClientInGarage(Garage i_Garage,out ClientCard o_Client)
+        {
+            bool isFound = false;
+            int attemptsLeft = 2;
+            o_Client = null;
+
+            while(isFound == false && attemptsLeft > 0)
+            {
+                string licenseNumToWatch = GetLicenseNumStr();
+                isFound = i_Garage.Clients.TryGetValue(licenseNumToWatch, out o_Client);
+                if(isFound == false)
+                {
+                    if(attemptsLeft > 0)
+                    {
+                        Console.WriteLine(string.Format(
+                            "Vehicle not found, attempts left:{0}"
+                            , attemptsLeft--));
+                    }
+                    else
+                    {
+                        Console.WriteLine("Vehicle not found, no attempts left, going back to the menu");
+                    }
+                }
+            }
+
+            return isFound;
+
+        }
+        public static void ShowVehicleData(Garage i_Garage)
+        {
+
+            if(FindClientInGarage(i_Garage, out ClientCard clientToWatch))
+            {
+                Console.WriteLine(clientToWatch.ToString());
+            }
+           
+        }
+
         public static bool IsLicenseNumValid(string i_LicenseNum)
         {
             bool isValid = false;
@@ -212,8 +380,8 @@ namespace Ex03.ConsoleUI
                if (io_Garage.IsVehicleExistsInGarage(licenseNum) == true)
                {
                    Console.WriteLine("The Vehicle is already in the garage");
-                   OrderInfo orderOfTheVehicle = io_Garage.Vehicles[licenseNum];
-                   orderOfTheVehicle.Status = Garage.eVehicleStat.InRepair;
+                   ClientCard newClient = io_Garage.Clients[licenseNum];
+                   newClient.Status = Garage.eVehicleStat.InRepair;
                }
                else
                {
@@ -238,7 +406,7 @@ namespace Ex03.ConsoleUI
 
                    ownerName = GetNameFromUser();
                    ownerPhoneNum = GetPhoneNumberFromUser();
-                   io_Garage.AddVehicleToGarage(new OrderInfo(vehicleToAdd,ownerName,ownerPhoneNum));
+                   io_Garage.AddVehicleToGarage(new ClientCard(vehicleToAdd,ownerName,ownerPhoneNum));
                    Console.WriteLine("The Vehicle successfully added to the garage ");
                }
           }
@@ -251,7 +419,7 @@ namespace Ex03.ConsoleUI
             {
                 Console.WriteLine("Please enter your name");
                 name = Console.ReadLine();
-                inputIsValid = OrderInfo.IsNameValid(name);
+                inputIsValid = ClientCard.IsNameValid(name);
                 if(inputIsValid == false)
                 {
                     Console.WriteLine("The input should contain only letters");
@@ -269,18 +437,10 @@ namespace Ex03.ConsoleUI
             {
                 Console.WriteLine("Please enter your phone number");
                 phoneNumStr = Console.ReadLine();
-                inputIsValid = int.TryParse(phoneNumStr, out int phoneNum);
-                if (inputIsValid == false)
+                inputIsValid = ClientCard.IsPhoneNumberValid(phoneNumStr);
+                if (inputIsValid==false)
                 {
-                    Console.WriteLine("The input should contain only digits");
-                }
-                else
-                {
-                    inputIsValid = OrderInfo.IsPhoneNumberValid(phoneNum);
-                    if(inputIsValid == false)
-                    {
-                        Console.WriteLine("The number must contain 10 digits");
-                    }
+                    Console.WriteLine("The number must contain 10 digits");
                 }
 
             }
@@ -288,24 +448,24 @@ namespace Ex03.ConsoleUI
             return phoneNumStr;
 
         }
-          internal static void ProceedToNextStepOfProcess()
-          {
-               Garage.countProcessSteps++;
-          }
-          //****************Input Methods******************//  
+
           internal static int GetTypeOption()
           {
-               string numOptionString = null;
-               int numOption;
+              string choosedOption = null;
+              bool inputIsValid = false;
 
-               do
-               {
-                    PrintVehicleTypeMenu(Instance.sr_VehicleTypesStr);
-                    numOptionString = Console.ReadLine();
-               }
-               while (OptionIsValid(numOptionString, out numOption) == false);
+              while(inputIsValid == false)
+              {
+                  PrintVehicleTypeMenu(Enum.GetNames(typeof(Instance.eVehicleType)));
+                  choosedOption = Console.ReadLine();
+                  inputIsValid = IsOptionValid(choosedOption, Enum.GetNames(typeof(Instance.eVehicleType)).Length);
+                  if(inputIsValid == false)
+                  {
+                      Console.WriteLine("Incorrect input, please try again");
+                  }
+              }
 
-               return numOption;
+              return int.Parse(choosedOption);
           }
 
           internal static string GetLicenseNumStr()
@@ -323,17 +483,7 @@ namespace Ex03.ConsoleUI
 
           }
 
-          //****************Validation Methods******************//  
-          
-
-          internal static bool OptionIsValid(string i_optionNumString, out int o_OptionNum)
-          {
-               return int.TryParse(i_optionNumString, out o_OptionNum) == true && o_OptionNum >= 1 && o_OptionNum <= Instance.sr_VehicleTypesStr.Count;
-          }
-
-
-          //****************Console Output******************//  
-          internal static void PrintVehicleTypeMenu(List<string> VehicleTypeStrings)
+          internal static void PrintVehicleTypeMenu(string[] VehicleTypeStrings)
           {
                int optionNum = 1;
                foreach (string typeOfVehicle in VehicleTypeStrings)
@@ -345,6 +495,7 @@ namespace Ex03.ConsoleUI
                }
 
           }
+
 
      }
 

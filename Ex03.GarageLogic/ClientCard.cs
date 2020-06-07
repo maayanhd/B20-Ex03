@@ -4,7 +4,7 @@ using System.Text;
 
 namespace Ex03.GarageLogic
 {
-    public class OrderInfo
+    public class ClientCard
     {
 
         private Vehicle m_VehicleInGarage;
@@ -12,7 +12,7 @@ namespace Ex03.GarageLogic
         private string m_OwnerPhoneNumber;
         private Garage.eVehicleStat m_VehicleStatus;
 
-        public OrderInfo(Vehicle i_Vehicle, string i_OwnerName, string i_OwnerPhoneNumber)
+        public ClientCard(Vehicle i_Vehicle, string i_OwnerName, string i_OwnerPhoneNumber)
         {
             m_VehicleInGarage = i_Vehicle;
             m_OwnerName = i_OwnerName;
@@ -42,12 +42,9 @@ namespace Ex03.GarageLogic
             return isValid;
         }
 
-        public static bool IsPhoneNumberValid(int i_PhoneNum)
+        public static bool IsPhoneNumberValid(string i_PhoneNum)
         {
-            bool isValid = false;
-            isValid = i_PhoneNum.ToString().Length == 10;
-
-            return isValid;
+            return i_PhoneNum.Length==10 && int.TryParse(i_PhoneNum,out int phoneNum)==true;
         }
         public Vehicle VehicleInGarage
         {
@@ -79,12 +76,12 @@ namespace Ex03.GarageLogic
 
         public override string ToString()
         {
-            StringBuilder orderInfoStr = new StringBuilder();
-            orderInfoStr.AppendLine(VehicleInGarage.ToString());
-            orderInfoStr.AppendLine(string.Format("Owner name:{0}", Owner));
-            orderInfoStr.AppendLine(string.Format("Owner phone number:{0}", OwnerPhoneNumber));
+            StringBuilder clientCardStr = new StringBuilder();
+            clientCardStr.AppendLine(VehicleInGarage.ToString());
+            clientCardStr.AppendLine(string.Format("Owner name:{0}", Owner));
+            clientCardStr.AppendLine(string.Format("Owner phone number:{0}", OwnerPhoneNumber));
 
-            return orderInfoStr.ToString();
+            return clientCardStr.ToString();
         }
         public string OwnerPhoneNumber
         {
@@ -99,7 +96,7 @@ namespace Ex03.GarageLogic
                 {
                     throw new FormatException();
                 }
-                else if(IsPhoneNumberValid(phoneNum) == false)
+                else if(IsPhoneNumberValid(value) == false)
                 {
                     throw new ArgumentException();
                 }

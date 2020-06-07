@@ -6,12 +6,13 @@ namespace Ex03.GarageLogic
 {
      public sealed class Car : Vehicle
      {
-         private eColor r_EColor;
 
+          private Color m_CarColor;
           private int m_NumOfDoors;
 
           public Car(string i_LicenseNumber, Engine i_Engine) : base(i_Engine,i_LicenseNumber)
           {
+            m_CarColor=new Color();
             NumOfWheels = 4;
             ManageMemberInfo();
             m_Engine = i_Engine;
@@ -21,7 +22,7 @@ namespace Ex03.GarageLogic
           public override string ToString()
           {
             StringBuilder carStr = new StringBuilder(base.ToString());
-            carStr.AppendLine(string.Format("Color:{0}",EColor.ToString()));
+            carStr.AppendLine(string.Format("Color:{0}",CarColor.ToString()));
             carStr.AppendLine(string.Format("Number of doors:{0}", NumOfDoors.ToString()));
             return carStr.ToString();
           }
@@ -49,12 +50,7 @@ namespace Ex03.GarageLogic
                        switch(i_NumOfField - NumOfBaseMembers)
                        {
                            case 0:
-                               isMemberValid = IsColorValid(i_InputStr);
-                               if(isMemberValid == true)
-                               {
-                                   AssignColor(i_InputStr);
-                               }
-
+                               isMemberValid = Color.TryParse(i_InputStr,out m_CarColor);
                                break;
                            case 1:
                                isMemberValid = int.TryParse(i_InputStr, out int io_NumOfDoors) == true
@@ -74,9 +70,7 @@ namespace Ex03.GarageLogic
                                {
                                    if(m_Engine is GasEngine)
                                    {
-                                       (m_Engine as GasEngine).ReFuel(
-                                           io_AmountOfMaterial,
-                                           (m_Engine as GasEngine).FuelType);
+                                       (m_Engine as GasEngine).ReFuel(io_AmountOfMaterial, (m_Engine as GasEngine).MyFuel);
                                    }
                                    else
                                    {
@@ -93,21 +87,7 @@ namespace Ex03.GarageLogic
           }
           
           // new method to update flow chart
-          public bool IsColorValid(string i_ColorString)
-          {
-              bool isValid = false;
-              foreach(string color in Enum.GetNames(typeof(eColor)))
-              {
-                  isValid = i_ColorString.Equals(color);
-                  if(isValid == true)
-                  {
-                      break;
-                  }
-              }
-
-              return isValid;
-          }
-              
+    
 
           public bool IsNumOfDoorsValid(int i_NumOfDoors)
           {
@@ -115,13 +95,7 @@ namespace Ex03.GarageLogic
           }
 
           //****************Enumerations******************//  
-          public enum eColor
-          {
-               Red,
-               White,
-               Black,
-               Silver
-          }
+
 
           // New- update in flow chart
           //****************Assigning Methods******************//  
@@ -134,7 +108,7 @@ namespace Ex03.GarageLogic
                }
                else if (IsNumOfDoorsValid(numOfDoors)==false)
                {
-                    throw new ValueOutOfRangeException(2, 5, "the number of doors must be a whole number from 2 to 5" + Environment.NewLine);
+                    throw new ValueOutOfRangeException(2, 5);
                }
                else
                {
@@ -143,32 +117,20 @@ namespace Ex03.GarageLogic
                
           }
 
-          public void AssignColor(string i_Color)
-          {
-              if(IsColorValid(i_Color))
-              {
-                  r_EColor = (eColor)(Enum.Parse(typeof(eColor), i_Color));
-              }
-              else
-              {
-                  throw  new FormatException("Color not found");
-              }
-          }
-          
           //****************Properties******************//  
-          public eColor EColor
+
+          public Color CarColor
           {
-               get
-               {
-                    return r_EColor;
-               }
-               set
-               {
-                   r_EColor = value;
-               }
-
+              get
+              {
+                  
+                  return m_CarColor;
+              }
+              set
+              {
+                  m_CarColor = value;
+              }
           }
-
           public int NumOfDoors
           {
                get
@@ -182,16 +144,7 @@ namespace Ex03.GarageLogic
                }
 
           }
-                    
-          public string[] ColorStrings
-          {
-               get
-               {
-                    return r_ColorStrings;
-               }
-
-          }
-
+          
           public Engine CarEngine
           {
                get

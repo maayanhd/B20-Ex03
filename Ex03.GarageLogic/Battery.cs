@@ -32,15 +32,27 @@ namespace Ex03.GarageLogic
           {
                if (IsTotalAmountOfChargingWithinLimit(i_HoursToCharge) == false)
                {
-                    throw new ValueOutOfRangeException(m_MaxBatteryLifeInHours - m_RemainingBatteryLifeInHours, 0, "You exceeded the possible range of charging battery" + Environment.NewLine);
+                    throw new ValueOutOfRangeException(m_MaxBatteryLifeInHours - m_RemainingBatteryLifeInHours, 0);
                }
                else
                {
                     m_RemainingBatteryLifeInHours += i_HoursToCharge;
                }
           }
+        public override void InitializeAmountOfEnergy(float i_AmountOfInitialEnergy)
+        {
+            if (IsAmountsOfSourcePowerMaterialValid(i_AmountOfInitialEnergy))
+            {
+                RemainingBatteryLifeInHours = i_AmountOfInitialEnergy;
+            }
+            else
+            {
+                throw new ValueOutOfRangeException(MaxBatteryLifeInHours - RemainingBatteryLifeInHours, 0);
+            }
 
-          public override bool IsAmountsOfSourcePowerMaterialValid(float i_MaterialToCheck)
+        }
+
+        public override bool IsAmountsOfSourcePowerMaterialValid(float i_MaterialToCheck)
           {
                return IsTotalAmountOfChargingWithinLimit(i_MaterialToCheck);
           }

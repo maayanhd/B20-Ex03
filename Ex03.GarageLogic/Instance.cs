@@ -6,13 +6,11 @@ namespace Ex03.GarageLogic
 {
      public static class Instance
      {
-          public static readonly List<string> sr_VehicleTypesStr = new List<string> { "Car", "Bike", "Truck", "ElectricCar", "ElectricBike" };
 
-          //****************Vehicle types list******************//  
           public enum eVehicleType
           {
-               GasCar,
-               GasBike,
+               Car,
+               Bike,
                Truck,
                ElectricCar,
                ElectricBike
@@ -26,16 +24,16 @@ namespace Ex03.GarageLogic
 
                switch (i_EVehicleType)
                {
-                    case eVehicleType.GasCar:
-                         generatedVehicle = new Car(i_LicenseNum, new GasEngine(60, GasEngine.eFuelType.Octan96));
+                    case eVehicleType.Car:
+                         generatedVehicle = new Car(i_LicenseNum, new GasEngine(60, new Fuel(Fuel.eFuelType.Octan96)));
                          break;
 
-                    case eVehicleType.GasBike:
-                         generatedVehicle = new Bike(i_LicenseNum, new GasEngine(7, GasEngine.eFuelType.Octan95));
+                    case eVehicleType.Bike:
+                         generatedVehicle = new Bike(i_LicenseNum, new GasEngine(7, new Fuel(Fuel.eFuelType.Octan95)));
                          break;
 
                     case eVehicleType.Truck:
-                         generatedVehicle = new Truck(i_LicenseNum, new GasEngine(120, GasEngine.eFuelType.Soler));
+                         generatedVehicle = new Truck(i_LicenseNum, new GasEngine(120, new Fuel(Fuel.eFuelType.Soler)));
                          break;
 
                     case eVehicleType.ElectricCar:
@@ -51,6 +49,11 @@ namespace Ex03.GarageLogic
 
           }
 
-     }
+        public static bool OptionIsValid(int o_OptionNum)
+        {
+            return o_OptionNum >= 1 && o_OptionNum <= Enum.GetNames(typeof(Instance.eVehicleType)).Length;
+        }
+
+    }
 
 }

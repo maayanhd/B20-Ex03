@@ -45,6 +45,14 @@ namespace Ex03.GarageLogic
 
           }
 
+          public override string ToString()
+          {
+              StringBuilder strToReturn = new StringBuilder();
+
+              strToReturn.AppendLine(string.Format("Manufacturer:{0}", Manufacturor));
+              strToReturn.AppendLine(string.Format("Current wheel pressure:{0} from {1} possible", CurrentWheelPressure,MaximalWheelPressure));
+              return strToReturn.ToString();
+          }
           public float MaximalWheelPressure
           {
                get
@@ -85,7 +93,11 @@ namespace Ex03.GarageLogic
           }
 
           //****************Functionality******************//  
-               
+          public void InflateToMaximum()
+          {
+            Inflate(m_MaximalWheelPressure-m_CurrentWheelPressure);
+          }
+
           public void Inflate(float i_AirToAdd)
           {
               if(IsAirPressureIsValid(i_AirToAdd))
@@ -94,7 +106,7 @@ namespace Ex03.GarageLogic
               }
               else
               {
-                  throw new ValueOutOfRangeException(m_MaximalWheelPressure - m_CurrentWheelPressure,0 , "The air you're asking to add is out of range");
+                  throw new ValueOutOfRangeException(m_MaximalWheelPressure - m_CurrentWheelPressure,0);
               }
 
           }
@@ -119,11 +131,11 @@ namespace Ex03.GarageLogic
           {
                if (float.TryParse(i_CurrentAirPressure, out float io_CurrentAirPressure) == false)
                {
-                    throw new FormatException("The Manufacturer should consist only letters");
+                    throw new FormatException("The value must be a number");
                }
                else if (IsAirPressureIsValid(io_CurrentAirPressure) == false)
                {
-                    throw new ValueOutOfRangeException(MaximalWheelPressure, 0, "Air pressure is out of range");
+                    throw new ValueOutOfRangeException(MaximalWheelPressure, 0);
                }
                else
                {

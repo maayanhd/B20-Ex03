@@ -9,14 +9,10 @@ namespace Ex03.GarageLogic
           private float m_MaxValue;
           private float m_MinValue;
 
-          // new- update in flow chart 
-          private readonly string m_NotifyingMessage;
-
-          public ValueOutOfRangeException(float i_MaxValue, float i_MinValue, string i_NotifyingMessage)
+          public ValueOutOfRangeException(float i_MaxValue, float i_MinValue)
           {
                m_MaxValue = i_MaxValue;
                m_MinValue = i_MinValue;
-               m_NotifyingMessage = i_NotifyingMessage;
           }
 
           //****************Properties******************//  
