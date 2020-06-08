@@ -16,7 +16,7 @@ namespace Ex03.GarageLogic
         {
             A,
             A1,
-            Aa,
+            AA,
             B
         }
 

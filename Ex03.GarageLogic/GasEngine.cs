@@ -6,7 +6,7 @@ namespace Ex03.GarageLogic
 {
      public class GasEngine : Engine
      {
-         private Fuel m_Fuel;
+          private Fuel m_Fuel;
           private float m_CurrentAmountOfFuelInLitters;
           private float m_MaximumAmountOfFuelInLitters;
           private readonly string m_CurrentAmountInfoStr;
@@ -22,11 +22,11 @@ namespace Ex03.GarageLogic
           {
             StringBuilder gasEngineStr = new StringBuilder();
             gasEngineStr.AppendLine(string.Format("Fuel type: {0}", MyFuel.ToString()));
-            gasEngineStr.AppendLine(string.Format("Amount of fuel:{0}L from {1}L", CurrentAmountOfFuelInLitters.ToString(),MaximumAmountOfFuelInLitters.ToString()));
+            gasEngineStr.Append(string.Format("Amount of fuel: {0}L out of {1}L", CurrentAmountOfFuelInLitters.ToString(),MaximumAmountOfFuelInLitters.ToString()));
             return gasEngineStr.ToString();
           }
        //****************Functionality******************//  
-          public void ReFuel(float i_FuelToAdd, Fuel i_FuelToFill)
+          public void ReFuel(float i_FuelToAdd, Fuel i_FuelToFill,Vehicle io_VehicleToRefuel)
           {
                if (IsTotalAmountOfFuelWithinLimit(i_FuelToAdd) == false)
                {
@@ -39,15 +39,17 @@ namespace Ex03.GarageLogic
                else
                {
                     m_CurrentAmountOfFuelInLitters += i_FuelToAdd;
+                    UpdateEnergyLeftInPercents(io_VehicleToRefuel);
                }
 
           }
 
-          public override void InitializeAmountOfEnergy(float i_AmountOfInitialEnergy)
+          public override void InitializeAmountOfEnergy(float i_AmountOfInitialEnergy,Vehicle io_CurrentVehicle)
           {
               if(IsAmountsOfSourcePowerMaterialValid(i_AmountOfInitialEnergy))
               {
                   CurrentAmountOfFuelInLitters = i_AmountOfInitialEnergy;
+                  UpdateEnergyLeftInPercents(io_CurrentVehicle);
               }
               else
               {

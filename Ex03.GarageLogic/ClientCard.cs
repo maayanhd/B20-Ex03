@@ -46,6 +46,7 @@ namespace Ex03.GarageLogic
         {
             return i_PhoneNum.Length==10 && int.TryParse(i_PhoneNum,out int phoneNum)==true;
         }
+
         public Vehicle VehicleInGarage
         {
             get
@@ -78,8 +79,9 @@ namespace Ex03.GarageLogic
         {
             StringBuilder clientCardStr = new StringBuilder();
             clientCardStr.AppendLine(VehicleInGarage.ToString());
-            clientCardStr.AppendLine(string.Format("Owner name:{0}", Owner));
-            clientCardStr.AppendLine(string.Format("Owner phone number:{0}", OwnerPhoneNumber));
+            clientCardStr.AppendLine(string.Format("Owner name: {0}", Owner));
+            clientCardStr.AppendLine(string.Format("Owner phone number: {0}", OwnerPhoneNumber));
+            clientCardStr.AppendLine(string.Format("Status: {0}", Status.ToString()));
 
             return clientCardStr.ToString();
         }

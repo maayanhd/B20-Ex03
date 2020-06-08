@@ -8,7 +8,7 @@ namespace Ex03.GarageLogic
     {
           public abstract void UpdateEnergyLeftInPercents(Vehicle i_CurrentVehicle);
           public abstract bool IsAmountsOfSourcePowerMaterialValid(float i_MaterialToCheck);
-          public abstract void InitializeAmountOfEnergy(float i_AmountOfInitialEnergy);
+          public abstract void InitializeAmountOfEnergy(float i_AmountOfInitialEnergy,Vehicle i_CurrenVehicle);
 
     }
 

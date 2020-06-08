@@ -49,8 +49,8 @@ namespace Ex03.GarageLogic
           {
               StringBuilder strToReturn = new StringBuilder();
 
-              strToReturn.AppendLine(string.Format("Manufacturer:{0}", Manufacturor));
-              strToReturn.AppendLine(string.Format("Current wheel pressure:{0} from {1} possible", CurrentWheelPressure,MaximalWheelPressure));
+              strToReturn.AppendLine(string.Format("Manufacturer: {0}", Manufacturor));
+              strToReturn.AppendLine(string.Format("Current wheel pressure: {0} from {1} possible", CurrentWheelPressure,MaximalWheelPressure));
               return strToReturn.ToString();
           }
           public float MaximalWheelPressure
@@ -89,7 +89,7 @@ namespace Ex03.GarageLogic
 
           public bool IsAirPressureIsValid(float i_AirPressure)
           {
-              return i_AirPressure <= m_MaximalWheelPressure - m_CurrentWheelPressure;
+              return i_AirPressure <= m_MaximalWheelPressure - m_CurrentWheelPressure && i_AirPressure>=0;
           }
 
           //****************Functionality******************//  

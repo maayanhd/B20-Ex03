@@ -51,7 +51,7 @@ namespace Ex03.GarageLogic
           public override string ToString()
           {
                StringBuilder vehicleStr = new StringBuilder(string.Format(
-                   "License number:{0}{1}Model:{2}{1}",
+                   "License number:{0}{1}Model: {2}{1}",
                    LicenseNum,
                    Environment.NewLine,
                    Model));
@@ -63,9 +63,9 @@ namespace Ex03.GarageLogic
                }
 
                vehicleStr.Append(MyEngine.ToString());
+               vehicleStr.AppendLine(string.Format("({0:P})", EnergyLeftInPercents));
 
                return vehicleStr.ToString();
-
           }
 
           public virtual bool TryAssignMember(int i_NumOfField, string i_InputStr)
@@ -88,7 +88,8 @@ namespace Ex03.GarageLogic
                          isMemberValid = float.TryParse(i_InputStr, out float io_AmountOfMaterial) == true ? m_Engine.IsAmountsOfSourcePowerMaterialValid(io_AmountOfMaterial) : false;
                          if (isMemberValid == true)
                          {
-                              MyEngine.InitializeAmountOfEnergy(io_AmountOfMaterial);
+                              MyEngine.InitializeAmountOfEnergy(io_AmountOfMaterial,this);
+
                          }
                          break;
                     case 2:

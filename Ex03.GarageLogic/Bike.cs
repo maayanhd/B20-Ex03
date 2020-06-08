@@ -31,8 +31,8 @@ namespace Ex03.GarageLogic
           public override string ToString()
           {
               StringBuilder bikeStr = new StringBuilder(base.ToString());
-              bikeStr.AppendLine(string.Format("License type:{0}", m_BikeLicense.ToString()));
-              bikeStr.AppendLine(string.Format("Engine velocity:{0}", EngineVelocity.ToString()));
+              bikeStr.AppendLine(string.Format("License type: {0}", m_BikeLicense.ToString()));
+              bikeStr.AppendLine(string.Format("Engine velocity: {0}", EngineVelocity.ToString()));
               return bikeStr.ToString();
 
           }

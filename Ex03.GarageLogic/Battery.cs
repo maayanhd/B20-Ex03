@@ -25,10 +25,10 @@ namespace Ex03.GarageLogic
           public override string ToString()
           {
               StringBuilder batteryStr = new StringBuilder();
-              batteryStr.AppendLine(string.Format("Energy left:{0}H from {1}H", RemainingBatteryLifeInHours.ToString(), MaxBatteryLifeInHours.ToString()));
+              batteryStr.Append(string.Format("Energy left: {0}H out of {1}H", RemainingBatteryLifeInHours.ToString(), MaxBatteryLifeInHours.ToString()));
               return batteryStr.ToString();
           }
-        public void Reload(float i_HoursToCharge)
+        public void Reload(float i_HoursToCharge,Vehicle io_VehicleToCharge)
           {
                if (IsTotalAmountOfChargingWithinLimit(i_HoursToCharge) == false)
                {
@@ -37,13 +37,15 @@ namespace Ex03.GarageLogic
                else
                {
                     m_RemainingBatteryLifeInHours += i_HoursToCharge;
+                    UpdateEnergyLeftInPercents(io_VehicleToCharge);
                }
           }
-        public override void InitializeAmountOfEnergy(float i_AmountOfInitialEnergy)
+        public override void InitializeAmountOfEnergy(float i_AmountOfInitialEnergy,Vehicle io_CurrentVehicle)
         {
             if (IsAmountsOfSourcePowerMaterialValid(i_AmountOfInitialEnergy))
             {
                 RemainingBatteryLifeInHours = i_AmountOfInitialEnergy;
+                UpdateEnergyLeftInPercents(io_CurrentVehicle);
             }
             else
             {
@@ -51,11 +53,14 @@ namespace Ex03.GarageLogic
             }
 
         }
-
+        public bool IsTotalAmountOfChargingWithinLimit(float i_HoursToCharge)
+        {
+            return i_HoursToCharge <= m_MaxBatteryLifeInHours - m_RemainingBatteryLifeInHours && i_HoursToCharge >= 0;
+        }
         public override bool IsAmountsOfSourcePowerMaterialValid(float i_MaterialToCheck)
-          {
+        {
                return IsTotalAmountOfChargingWithinLimit(i_MaterialToCheck);
-          }
+        }
 
           //****************Properties******************//  
 
@@ -95,11 +100,6 @@ namespace Ex03.GarageLogic
                
           }
 
-          //****************Validation Methods******************// 
-          
-          public bool IsTotalAmountOfChargingWithinLimit(float i_HoursToCharge)
-          {
-               return i_HoursToCharge <= m_MaxBatteryLifeInHours - m_RemainingBatteryLifeInHours;
-          }
+    
      }
 }

@@ -58,7 +58,7 @@ namespace Ex03.ConsoleUI
                     AddVehicle(io_Garage);
                     break;
                 case 2:
-                    WatchGarageDataBase(io_Garage);
+                    ShowGarageDataBase(io_Garage);
                     break;
                 case 3:
                     ChangeVehicleStatus(io_Garage);
@@ -95,7 +95,7 @@ namespace Ex03.ConsoleUI
                     Fuel fuelToFill = null;
                     float amountOfFuel = GetAmountOfFuelFromUser(vehicleToRefuel.MyEngine as GasEngine);
                     GetFuelTypeFromUser(out fuelToFill, (vehicleToRefuel.MyEngine as GasEngine).MyFuel);
-                    (vehicleToRefuel.MyEngine as GasEngine).ReFuel(amountOfFuel,fuelToFill);
+                    (vehicleToRefuel.MyEngine as GasEngine).ReFuel(amountOfFuel,fuelToFill,vehicleToRefuel);
                     Console.WriteLine("Refueled successfully");
                 }
                 else
@@ -153,7 +153,7 @@ namespace Ex03.ConsoleUI
             return fuelType;
         }
 
-        public static void WatchGarageDataBase(Garage i_Garage)
+        public static void ShowGarageDataBase(Garage i_Garage)
         {
             string choosedOption = null;
             int optionNum;
@@ -173,21 +173,51 @@ namespace Ex03.ConsoleUI
                 }
             }
 
+
             optionNum = int.Parse(choosedOption);
-            foreach (ClientCard client in i_Garage.Clients.Values)
+            if (optionNum == 1)
             {
-                if(optionNum==1)
-                {
-                    Console.WriteLine(client.VehicleInGarage.LicenseNum);
-                }
-                else if(optionNum-2==(int)client.Status)
-                {
-                    Console.WriteLine(client.VehicleInGarage.LicenseNum);
-                }
+                PrintAllClientsLicenseNum(i_Garage);
+            }
+            else
+            {
+                Garage.eVehicleStat filter = Garage.GetStatusFromInt(optionNum - 2);
+                PrintListOfStrings(i_Garage.VehicleStatus[filter]);
             }
 
         }
 
+        public static void PrintAllClientsLicenseNum(Garage i_Garage)
+        {
+            if(i_Garage.Clients.Count == 0)
+            {
+                Console.WriteLine("No vehicles in the garage at this moment");
+            }
+            else
+            {
+                foreach (string key in i_Garage.Clients.Keys)
+                {
+                    Console.WriteLine(key);
+                }
+            }
+            
+        }
+
+        public static void PrintListOfStrings(List<string> i_ListToPrint)
+        {
+            if(i_ListToPrint.Count == 0)
+            {
+                Console.WriteLine("No vehicles applied to your request");
+            }
+            else
+            {
+                foreach (string str in i_ListToPrint)
+                {
+                    Console.WriteLine(str);
+                }
+            }
+            
+        }
         public static bool IsOptionValid(string i_ChoosedOption,int i_NumOfOptions)
         {
             bool isValid = false;
@@ -210,33 +240,33 @@ namespace Ex03.ConsoleUI
                 if (vehicleToCharge.MyEngine is Battery)
                 {
                     float hoursToCharge = 0;
-                    hoursToCharge = GetHoursToChargeFromUser((Battery)vehicleToCharge.MyEngine);
-                    (vehicleToCharge.MyEngine as Battery).Reload(hoursToCharge);
+                    hoursToCharge = GetMinutesToChargeFromUser((Battery)vehicleToCharge.MyEngine);
+                    (vehicleToCharge.MyEngine as Battery).Reload(hoursToCharge,vehicleToCharge);
                     Console.WriteLine("Charged successfully");
                 }
                 else
                 {
-                    Console.WriteLine("Cannot refuel electric vehicle");
+                    Console.WriteLine("Cannot charge gasoline vehicle");
                 }
             }
         }
-        public static float GetHoursToChargeFromUser(Battery i_BatteryToCharge)
+        public static float GetMinutesToChargeFromUser(Battery i_BatteryToCharge)
         {
-            float hoursToCharge = 0;
+            float minutesToCharge = 0;
             bool isValid = false;
 
             while(isValid == false)
             {
-                Console.WriteLine("Please enter amount of hours to load");
-                hoursToCharge = GetFloatFromUser();
-                isValid = i_BatteryToCharge.IsAmountsOfSourcePowerMaterialValid(hoursToCharge);
+                Console.WriteLine("Please enter amount of minutes to load");
+                minutesToCharge = GetFloatFromUser();
+                isValid = i_BatteryToCharge.IsAmountsOfSourcePowerMaterialValid(minutesToCharge/60);
                 if (isValid == false)
                 {
                     Console.WriteLine("Cannot charge more than the capacity of the battery");
                 }
             }
 
-            return hoursToCharge;
+            return minutesToCharge/60;
         }
 
         public static float GetFloatFromUser()
@@ -255,23 +285,7 @@ namespace Ex03.ConsoleUI
             }
             return floatToReturn;
         }
-        public static int GetIntFromUser()
-        {
-            bool isValid = false;
-            string inputStr;
-            int IntToReturn = 0;
-            while (isValid == false)
-            {
-                inputStr = Console.ReadLine();
-                isValid = int.TryParse(inputStr, out IntToReturn);
-                if (isValid == false)
-                {
-                    Console.WriteLine("The input must be an integer");
-                }
-            }
-            return IntToReturn;
-        }
-  
+
         public static void InflateVehicleWheels(Garage io_Garage)
         {
             if (FindClientInGarage(io_Garage, out ClientCard clientToWatch) == true)
@@ -305,7 +319,7 @@ namespace Ex03.ConsoleUI
                     }
                     else
                     {
-                         HandleStatusChange(clientToWatch, Garage.GetStatusFromInt(int.Parse(optionStr) - 1));
+                         io_Garage.ChangeVehicleStatus(clientToWatch, Garage.GetStatusFromInt(int.Parse(optionStr) - 1));
                     }
                 }
 

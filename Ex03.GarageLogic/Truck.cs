@@ -28,7 +28,7 @@ namespace Ex03.GarageLogic
               {
                   truckStr.AppendLine("Is not carrying dangerous materials");
               }
-              truckStr.AppendLine(string.Format("Carrying size:{0}", CarryingSize.ToString()));
+              truckStr.AppendLine(string.Format("Carrying size: {0} kg", CarryingSize.ToString()));
 
 
               return truckStr.ToString();
@@ -39,6 +39,7 @@ namespace Ex03.GarageLogic
                base.ManageMemberInfo();
                AddWheels();
                m_MemberInfoStr.Add("whether the truck carrying dangerous materials");
+               m_MemberInfoStr.Add("carrying size of the truck");
           }
 
           //****************Validations Methods******************//  
@@ -67,13 +68,6 @@ namespace Ex03.GarageLogic
                                 AssignCarryingSize(i_InputStr);
                               }
                               break;
-                         case 2:
-                              isMemberValid = float.TryParse(i_InputStr, out float io_AmountOfMaterial) == true ? ((GasEngine)MyEngine).IsAmountsOfSourcePowerMaterialValid(io_AmountOfMaterial) : false;
-                              if (isMemberValid == true)
-                              {
-                                  (m_Engine as GasEngine).ReFuel(io_AmountOfMaterial, (m_Engine as GasEngine).MyFuel);
-                              }
-                              break;
                     }
 
 
@@ -86,7 +80,7 @@ namespace Ex03.GarageLogic
               return i_CarryingSize > 0;
           }
 
-          void AssignIsCarryingDangerousMaterials(string i_IsCarryingDangerousMaterials)
+          public void AssignIsCarryingDangerousMaterials(string i_IsCarryingDangerousMaterials)
           {
                if (i_IsCarryingDangerousMaterials.Equals("Yes") == false && i_IsCarryingDangerousMaterials.Equals("No") == false)
                {
@@ -99,7 +93,7 @@ namespace Ex03.GarageLogic
 
           }
 
-          void AssignCarryingSize(string i_CarryingSize)
+          public void AssignCarryingSize(string i_CarryingSize)
           {
 
                if (float.TryParse(i_CarryingSize, out float io_CarryingSize) == false)

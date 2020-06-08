@@ -22,8 +22,8 @@ namespace Ex03.GarageLogic
           public override string ToString()
           {
                StringBuilder carStr = new StringBuilder(base.ToString());
-               carStr.AppendLine(string.Format("Color:{0}", CarColor.ToString()));
-               carStr.AppendLine(string.Format("Number of doors:{0}", NumOfDoors.ToString()));
+               carStr.AppendLine(string.Format("Color: {0}", CarColor.ToString()));
+               carStr.AppendLine(string.Format("Number of doors: {0}", NumOfDoors.ToString()));
                return carStr.ToString();
           }
           public override void ManageMemberInfo()
@@ -60,25 +60,8 @@ namespace Ex03.GarageLogic
                               {
                                    AssignNumOfDoors(i_InputStr);
                               }
-
                               break;
-                         case 2:
-                              isMemberValid = float.TryParse(i_InputStr, out float io_AmountOfMaterial) == true
-                                                  ? CarEngine.IsAmountsOfSourcePowerMaterialValid(io_AmountOfMaterial)
-                                                  : false;
-                              if (isMemberValid == true)
-                              {
-                                   if (m_Engine is GasEngine)
-                                   {
-                                        (m_Engine as GasEngine).ReFuel(io_AmountOfMaterial, (m_Engine as GasEngine).MyFuel);
-                                   }
-                                   else
-                                   {
-                                        (m_Engine as Battery).Reload(io_AmountOfMaterial);
-                                   }
-                              }
 
-                              break;
                     }
 
                }
