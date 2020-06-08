@@ -89,16 +89,18 @@ namespace Ex03.GarageLogic
             {
                 return m_OwnerPhoneNumber;
             }
+
             set
             {
                 int phoneNum;
+
                 if(int.TryParse(value, out phoneNum) == false)
                 {
-                    throw new FormatException();
+                    throw new FormatException("The phone number must consist of digits only");
                 }
-                else if(IsPhoneNumberValid(value) == false)
+                else if(value.Length == 10)
                 {
-                    throw new ArgumentException();
+                    throw new ArgumentException("The phone number should be only 10 characters");
                 }
                 m_OwnerPhoneNumber = value;
             }

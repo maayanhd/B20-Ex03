@@ -12,7 +12,7 @@ namespace Ex03.GarageLogic
           public Bike(string i_LicenseNumber, Engine i_Engine) : base(i_Engine,i_LicenseNumber)
         {
                m_BikeLicense = new License();
-               NumOfWheels = 2;
+               m_NumOfWheels = 2;
                ManageMemberInfo();
           }
 
@@ -87,7 +87,7 @@ namespace Ex03.GarageLogic
 
                if (int.TryParse(i_EngineVelocity, out int io_EngineVelocity) == false)
                {
-                    throw new FormatException("The Engine should be a whole number" + Environment.NewLine);
+                    throw new FormatException("The Engine should be a whole number");
                }
                else if (IsEngineVelocityValid(io_EngineVelocity) == false)
                {

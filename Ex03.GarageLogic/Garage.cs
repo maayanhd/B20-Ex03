@@ -46,23 +46,19 @@ namespace Ex03.GarageLogic
               return statusToReturn;
           }
 
-        public void AddVehicleToGarage(ClientCard i_VehicleToAdd)
+          public static void HandleStatusChange(ClientCard io_ClientToChange, eVehicleStat i_StatusToSet)
           {
 
-              if(Clients.ContainsKey(i_VehicleToAdd.VehicleInGarage.LicenseNum) == false)
-              {
-                  Clients.Add(i_VehicleToAdd.VehicleInGarage.LicenseNum, i_VehicleToAdd);
-                  VehicleStatus[i_VehicleToAdd.Status].Add(i_VehicleToAdd.VehicleInGarage.LicenseNum);
-
-              }
           }
-        //****************Functionality******************//  
+
+          //****************Functionality******************//  
           public bool IsVehicleExistsInGarage(string i_LicenseNumber)
           {
               return Clients.ContainsKey(i_LicenseNumber) == true;
           }
-        
 
+
+        
           //****************Properties******************//  
           public Dictionary<string, ClientCard> Clients
           {
@@ -73,7 +69,6 @@ namespace Ex03.GarageLogic
 
           }
 
-          
           public Dictionary<eVehicleStat,List<string>> VehicleStatus
           {
                get
@@ -82,8 +77,8 @@ namespace Ex03.GarageLogic
                }
 
           }
-
-
+          
      }
+
 }
 

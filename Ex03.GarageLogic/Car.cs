@@ -10,21 +10,21 @@ namespace Ex03.GarageLogic
           private Color m_CarColor;
           private int m_NumOfDoors;
 
-          public Car(string i_LicenseNumber, Engine i_Engine) : base(i_Engine,i_LicenseNumber)
+          public Car(string i_LicenseNumber, Engine i_Engine) : base(i_Engine, i_LicenseNumber)
           {
-            m_CarColor=new Color();
-            NumOfWheels = 4;
-            ManageMemberInfo();
-            m_Engine = i_Engine;
+               m_CarColor = new Color();
+               m_NumOfWheels = 4;
+               ManageMemberInfo();
+               m_Engine = i_Engine;
           }
 
 
           public override string ToString()
           {
-            StringBuilder carStr = new StringBuilder(base.ToString());
-            carStr.AppendLine(string.Format("Color:{0}",CarColor.ToString()));
-            carStr.AppendLine(string.Format("Number of doors:{0}", NumOfDoors.ToString()));
-            return carStr.ToString();
+               StringBuilder carStr = new StringBuilder(base.ToString());
+               carStr.AppendLine(string.Format("Color:{0}", CarColor.ToString()));
+               carStr.AppendLine(string.Format("Number of doors:{0}", NumOfDoors.ToString()));
+               return carStr.ToString();
           }
           public override void ManageMemberInfo()
           {
@@ -34,60 +34,60 @@ namespace Ex03.GarageLogic
                m_MemberInfoStr.Add("A color");
                m_MemberInfoStr.Add("Number of doors");
           }
-          
+
 
           //****************Validation Methods******************//  
           public override bool TryAssignMember(int i_NumOfField, string i_InputStr)
           {
                bool isMemberValid = false;
 
-               if(i_NumOfField < NumOfBaseMembers)
+               if (i_NumOfField < NumOfBaseMembers)
                {
-                   isMemberValid = base.TryAssignMember(i_NumOfField, i_InputStr);
+                    isMemberValid = base.TryAssignMember(i_NumOfField, i_InputStr);
                }
                else
                {
-                       switch(i_NumOfField - NumOfBaseMembers)
-                       {
-                           case 0:
-                               isMemberValid = Color.TryParse(i_InputStr,out m_CarColor);
-                               break;
-                           case 1:
-                               isMemberValid = int.TryParse(i_InputStr, out int io_NumOfDoors) == true
-                                                   ? IsNumOfDoorsValid(io_NumOfDoors)
-                                                   : false;
-                               if(isMemberValid == true)
-                               {
+                    switch (i_NumOfField - NumOfBaseMembers)
+                    {
+                         case 0:
+                              isMemberValid = Color.TryParse(i_InputStr, out m_CarColor);
+                              break;
+                         case 1:
+                              isMemberValid = int.TryParse(i_InputStr, out int io_NumOfDoors) == true
+                                                  ? IsNumOfDoorsValid(io_NumOfDoors)
+                                                  : false;
+                              if (isMemberValid == true)
+                              {
                                    AssignNumOfDoors(i_InputStr);
-                               }
+                              }
 
-                               break;
-                           case 2:
-                               isMemberValid = float.TryParse(i_InputStr, out float io_AmountOfMaterial) == true
-                                                   ? CarEngine.IsAmountsOfSourcePowerMaterialValid(io_AmountOfMaterial)
-                                                   : false;
-                               if(isMemberValid == true)
-                               {
-                                   if(m_Engine is GasEngine)
+                              break;
+                         case 2:
+                              isMemberValid = float.TryParse(i_InputStr, out float io_AmountOfMaterial) == true
+                                                  ? CarEngine.IsAmountsOfSourcePowerMaterialValid(io_AmountOfMaterial)
+                                                  : false;
+                              if (isMemberValid == true)
+                              {
+                                   if (m_Engine is GasEngine)
                                    {
-                                       (m_Engine as GasEngine).ReFuel(io_AmountOfMaterial, (m_Engine as GasEngine).MyFuel);
+                                        (m_Engine as GasEngine).ReFuel(io_AmountOfMaterial, (m_Engine as GasEngine).MyFuel);
                                    }
                                    else
                                    {
-                                       (m_Engine as Battery).Reload(io_AmountOfMaterial);
+                                        (m_Engine as Battery).Reload(io_AmountOfMaterial);
                                    }
-                               }
+                              }
 
-                               break;
-                       }
+                              break;
+                    }
 
                }
                return isMemberValid;
 
           }
-          
+
           // new method to update flow chart
-    
+
 
           public bool IsNumOfDoorsValid(int i_NumOfDoors)
           {
@@ -101,12 +101,12 @@ namespace Ex03.GarageLogic
           //****************Assigning Methods******************//  
           public void AssignNumOfDoors(string i_NumOfDoors)
           {
-              int numOfDoors=0;
-               if (int.TryParse(i_NumOfDoors, out numOfDoors) ==false)
+               int numOfDoors = 0;
+               if (int.TryParse(i_NumOfDoors, out numOfDoors) == false)
                {
                     throw new FormatException("Please enter a whole number" + Environment.NewLine);
                }
-               else if (IsNumOfDoorsValid(numOfDoors)==false)
+               else if (IsNumOfDoorsValid(numOfDoors) == false)
                {
                     throw new ValueOutOfRangeException(2, 5);
                }
@@ -114,22 +114,22 @@ namespace Ex03.GarageLogic
                {
                     NumOfDoors = numOfDoors;
                }
-               
+
           }
 
           //****************Properties******************//  
 
           public Color CarColor
           {
-              get
-              {
-                  
-                  return m_CarColor;
-              }
-              set
-              {
-                  m_CarColor = value;
-              }
+               get
+               {
+
+                    return m_CarColor;
+               }
+               set
+               {
+                    m_CarColor = value;
+               }
           }
           public int NumOfDoors
           {
@@ -144,7 +144,7 @@ namespace Ex03.GarageLogic
                }
 
           }
-          
+
           public Engine CarEngine
           {
                get

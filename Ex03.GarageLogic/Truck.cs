@@ -11,7 +11,7 @@ namespace Ex03.GarageLogic
 
           public Truck(string i_LicenseNumber, GasEngine i_GasEngine) : base(i_GasEngine,i_LicenseNumber)
           {
-              NumOfWheels = 16;
+               m_NumOfWheels = 16;
               m_Engine = i_GasEngine;
               ((GasEngine)MyEngine).MyFuel.FuelType = Fuel.eFuelType.Soler;
               ((GasEngine)MyEngine).MaximumAmountOfFuelInLitters = 120;

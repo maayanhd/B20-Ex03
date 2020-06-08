@@ -305,7 +305,7 @@ namespace Ex03.ConsoleUI
                     }
                     else
                     {
-                        clientToWatch.Status = Garage.GetStatusFromInt(int.Parse(optionStr) - 1);
+                         HandleStatusChange(clientToWatch, Garage.GetStatusFromInt(int.Parse(optionStr) - 1));
                     }
                 }
 
@@ -471,13 +471,15 @@ namespace Ex03.ConsoleUI
           internal static string GetLicenseNumStr()
           {
                string licenseNumStr = null;
+               bool isLicenseNumberValid = false;
 
                do
                {
-                   Console.WriteLine("Please enter a license number of the vehicle: ");
-                   licenseNumStr = Console.ReadLine();
+                    Console.WriteLine("Please enter a license number of the vehicle: ");
+                    licenseNumStr = Console.ReadLine();
+                    isLicenseNumberValid = IsLicenseNumValid(licenseNumStr);
+               } while (isLicenseNumberValid == false);
 
-               } while (IsLicenseNumValid(licenseNumStr) == false);
 
                return licenseNumStr;
 

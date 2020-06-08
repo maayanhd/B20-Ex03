@@ -12,13 +12,13 @@ namespace Ex03.GarageLogic
           protected float m_EnergyLeftInPercents;
           protected readonly List<Wheel> r_Wheels;
           protected int m_NumOfWheels;
-          
+
           public Engine m_Engine;
 
           protected List<string> m_MemberInfoStr;
-          protected  int m_NumOfBaseMembers;
+          protected int m_NumOfBaseMembers;
 
-          protected Vehicle(Engine i_Engine,string i_LicenseNumber)
+          protected Vehicle(Engine i_Engine, string i_LicenseNumber)
           {
                m_Engine = i_Engine;
                m_MemberInfoStr = new List<string>();
@@ -34,41 +34,41 @@ namespace Ex03.GarageLogic
 
           public void manageEngineMemberInfoStr()
           {
-              GasEngine gasEngine = m_Engine as GasEngine;
-              Battery battery = m_Engine as Battery;
+               GasEngine gasEngine = m_Engine as GasEngine;
+               Battery battery = m_Engine as Battery;
 
-              if (gasEngine != null)
-              {
-                  m_MemberInfoStr.Add(gasEngine.CurrentAmountInfoStr);
-              }
+               if (gasEngine != null)
+               {
+                    m_MemberInfoStr.Add(gasEngine.CurrentAmountInfoStr);
+               }
 
-              if (battery != null)
-              {
-                  m_MemberInfoStr.Add(battery.RemainingBatteryLifeInfoStr);
-              }
+               if (battery != null)
+               {
+                    m_MemberInfoStr.Add(battery.RemainingBatteryLifeInfoStr);
+               }
 
           }
           public override string ToString()
           {
-              StringBuilder vehicleStr = new StringBuilder(string.Format(
-                  "License number:{0}{1}Model:{2}{1}",
-                  LicenseNum,
-                  Environment.NewLine,
-                  Model));
+               StringBuilder vehicleStr = new StringBuilder(string.Format(
+                   "License number:{0}{1}Model:{2}{1}",
+                   LicenseNum,
+                   Environment.NewLine,
+                   Model));
 
-              for(int i=0;i<Wheels.Count;i++)
-              {
-                  vehicleStr.AppendLine(string.Format("Wheel {0}: ",(i+1).ToString()));
-                  vehicleStr.Append(Wheels[i].ToString());
-              }
+               for (int i = 0; i < Wheels.Count; i++)
+               {
+                    vehicleStr.AppendLine(string.Format("Wheel {0}: ", (i + 1).ToString()));
+                    vehicleStr.Append(Wheels[i].ToString());
+               }
 
-              vehicleStr.Append(MyEngine.ToString());
-              
-              return vehicleStr.ToString();
+               vehicleStr.Append(MyEngine.ToString());
+
+               return vehicleStr.ToString();
 
           }
 
-        public virtual bool TryAssignMember(int i_NumOfField, string i_InputStr)
+          public virtual bool TryAssignMember(int i_NumOfField, string i_InputStr)
           {
                bool isMemberValid = false;
                int io_IndexOfWheelBasedOnField = i_NumOfField;
@@ -77,38 +77,36 @@ namespace Ex03.GarageLogic
 
                switch (i_NumOfField)
                {
-
                     case 0:
                          isMemberValid = IsModelValid(i_InputStr);
-                         if(isMemberValid == true)
+                         if (isMemberValid == true)
                          {
-                             Model = i_InputStr;
+                              Model = i_InputStr;
                          }
                          break;
                     case 1:
-                        isMemberValid = float.TryParse(i_InputStr, out float io_AmountOfMaterial) == true ? m_Engine.IsAmountsOfSourcePowerMaterialValid(io_AmountOfMaterial) : false;
-                        if(isMemberValid == true)
-                        {
-                          MyEngine.InitializeAmountOfEnergy(io_AmountOfMaterial);
-                        }
-                        break;
+                         isMemberValid = float.TryParse(i_InputStr, out float io_AmountOfMaterial) == true ? m_Engine.IsAmountsOfSourcePowerMaterialValid(io_AmountOfMaterial) : false;
+                         if (isMemberValid == true)
+                         {
+                              MyEngine.InitializeAmountOfEnergy(io_AmountOfMaterial);
+                         }
+                         break;
                     case 2:
                          isMemberValid = Wheels[io_IndexOfWheelBasedOnField].IsManufactorerValid(i_InputStr);
-                         if(isMemberValid == true)
+                         if (isMemberValid == true)
                          {
-                             Wheels[io_IndexOfWheelBasedOnField].Manufacturor = i_InputStr;
+                              Wheels[io_IndexOfWheelBasedOnField].Manufacturor = i_InputStr;
                          }
                          break;
                     case 3:
                          isMemberValid = float.TryParse(i_InputStr, out float o_AirPressure) == true ? Wheels[io_IndexOfWheelBasedOnField].IsAirPressureIsValid(o_AirPressure) : false;
-                         if(isMemberValid == true)
+                         if (isMemberValid == true)
                          {
-                             Wheels[io_IndexOfWheelBasedOnField].Inflate(o_AirPressure);
+                              Wheels[io_IndexOfWheelBasedOnField].Inflate(o_AirPressure);
                          }
                          break;
-                    
 
-            }
+               }
 
                return isMemberValid;
 
@@ -147,7 +145,7 @@ namespace Ex03.GarageLogic
 
                     }
                }
-               
+
                return isValid;
 
           }
@@ -155,21 +153,21 @@ namespace Ex03.GarageLogic
           //***********Override of Object Methods*********//  
           public void AddWheels()
           {
-              for (int i = 0; i < NumOfWheels; i++)
-              {
-                  Wheels.Add(new Wheel(32));
-                  m_MemberInfoStr.Add(string.Format(
-                      "{0} wheel's manufacturer",
-                      i + 1));
-                  m_MemberInfoStr.Add(string.Format(
-                      "current air pressure in wheel {0}",
-                      i + 1));
-              }
+               for (int i = 0; i < NumOfWheels; i++)
+               {
+                    Wheels.Add(new Wheel(32));
+                    m_MemberInfoStr.Add(string.Format(
+                        "{0} wheel's manufacturer",
+                        i + 1));
+                    m_MemberInfoStr.Add(string.Format(
+                        "current air pressure in wheel {0}",
+                        i + 1));
+               }
           }
 
           public override int GetHashCode()
           {
-              return int.Parse(r_LicenseNum);
+               return int.Parse(r_LicenseNum);
           }
 
           public override bool Equals(object i_obj)
@@ -219,60 +217,63 @@ namespace Ex03.GarageLogic
           }
           public Engine MyEngine
           {
-              get
-              {
-                  return m_Engine;
-              }
-              set
-              {
-                  m_Engine = value;
-              }
+               get
+               {
+                    return m_Engine;
+               }
+               set
+               {
+                    m_Engine = value;
+               }
           }
           public string Model
           {
                get
                {
-                    return m_Model; 
+                    return m_Model;
                }
 
                set
                {
-               if (IsModelValid(value) == true)
-               {
-                    m_Model = value;
-               }
-               else
-               {
-                    throw new FormatException("The Model should consist of only letters and digits");
-               }
+                    if (IsModelValid(value) == true)
+                    {
+                         m_Model = value;
+                    }
+                    else
+                    {
+                         throw new FormatException("The Model should consist of only letters and digits");
+                    }
                }
 
           }
           public int NumOfWheels
           {
-              get
-              {
-                  return m_NumOfWheels;
-              }
-              set
-              {
-                  m_NumOfWheels = value;
-              }
+               get
+               {
+                    return m_NumOfWheels;
+               }
 
+               set
+               {
+                    m_NumOfWheels = value;
+               }
+                                
           }
+
           public int NumOfBaseMembers
           {
-              get
-              {
-                  return m_NumOfBaseMembers;
-              }
-              set
-              {
-                  m_NumOfBaseMembers = value;
-              }
+               get
+               {
+                    return m_NumOfBaseMembers;
+               }
+               set
+               {
+                    m_NumOfBaseMembers = value;
+               }
 
           }
-        public float EnergyLeftInPercents
+
+          public float EnergyLeftInPercents
           {
                get
                {
