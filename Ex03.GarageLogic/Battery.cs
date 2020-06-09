@@ -4,7 +4,7 @@ using System.Text;
 
 namespace Ex03.GarageLogic
 {
-    public sealed class Battery : Engine
+    public class Battery : Engine
     {
         private readonly string r_RemainingBatteryLifeInfoStr;
         private float m_RemainingBatteryLifeInHours;
