@@ -6,8 +6,24 @@ namespace Ex03.GarageLogic
 {
     public class Fuel
     {
-
         private eFuelType m_EFuelType;
+
+        public static bool TryParse(string i_FuelTypeStr, out Fuel o_Fuel)
+        {
+            o_Fuel = null;
+            bool isValid = false;
+            foreach (string type in Enum.GetNames(typeof(eFuelType)))
+            {
+                isValid = i_FuelTypeStr.Equals(type);
+                if (isValid == true)
+                {
+                    o_Fuel = new Fuel((eFuelType)Enum.Parse(typeof(eFuelType), i_FuelTypeStr));
+                    break;
+                }
+            }
+
+            return isValid;
+        }
 
         public Fuel(eFuelType i_EFuelType)
         {
@@ -16,7 +32,6 @@ namespace Ex03.GarageLogic
 
         public Fuel()
         {
-
         }
 
         public enum eFuelType
@@ -43,23 +58,6 @@ namespace Ex03.GarageLogic
         public bool Equals(Fuel i_FuelToCompare)
         {
             return this.FuelType == i_FuelToCompare.FuelType;
-        }
-
-        public static bool TryParse(string i_FuelTypeStr,out Fuel o_Fuel)
-        {
-            o_Fuel = null;
-            bool isValid = false;
-            foreach (string type in Enum.GetNames(typeof(eFuelType)))
-            {
-                isValid = i_FuelTypeStr.Equals(type);
-                if (isValid == true)
-                {
-                    o_Fuel = new Fuel((eFuelType)Enum.Parse(typeof(eFuelType), i_FuelTypeStr));
-                    break;
-                }
-            }
-
-            return isValid;
         }
 
         public override string ToString()

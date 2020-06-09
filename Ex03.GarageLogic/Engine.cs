@@ -12,6 +12,6 @@ namespace Ex03.GarageLogic
 
           public abstract bool IsAmountsOfSourcePowerMaterialValid(float i_MaterialToCheck);
 
-          internal abstract void InitializeAmountOfEnergy(float i_AmountOfInitialEnergy,Vehicle i_CurrentVehicle);
+          internal abstract void InitializeAmountOfEnergy(float i_AmountOfInitialEnergy, Vehicle i_CurrentVehicle);
     }
 }

@@ -6,7 +6,6 @@ namespace Ex03.GarageLogic
 {
     public class ClientCard
     {
-
         private Vehicle m_VehicleInGarage;
         private string m_OwnerName;
         private string m_OwnerPhoneNumber;
@@ -43,7 +42,7 @@ namespace Ex03.GarageLogic
 
         public static bool IsPhoneNumberValid(string i_PhoneNum)
         {
-            return i_PhoneNum.Length==10 && int.TryParse(i_PhoneNum,out int phoneNum)==true;
+            return i_PhoneNum.Length == 10 && int.TryParse(i_PhoneNum, out int phoneNum) == true;
         }
 
         public Vehicle VehicleInGarage
@@ -68,7 +67,7 @@ namespace Ex03.GarageLogic
 
             set
             {
-                if(IsNameValid(value)==false)
+                if(IsNameValid(value) == false)
                 {
                     throw new FormatException("The name must contain letters only");
                 }

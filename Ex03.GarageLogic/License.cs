@@ -7,10 +7,7 @@ namespace Ex03.GarageLogic
 {
     public class License
     {
-
         private eLicenseType? m_ELicenseType;
-
-
 
         public enum eLicenseType
         {
@@ -27,23 +24,22 @@ namespace Ex03.GarageLogic
             foreach (string type in Enum.GetNames(typeof(eLicenseType)))
             {
                 typeStr.Append(string.Format(" {0}", type));
-
             }
 
             return typeStr.ToString();
         }
 
-        public static bool TryParse(string i_LicenseType,out License o_License)
+        public static bool TryParse(string i_LicenseType, out License o_License)
         {
             bool isValid = false;
             o_License = null;
-            foreach (string type in Enum.GetNames(typeof(eLicenseType)))
+            foreach(string type in Enum.GetNames(typeof(eLicenseType)))
             {
                 isValid = i_LicenseType.Equals(type);
-                if (isValid == true)
+                if(isValid == true)
                 {
-                    o_License= new License();
-                    o_License.m_ELicenseType = (eLicenseType)(Enum.Parse(typeof(eLicenseType), i_LicenseType));
+                    o_License = new License();
+                    o_License.m_ELicenseType = (eLicenseType)Enum.Parse(typeof(eLicenseType), i_LicenseType);
                     break;
                 }
             }
@@ -62,12 +58,11 @@ namespace Ex03.GarageLogic
             {
                 m_ELicenseType = value;
             }
-
         }
 
         public override string ToString()
         {
-            return  m_ELicenseType.ToString();
+            return m_ELicenseType.ToString();
         }
     }
 }

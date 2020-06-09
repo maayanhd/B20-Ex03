@@ -93,9 +93,6 @@ namespace Ex03.GarageLogic
                {
                     return r_VehicleStatus;
                }
-
           }
-
      }
-
 }

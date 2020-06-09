@@ -8,18 +8,18 @@ namespace Ex03.GarageLogic
     {
         private eColor? m_EColor;
 
-        public static bool TryParse(string i_ColorString,out Color o_Color)
+        public static bool TryParse(string i_ColorString, out Color o_Color)
         {
             bool isValid = false;
             o_Color = null;
 
-            foreach (string color in Enum.GetNames(typeof(eColor)))
+            foreach(string color in Enum.GetNames(typeof(eColor)))
             {
                 isValid = i_ColorString.Equals(color);
-                if (isValid == true)
+                if(isValid == true)
                 {
-                   o_Color =new Color();
-                   o_Color.m_EColor = (eColor)(Enum.Parse(typeof(eColor), i_ColorString));
+                   o_Color = new Color();
+                   o_Color.m_EColor = (eColor)Enum.Parse(typeof(eColor), i_ColorString);
                    break;
                 }
             }
@@ -42,7 +42,6 @@ namespace Ex03.GarageLogic
             foreach (string color in Enum.GetNames(typeof(eColor)))
             {
                 colorsStr.Append(string.Format(" {0}", color));
-
             }
 
             return colorsStr.ToString();
@@ -59,7 +58,6 @@ namespace Ex03.GarageLogic
             {
                 m_EColor = value;
             }
-
         }
 
         public override string ToString()
