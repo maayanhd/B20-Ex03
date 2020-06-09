@@ -19,6 +19,7 @@ namespace Ex03.GarageLogic
             AA,
             B
         }
+
         public static string GetPossibleLicenseTypes()
         {
             StringBuilder typeStr = new StringBuilder();
@@ -31,6 +32,7 @@ namespace Ex03.GarageLogic
 
             return typeStr.ToString();
         }
+
         public static bool TryParse(string i_LicenseType,out License o_License)
         {
             bool isValid = false;
@@ -62,6 +64,7 @@ namespace Ex03.GarageLogic
             }
 
         }
+
         public override string ToString()
         {
             return  m_ELicenseType.ToString();

@@ -9,31 +9,34 @@ namespace Ex03.GarageLogic
           private bool m_IsCarryingDangerousMaterials;
           private float m_CarryingSize;
 
-          public Truck(string i_LicenseNumber, GasEngine i_GasEngine) : base(i_GasEngine,i_LicenseNumber)
+          public Truck(string i_LicenseNumber, GasEngine i_GasEngine) : base(i_GasEngine, i_LicenseNumber)
           {
                m_NumOfWheels = 16;
-              m_Engine = i_GasEngine;
-              ((GasEngine)MyEngine).MyFuel.FuelType = Fuel.eFuelType.Soler;
-              ((GasEngine)MyEngine).MaximumAmountOfFuelInLitters = 120;
-              ManageMemberInfo();
+               m_Engine = i_GasEngine;
+               ((GasEngine)MyEngine).MyFuel.FuelType = Fuel.eFuelType.Soler;
+               ((GasEngine)MyEngine).MaximumAmountOfFuelInLitters = 120;
+               ManageMemberInfo();
           }
+
           public override string ToString()
           {
-              StringBuilder truckStr = new StringBuilder(base.ToString());
-              if(IsCarryingDangerousMaterials == true)
-              {
-                  truckStr.AppendLine("Is carrying dangerous materials");
-              }
-              else
-              {
-                  truckStr.AppendLine("Is not carrying dangerous materials");
-              }
-              truckStr.AppendLine(string.Format("Carrying size: {0} kg", CarryingSize.ToString()));
+               StringBuilder truckStr = new StringBuilder(base.ToString());
+               if (IsCarryingDangerousMaterials == true)
+               {
+                    truckStr.AppendLine("Is carrying dangerous materials");
+               }
+               else
+               {
+                    truckStr.AppendLine("Is not carrying dangerous materials");
+               }
+
+               truckStr.AppendLine(string.Format("Carrying size: {0} kg", CarryingSize.ToString()));
 
 
-              return truckStr.ToString();
+               return truckStr.ToString();
           }
-        internal override void ManageMemberInfo()
+
+          internal override void ManageMemberInfo()
           {
                NumOfBaseMembers = NumOfWheels * 2 + 2;
                base.ManageMemberInfo();
@@ -42,42 +45,44 @@ namespace Ex03.GarageLogic
                m_MemberInfoStr.Add("carrying size of the truck");
           }
 
-          public override bool TryAssignMember(int i_NumOfField, string i_InputStr,out string io_ErrorMsg)
+          public override bool TryAssignMember(int i_NumOfField, string i_InputStr, out string io_ErrorMsg)
           {
                bool isMemberValid = false;
                io_ErrorMsg = null;
                if (i_NumOfField < NumOfBaseMembers)
                {
-                   isMemberValid = base.TryAssignMember(i_NumOfField, i_InputStr,out io_ErrorMsg);
+                    isMemberValid = base.TryAssignMember(i_NumOfField, i_InputStr, out io_ErrorMsg);
                }
-                    
+
                switch (i_NumOfField - NumOfBaseMembers)
-                    {
-                         case 0:
-                             isMemberValid = i_InputStr.Equals("Yes") || i_InputStr.Equals("No")
-                                                                      || i_InputStr.Equals("yes")
-                                                                      || i_InputStr.Equals("no");
-                              if (isMemberValid == true)
-                              {
-                                  AssignIsCarryingDangerousMaterials(i_InputStr);
-                              }
-                              else
-                              {
-                                  io_ErrorMsg = "Your answer must be either: Yes or No";
-                              }
-                              break;
-                         case 1:
-                              isMemberValid = float.TryParse(i_InputStr, out float io_CarryingSize) == true ? IsCarryingSizeValid(io_CarryingSize) : false;
-                              if(isMemberValid == true)
-                              {
-                                AssignCarryingSize(i_InputStr);
-                              }
-                              else
-                              {
-                                  io_ErrorMsg = "The value must be a positive number";
-                              }
-                              break;
-                    }
+               {
+                    case 0:
+                         isMemberValid = i_InputStr.Equals("Yes") || i_InputStr.Equals("No")
+                                                                  || i_InputStr.Equals("yes")
+                                                                  || i_InputStr.Equals("no");
+                         if (isMemberValid == true)
+                         {
+                              AssignIsCarryingDangerousMaterials(i_InputStr);
+                         }
+                         else
+                         {
+                              io_ErrorMsg = "Your answer must be either: Yes or No";
+                         }
+
+                         break;
+                    case 1:
+                         isMemberValid = float.TryParse(i_InputStr, out float io_CarryingSize) == true ? IsCarryingSizeValid(io_CarryingSize) : false;
+                         if (isMemberValid == true)
+                         {
+                              AssignCarryingSize(i_InputStr);
+                         }
+                         else
+                         {
+                              io_ErrorMsg = "The value must be a positive number";
+                         }
+
+                         break;
+               }
 
 
                return isMemberValid;
@@ -86,7 +91,7 @@ namespace Ex03.GarageLogic
 
           public static bool IsCarryingSizeValid(float i_CarryingSize)
           {
-              return i_CarryingSize > 0;
+               return i_CarryingSize > 0;
           }
 
           public void AssignIsCarryingDangerousMaterials(string i_IsCarryingDangerousMaterials)
@@ -115,6 +120,7 @@ namespace Ex03.GarageLogic
                }
 
           }
+
           public bool IsCarryingDangerousMaterials
           {
                get

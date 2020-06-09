@@ -20,72 +20,74 @@ namespace Ex03.GarageLogic
 
           public enum eVehicleStat
           {
-              InRepair,
-              Repaired,
-              Paid
+               InRepair,
+               Repaired,
+               Paid
           }
 
           public static eVehicleStat GetStatusFromInt(int i_Status)
           {
-              eVehicleStat statusToReturn;
-              switch (i_Status)
-              {
-                  case 0:
-                      statusToReturn = eVehicleStat.InRepair;
-                      break;
-                  case 1:
-                      statusToReturn = eVehicleStat.Repaired;
-                      break;
-                  case 2:
-                      statusToReturn = eVehicleStat.Paid;
-                      break;
-                  default:
-                      throw new ValueOutOfRangeException(2, 0);
-              }
+               eVehicleStat statusToReturn;
+               switch (i_Status)
+               {
+                    case 0:
+                         statusToReturn = eVehicleStat.InRepair;
+                         break;
+                    case 1:
+                         statusToReturn = eVehicleStat.Repaired;
+                         break;
+                    case 2:
+                         statusToReturn = eVehicleStat.Paid;
+                         break;
+                    default:
+                         throw new ValueOutOfRangeException(2, 0);
+               }
 
-              return statusToReturn;
+               return statusToReturn;
           }
 
           public void ChangeVehicleStatus(ClientCard io_ClientToChange, eVehicleStat i_StatusToSet)
           {
-              VehicleStatus[io_ClientToChange.Status].Remove(io_ClientToChange.VehicleInGarage.LicenseNum);
-              VehicleStatus[i_StatusToSet].Add(io_ClientToChange.VehicleInGarage.LicenseNum);
-              io_ClientToChange.Status = i_StatusToSet;
+               VehicleStatus[io_ClientToChange.Status].Remove(io_ClientToChange.VehicleInGarage.LicenseNum);
+               VehicleStatus[i_StatusToSet].Add(io_ClientToChange.VehicleInGarage.LicenseNum);
+               io_ClientToChange.Status = i_StatusToSet;
           }
- 
+
           public bool IsVehicleExistsInGarage(string i_LicenseNumber)
           {
-              return Clients.ContainsKey(i_LicenseNumber) == true;
+               return Clients.ContainsKey(i_LicenseNumber) == true;
           }
 
           public void AddVehicleToGarage(ClientCard i_VehicleToAdd)
           {
-              if(Clients.ContainsKey(i_VehicleToAdd.VehicleInGarage.LicenseNum) == false)
-              {
-                  Clients.Add(i_VehicleToAdd.VehicleInGarage.LicenseNum, i_VehicleToAdd);
-                  VehicleStatus[i_VehicleToAdd.Status].Add(i_VehicleToAdd.VehicleInGarage.LicenseNum);
-              }
+               if (Clients.ContainsKey(i_VehicleToAdd.VehicleInGarage.LicenseNum) == false)
+               {
+                    Clients.Add(i_VehicleToAdd.VehicleInGarage.LicenseNum, i_VehicleToAdd);
+                    VehicleStatus[i_VehicleToAdd.Status].Add(i_VehicleToAdd.VehicleInGarage.LicenseNum);
+               }
           }
 
           public List<string> GetClientsByStatus(eVehicleStat i_Status)
           {
-              return VehicleStatus[i_Status];
+               return VehicleStatus[i_Status];
           }
+
           public bool TryToFindClient(string i_LicenseNum, out ClientCard o_Client)
           {
-              o_Client = null;
-              bool isFound = Clients.TryGetValue(i_LicenseNum, out o_Client);
-              return isFound;
+               o_Client = null;
+               bool isFound = Clients.TryGetValue(i_LicenseNum, out o_Client);
+               return isFound;
           }
-        public Dictionary<string, ClientCard> Clients
-        {
+
+          public Dictionary<string, ClientCard> Clients
+          {
                get
                {
                     return r_Vehicles;
                }
+          }
 
-        }
-        public Dictionary<eVehicleStat,List<string>> VehicleStatus
+          public Dictionary<eVehicleStat, List<string>> VehicleStatus
           {
                get
                {
@@ -93,8 +95,7 @@ namespace Ex03.GarageLogic
                }
 
           }
-          
+
      }
 
 }
-

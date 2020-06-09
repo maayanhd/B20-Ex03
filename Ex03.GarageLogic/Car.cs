@@ -26,6 +26,7 @@ namespace Ex03.GarageLogic
                carStr.AppendLine(string.Format("Number of doors: {0}", NumOfDoors.ToString()));
                return carStr.ToString();
           }
+
           internal override void ManageMemberInfo()
           {
                NumOfBaseMembers = NumOfWheels * 2 + 2;
@@ -55,6 +56,7 @@ namespace Ex03.GarageLogic
                                       "Allowed colors:{0}",
                                       Color.GetPossibleColorsStr());
                               }
+
                               break;
                          case 1:
                               isMemberValid = int.TryParse(i_InputStr, out int io_NumOfDoors) == true
@@ -68,17 +70,14 @@ namespace Ex03.GarageLogic
                               {
                                   io_ErrorMsg = "A car must have: 2,3,4 or 5 doors";
                               }
-                              break;
 
+                              break;
                     }
 
                }
+
                return isMemberValid;
-
           }
-
-          // new method to update flow chart
-
 
           public bool IsNumOfDoorsValid(int i_NumOfDoors)
           {
@@ -87,8 +86,7 @@ namespace Ex03.GarageLogic
 
           public void AssignNumOfDoors(string i_NumOfDoors)
           {
-               int numOfDoors = 0;
-               if (int.TryParse(i_NumOfDoors, out numOfDoors) == false)
+               if (int.TryParse(i_NumOfDoors, out int numOfDoors) == false)
                {
                     throw new FormatException("Please enter a whole number" + Environment.NewLine);
                }
@@ -103,7 +101,6 @@ namespace Ex03.GarageLogic
 
           }
 
-
           public Color CarColor
           {
                get
@@ -111,11 +108,13 @@ namespace Ex03.GarageLogic
 
                     return m_CarColor;
                }
+
                set
                {
                     m_CarColor = value;
                }
           }
+
           public int NumOfDoors
           {
                get
@@ -141,9 +140,6 @@ namespace Ex03.GarageLogic
                {
                     m_Engine = value;
                }
-
           }
-
      }
-
 }

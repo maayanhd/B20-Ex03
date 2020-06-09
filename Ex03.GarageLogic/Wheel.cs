@@ -60,6 +60,7 @@ namespace Ex03.GarageLogic
               strToReturn.AppendLine(string.Format("Current wheel pressure: {0} from {1} possible", CurrentWheelPressure,MaximalWheelPressure));
               return strToReturn.ToString();
           }
+
           public float MaximalWheelPressure
           {
                get

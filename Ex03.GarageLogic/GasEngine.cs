@@ -6,7 +6,7 @@ namespace Ex03.GarageLogic
 {
      public class GasEngine : Engine
      {
-          private Fuel m_Fuel;
+          private readonly Fuel m_Fuel;
           private float m_CurrentAmountOfFuelInLitters;
           private float m_MaximumAmountOfFuelInLitters;
           private readonly string m_CurrentAmountInfoStr;
@@ -58,6 +58,7 @@ namespace Ex03.GarageLogic
           {
               return MaximumAmountOfFuelInLitters - CurrentAmountOfFuelInLitters;
           }
+
           internal override void UpdateEnergyLeftInPercents(Vehicle i_CurrentVehicle)
           {
                i_CurrentVehicle.EnergyLeftInPercents = CurrentAmountOfFuelInLitters / MaximumAmountOfFuelInLitters;
@@ -95,13 +96,16 @@ namespace Ex03.GarageLogic
                }
 
           }
+
           public Fuel MyFuel
           {
               get
               {
                   return m_Fuel;
               }
+
           }
+
           public string CurrentAmountInfoStr
           {
                get

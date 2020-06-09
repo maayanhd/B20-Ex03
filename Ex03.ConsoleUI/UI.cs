@@ -18,6 +18,7 @@ namespace Ex03.ConsoleUI
                    Menu(currentGarage,out closeApp);
                }
           }
+
           public static void Menu(Garage io_Garage,out bool io_CloseApp)
           {
             io_CloseApp = false;
@@ -92,9 +93,8 @@ namespace Ex03.ConsoleUI
                 Vehicle vehicleToRefuel = client.VehicleInGarage;
                 if(vehicleToRefuel.MyEngine is GasEngine)
                 {
-                    Fuel fuelToFill = null;
                     float amountOfFuel = GetAmountOfFuelFromUser(vehicleToRefuel.MyEngine as GasEngine);
-                    GetFuelTypeFromUser(out fuelToFill, (vehicleToRefuel.MyEngine as GasEngine).MyFuel);
+                    GetFuelTypeFromUser(out Fuel fuelToFill, (vehicleToRefuel.MyEngine as GasEngine).MyFuel);
                     (vehicleToRefuel.MyEngine as GasEngine).ReFuel(amountOfFuel,fuelToFill,vehicleToRefuel);
                     Console.WriteLine("Refueled successfully");
                 }
@@ -129,6 +129,7 @@ namespace Ex03.ConsoleUI
             return amountOfFuel;
 
         }
+
         public static string GetFuelTypeFromUser(out Fuel io_Fuel, Fuel i_FuelRequired)
         {
             bool isValid = false;
@@ -218,6 +219,7 @@ namespace Ex03.ConsoleUI
             }
             
         }
+
         public static bool IsOptionValid(string i_ChoosedOption,int i_NumOfOptions)
         {
             bool isValid = false;
@@ -232,6 +234,7 @@ namespace Ex03.ConsoleUI
 
             return isValid;
         }
+
         public static void ChargeVehiclesBattery(Garage io_Garage)
         {
             if (FindClientInGarage(io_Garage, out ClientCard clientToWatch) == true)
@@ -248,8 +251,11 @@ namespace Ex03.ConsoleUI
                 {
                     Console.WriteLine("Cannot charge gasoline vehicle");
                 }
+
             }
+
         }
+
         public static float GetMinutesToChargeFromUser(Battery i_BatteryToCharge)
         {
             float minutesToCharge = 0;
@@ -283,6 +289,7 @@ namespace Ex03.ConsoleUI
                     Console.WriteLine("The input must be a number");
                 }
             }
+
             return floatToReturn;
         }
 
@@ -295,10 +302,12 @@ namespace Ex03.ConsoleUI
                 {
                     wheel.InflateToMaximum();
                 }
+
                 Console.WriteLine("All wheels of the vehicle were inflated to the maximum value possible");
             }
 
         }
+
         public static void ChangeVehicleStatus(Garage io_Garage)
         {
             string optionStr = null;
@@ -356,6 +365,7 @@ namespace Ex03.ConsoleUI
             return isFound;
 
         }
+
         public static void ShowVehicleData(Garage i_Garage)
         {
 
@@ -381,11 +391,13 @@ namespace Ex03.ConsoleUI
                         break;
                     }
                 }
+
             }
 
             return isValid;
 
         }
+
         public static void AddVehicle(Garage io_Garage)
           {
               Console.WriteLine("Please choose the type of vehicle you would like to enter the garage:" + Environment.NewLine);
@@ -493,6 +505,10 @@ namespace Ex03.ConsoleUI
                     Console.WriteLine("Please enter a license number of the vehicle: ");
                     licenseNumStr = Console.ReadLine();
                     isLicenseNumberValid = IsLicenseNumValid(licenseNumStr);
+                    if (isLicenseNumberValid == false)
+                    {
+                         Console.WriteLine("Incorrect format, please enter a 10-digit number");
+                    }
                } while (isLicenseNumberValid == false);
 
 

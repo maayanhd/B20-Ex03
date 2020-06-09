@@ -13,10 +13,12 @@ namespace Ex03.GarageLogic
         {
             FuelType = i_EFuelType;
         }
+
         public Fuel()
         {
 
         }
+
         public enum eFuelType
         {
             Soler,
@@ -24,6 +26,7 @@ namespace Ex03.GarageLogic
             Octan96,
             Octan98
         }
+
         public eFuelType FuelType
         {
             get
@@ -35,7 +38,6 @@ namespace Ex03.GarageLogic
             {
                 m_EFuelType = value;
             }
-
         }
 
         public bool Equals(Fuel i_FuelToCompare)
@@ -56,8 +58,8 @@ namespace Ex03.GarageLogic
                     break;
                 }
             }
-            return isValid;
 
+            return isValid;
         }
 
         public override string ToString()

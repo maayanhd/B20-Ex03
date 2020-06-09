@@ -12,6 +12,7 @@ namespace Ex03.GarageLogic
         {
             bool isValid = false;
             o_Color = null;
+
             foreach (string color in Enum.GetNames(typeof(eColor)))
             {
                 isValid = i_ColorString.Equals(color);
@@ -25,6 +26,7 @@ namespace Ex03.GarageLogic
 
             return isValid;
         }
+
         public enum eColor
         {
             Red,
@@ -52,10 +54,12 @@ namespace Ex03.GarageLogic
             {
                 return m_EColor;
             }
+
             set
             {
                 m_EColor = value;
             }
+
         }
 
         public override string ToString()

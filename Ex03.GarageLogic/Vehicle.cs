@@ -29,10 +29,10 @@ namespace Ex03.GarageLogic
           internal virtual void ManageMemberInfo()
           {
                m_MemberInfoStr.Add("a model");
-               manageEngineMemberInfoStr();
+               ManageEngineMemberInfoStr();
           }
 
-          internal void manageEngineMemberInfoStr()
+          internal void ManageEngineMemberInfoStr()
           {
                GasEngine gasEngine = m_Engine as GasEngine;
                Battery battery = m_Engine as Battery;
@@ -48,6 +48,7 @@ namespace Ex03.GarageLogic
                }
 
           }
+
           public override string ToString()
           {
                StringBuilder vehicleStr = new StringBuilder(string.Format(
@@ -87,6 +88,7 @@ namespace Ex03.GarageLogic
                          {
                              io_ErrorMsg = "The model must contain letters or digits only";
                          }
+
                          break;
                     case 1:
                          isMemberValid = float.TryParse(i_InputStr, out float io_AmountOfMaterial) == true ? m_Engine.IsAmountsOfSourcePowerMaterialValid(io_AmountOfMaterial) : false;
@@ -101,6 +103,7 @@ namespace Ex03.GarageLogic
                                  "The value must be positive and below: {0}",
                                  m_Engine.GetAmountOfSourcePowerMaterialPossible().ToString());
                          }
+
                          break;
                     case 2:
                          isMemberValid = Wheels[io_IndexOfWheelBasedOnField].IsManufactorerValid(i_InputStr);
@@ -112,6 +115,7 @@ namespace Ex03.GarageLogic
                          {
                              io_ErrorMsg = "The value must contain letter only";
                          }
+
                          break;
                     case 3:
                          isMemberValid = float.TryParse(i_InputStr, out float o_AirPressure) == true ? Wheels[io_IndexOfWheelBasedOnField].IsAirPressureIsValid(o_AirPressure) : false;
@@ -125,6 +129,7 @@ namespace Ex03.GarageLogic
                                  "The value must be positive and below: {0}",
                                  Wheels[io_IndexOfWheelBasedOnField].GetAmountOfPressurePossibleToInflate().ToString());
                          }
+
                          break;
 
                }
@@ -208,17 +213,21 @@ namespace Ex03.GarageLogic
                }
 
           }
+
           public Engine MyEngine
           {
                get
                {
                     return m_Engine;
                }
+
                set
                {
                     m_Engine = value;
                }
+
           }
+
           public string Model
           {
                get
@@ -236,9 +245,11 @@ namespace Ex03.GarageLogic
                     {
                          throw new FormatException("The Model should consist of only letters and digits");
                     }
+
                }
 
           }
+
           public int NumOfWheels
           {
                get
@@ -259,6 +270,7 @@ namespace Ex03.GarageLogic
                {
                     return m_NumOfBaseMembers;
                }
+
                set
                {
                     m_NumOfBaseMembers = value;

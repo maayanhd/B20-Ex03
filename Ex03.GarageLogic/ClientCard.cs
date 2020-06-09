@@ -18,7 +18,6 @@ namespace Ex03.GarageLogic
             m_OwnerName = i_OwnerName;
             m_OwnerPhoneNumber = i_OwnerPhoneNumber;
             m_VehicleStatus = Garage.eVehicleStat.InRepair;
-
         }
 
         public static bool IsNameValid(string i_Name)
@@ -53,6 +52,7 @@ namespace Ex03.GarageLogic
             {
                 return m_VehicleInGarage;
             }
+
             set
             {
                 m_VehicleInGarage = value;
@@ -65,12 +65,14 @@ namespace Ex03.GarageLogic
             {
                 return m_OwnerName;
             }
+
             set
             {
                 if(IsNameValid(value)==false)
                 {
                     throw new FormatException("The name must contain letters only");
                 }
+
                 m_OwnerName = value;
             }
         }
@@ -85,6 +87,7 @@ namespace Ex03.GarageLogic
 
             return clientCardStr.ToString();
         }
+
         public string OwnerPhoneNumber
         {
             get
@@ -98,10 +101,12 @@ namespace Ex03.GarageLogic
                 {
                     throw new FormatException("The phone number must consist of digits only");
                 }
+
                 if(value.Length == 10)
                 {
                     throw new ArgumentException("The phone number should be only 10 characters");
                 }
+
                 m_OwnerPhoneNumber = value;
             }
         }
@@ -112,13 +117,11 @@ namespace Ex03.GarageLogic
             {
                 return m_VehicleStatus;
             }
+
             set
             {
                 m_VehicleStatus = value;
             }
-
         }
-        
     }
-
 }
