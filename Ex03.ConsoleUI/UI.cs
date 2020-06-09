@@ -9,6 +9,8 @@ namespace Ex03.ConsoleUI
 {
     public static class UI
     {
+        private static int field;
+
         public static void OpenGarageForBusiness()
         {
             Garage currentGarage = new Garage();
