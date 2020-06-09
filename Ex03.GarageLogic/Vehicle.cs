@@ -254,7 +254,7 @@ namespace Ex03.GarageLogic
             }
         }
 
-        public int NumOfBaseMembers
+        internal int NumOfBaseMembers
         {
             get
             {
@@ -280,7 +280,7 @@ namespace Ex03.GarageLogic
             }
         }
 
-        public List<Wheel> Wheels
+        internal List<Wheel> Wheels
         {
             get
             {
