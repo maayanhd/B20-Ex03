@@ -33,6 +33,19 @@ namespace Ex03.GarageLogic
             Silver
         }
 
+        public static string GetPossibleColorsStr()
+        {
+            StringBuilder colorsStr = new StringBuilder();
+
+            foreach (string color in Enum.GetNames(typeof(eColor)))
+            {
+                colorsStr.Append(string.Format(" {0}", color));
+
+            }
+
+            return colorsStr.ToString();
+        }
+
         public eColor? EColor
         {
             get
@@ -43,7 +56,6 @@ namespace Ex03.GarageLogic
             {
                 m_EColor = value;
             }
-
         }
 
         public override string ToString()

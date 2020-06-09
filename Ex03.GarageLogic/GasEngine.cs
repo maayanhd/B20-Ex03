@@ -25,26 +25,22 @@ namespace Ex03.GarageLogic
             gasEngineStr.Append(string.Format("Amount of fuel: {0}L out of {1}L", CurrentAmountOfFuelInLitters.ToString(),MaximumAmountOfFuelInLitters.ToString()));
             return gasEngineStr.ToString();
           }
-       //****************Functionality******************//  
+
           public void ReFuel(float i_FuelToAdd, Fuel i_FuelToFill,Vehicle io_VehicleToRefuel)
           {
-               if (IsTotalAmountOfFuelWithinLimit(i_FuelToAdd) == false)
+
+               if (i_FuelToFill.FuelType != MyFuel.FuelType)
                {
-                    throw new ValueOutOfRangeException(m_MaximumAmountOfFuelInLitters - m_CurrentAmountOfFuelInLitters, 0);
-               }
-               else if (i_FuelToFill.FuelType != MyFuel.FuelType)
-               {
-                    throw new ArgumentException("The fuel type is not matching the vehicle's fuel type"+Environment.NewLine);
+                    throw new ArgumentException("The fuel type is not matching the vehicle's fuel type");
                }
                else
                {
-                    m_CurrentAmountOfFuelInLitters += i_FuelToAdd;
-                    UpdateEnergyLeftInPercents(io_VehicleToRefuel);
+                    InitializeAmountOfEnergy(i_FuelToAdd+CurrentAmountOfFuelInLitters,io_VehicleToRefuel);
                }
 
           }
 
-          public override void InitializeAmountOfEnergy(float i_AmountOfInitialEnergy,Vehicle io_CurrentVehicle)
+          internal override void InitializeAmountOfEnergy(float i_AmountOfInitialEnergy,Vehicle io_CurrentVehicle)
           {
               if(IsAmountsOfSourcePowerMaterialValid(i_AmountOfInitialEnergy))
               {
@@ -53,29 +49,24 @@ namespace Ex03.GarageLogic
               }
               else
               {
-                  throw new ValueOutOfRangeException(m_MaximumAmountOfFuelInLitters - m_CurrentAmountOfFuelInLitters, 0);
+                  throw new ValueOutOfRangeException(m_MaximumAmountOfFuelInLitters - m_CurrentAmountOfFuelInLitters, 0, "Amount of source power not in limit");
               }
 
           }
 
-          public override void UpdateEnergyLeftInPercents(Vehicle i_CurrentVehicle)
+          public override float GetAmountOfSourcePowerMaterialPossible()
+          {
+              return MaximumAmountOfFuelInLitters - CurrentAmountOfFuelInLitters;
+          }
+          internal override void UpdateEnergyLeftInPercents(Vehicle i_CurrentVehicle)
           {
                i_CurrentVehicle.EnergyLeftInPercents = CurrentAmountOfFuelInLitters / MaximumAmountOfFuelInLitters;
           }
 
-          //**************Validation Methods***************//  
-          public override bool IsAmountsOfSourcePowerMaterialValid(float i_MaterialToCheck)
+          public override bool IsAmountsOfSourcePowerMaterialValid(float i_FuelToAdd)
           {
-               return IsTotalAmountOfFuelWithinLimit(i_MaterialToCheck);
+            return i_FuelToAdd <= m_MaximumAmountOfFuelInLitters - m_CurrentAmountOfFuelInLitters && i_FuelToAdd >= 0;
           }
-
-          public bool IsTotalAmountOfFuelWithinLimit(float i_FuelToAdd)
-          {
-               return i_FuelToAdd <= m_MaximumAmountOfFuelInLitters - m_CurrentAmountOfFuelInLitters && i_FuelToAdd>=0;
-          }
-                   
-          //****************Properties*******************//  
-
 
           public float CurrentAmountOfFuelInLitters
           {
@@ -119,10 +110,6 @@ namespace Ex03.GarageLogic
                }
 
           }
-
-          //****************Enumeration******************//  
-
-         
 
      }
 }

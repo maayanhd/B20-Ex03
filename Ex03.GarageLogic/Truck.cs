@@ -33,7 +33,7 @@ namespace Ex03.GarageLogic
 
               return truckStr.ToString();
           }
-        public override void ManageMemberInfo()
+        internal override void ManageMemberInfo()
           {
                NumOfBaseMembers = NumOfWheels * 2 + 2;
                base.ManageMemberInfo();
@@ -42,23 +42,28 @@ namespace Ex03.GarageLogic
                m_MemberInfoStr.Add("carrying size of the truck");
           }
 
-          //****************Validations Methods******************//  
-          public override bool TryAssignMember(int i_NumOfField, string i_InputStr)
+          public override bool TryAssignMember(int i_NumOfField, string i_InputStr,out string io_ErrorMsg)
           {
                bool isMemberValid = false;
-
+               io_ErrorMsg = null;
                if (i_NumOfField < NumOfBaseMembers)
                {
-                   isMemberValid = base.TryAssignMember(i_NumOfField, i_InputStr);
+                   isMemberValid = base.TryAssignMember(i_NumOfField, i_InputStr,out io_ErrorMsg);
                }
                     
                switch (i_NumOfField - NumOfBaseMembers)
                     {
                          case 0:
-                              isMemberValid = i_InputStr.Equals("Yes") == true || i_InputStr.Equals("No");
+                             isMemberValid = i_InputStr.Equals("Yes") || i_InputStr.Equals("No")
+                                                                      || i_InputStr.Equals("yes")
+                                                                      || i_InputStr.Equals("no");
                               if (isMemberValid == true)
                               {
                                   AssignIsCarryingDangerousMaterials(i_InputStr);
+                              }
+                              else
+                              {
+                                  io_ErrorMsg = "Your answer must be either: Yes or No";
                               }
                               break;
                          case 1:
@@ -66,6 +71,10 @@ namespace Ex03.GarageLogic
                               if(isMemberValid == true)
                               {
                                 AssignCarryingSize(i_InputStr);
+                              }
+                              else
+                              {
+                                  io_ErrorMsg = "The value must be a positive number";
                               }
                               break;
                     }
@@ -106,8 +115,6 @@ namespace Ex03.GarageLogic
                }
 
           }
-          
-          //****************Properties******************//  
           public bool IsCarryingDangerousMaterials
           {
                get

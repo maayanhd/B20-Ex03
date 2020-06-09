@@ -9,16 +9,15 @@ namespace Ex03.GarageLogic
 
           private float m_RemainingBatteryLifeInHours;
           private float m_MaxBatteryLifeInHours;
-          private readonly string m_RemainingBatteryLifeInfoStr;
+          private readonly string r_RemainingBatteryLifeInfoStr;
 
           public Battery(float i_MaxBatteryLifeInHours)
           {
                m_MaxBatteryLifeInHours = i_MaxBatteryLifeInHours;
-               m_RemainingBatteryLifeInfoStr = "remaining battery life in hours";
+               r_RemainingBatteryLifeInfoStr = "remaining battery life in hours";
           }
 
-          //****************Functionality******************//  
-          public override void UpdateEnergyLeftInPercents(Vehicle i_CurrentVehicle)
+          internal override void UpdateEnergyLeftInPercents(Vehicle i_CurrentVehicle)
           {
                i_CurrentVehicle.EnergyLeftInPercents = RemainingBatteryLifeInHours / MaxBatteryLifeInHours;
           }
@@ -29,18 +28,11 @@ namespace Ex03.GarageLogic
               return batteryStr.ToString();
           }
         public void Reload(float i_HoursToCharge,Vehicle io_VehicleToCharge)
-          {
-               if (IsTotalAmountOfChargingWithinLimit(i_HoursToCharge) == false)
-               {
-                    throw new ValueOutOfRangeException(m_MaxBatteryLifeInHours - m_RemainingBatteryLifeInHours, 0);
-               }
-               else
-               {
-                    m_RemainingBatteryLifeInHours += i_HoursToCharge;
-                    UpdateEnergyLeftInPercents(io_VehicleToCharge);
-               }
-          }
-        public override void InitializeAmountOfEnergy(float i_AmountOfInitialEnergy,Vehicle io_CurrentVehicle)
+        {
+             InitializeAmountOfEnergy(i_HoursToCharge+RemainingBatteryLifeInHours,io_VehicleToCharge);
+        }
+
+        internal override void InitializeAmountOfEnergy(float i_AmountOfInitialEnergy,Vehicle io_CurrentVehicle)
         {
             if (IsAmountsOfSourcePowerMaterialValid(i_AmountOfInitialEnergy))
             {
@@ -49,22 +41,20 @@ namespace Ex03.GarageLogic
             }
             else
             {
-                throw new ValueOutOfRangeException(MaxBatteryLifeInHours - RemainingBatteryLifeInHours, 0);
+                throw new ValueOutOfRangeException(MaxBatteryLifeInHours - RemainingBatteryLifeInHours, 0, "Amount of source power not in limit");
             }
 
         }
-        public bool IsTotalAmountOfChargingWithinLimit(float i_HoursToCharge)
+        public override float GetAmountOfSourcePowerMaterialPossible()
+        {
+            return MaxBatteryLifeInHours - RemainingBatteryLifeInHours;
+        }
+        public override bool IsAmountsOfSourcePowerMaterialValid(float i_HoursToCharge)
         {
             return i_HoursToCharge <= m_MaxBatteryLifeInHours - m_RemainingBatteryLifeInHours && i_HoursToCharge >= 0;
         }
-        public override bool IsAmountsOfSourcePowerMaterialValid(float i_MaterialToCheck)
-        {
-               return IsTotalAmountOfChargingWithinLimit(i_MaterialToCheck);
-        }
 
-          //****************Properties******************//  
-
-          public float RemainingBatteryLifeInHours
+        public float RemainingBatteryLifeInHours
           {
                get
                {
@@ -95,7 +85,7 @@ namespace Ex03.GarageLogic
           {
                get
                {
-                    return m_RemainingBatteryLifeInfoStr;
+                    return r_RemainingBatteryLifeInfoStr;
                }
                
           }

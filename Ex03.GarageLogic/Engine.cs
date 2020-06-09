@@ -6,9 +6,10 @@ namespace Ex03.GarageLogic
 {
     public abstract class Engine
     {
-          public abstract void UpdateEnergyLeftInPercents(Vehicle i_CurrentVehicle);
+          internal abstract void UpdateEnergyLeftInPercents(Vehicle i_CurrentVehicle);
+          public abstract float GetAmountOfSourcePowerMaterialPossible();
           public abstract bool IsAmountsOfSourcePowerMaterialValid(float i_MaterialToCheck);
-          public abstract void InitializeAmountOfEnergy(float i_AmountOfInitialEnergy,Vehicle i_CurrenVehicle);
+          internal abstract void InitializeAmountOfEnergy(float i_AmountOfInitialEnergy,Vehicle i_CurrentVehicle);
 
     }
 

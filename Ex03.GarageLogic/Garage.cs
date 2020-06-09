@@ -52,8 +52,7 @@ namespace Ex03.GarageLogic
               VehicleStatus[i_StatusToSet].Add(io_ClientToChange.VehicleInGarage.LicenseNum);
               io_ClientToChange.Status = i_StatusToSet;
           }
-
-          //****************Functionality******************//  
+ 
           public bool IsVehicleExistsInGarage(string i_LicenseNumber)
           {
               return Clients.ContainsKey(i_LicenseNumber) == true;
@@ -68,17 +67,25 @@ namespace Ex03.GarageLogic
               }
           }
 
-          //****************Properties******************//  
-        public Dictionary<string, ClientCard> Clients
+          public List<string> GetClientsByStatus(eVehicleStat i_Status)
           {
+              return VehicleStatus[i_Status];
+          }
+          public bool TryToFindClient(string i_LicenseNum, out ClientCard o_Client)
+          {
+              o_Client = null;
+              bool isFound = Clients.TryGetValue(i_LicenseNum, out o_Client);
+              return isFound;
+          }
+        public Dictionary<string, ClientCard> Clients
+        {
                get
                {
                     return r_Vehicles;
                }
 
-          }
-
-          public Dictionary<eVehicleStat,List<string>> VehicleStatus
+        }
+        public Dictionary<eVehicleStat,List<string>> VehicleStatus
           {
                get
                {

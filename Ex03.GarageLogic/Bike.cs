@@ -10,23 +10,22 @@ namespace Ex03.GarageLogic
           private int m_EngineVelocity;
 
           public Bike(string i_LicenseNumber, Engine i_Engine) : base(i_Engine,i_LicenseNumber)
-        {
+          {
                m_BikeLicense = new License();
                m_NumOfWheels = 2;
                ManageMemberInfo();
           }
 
-          public override void ManageMemberInfo()
+          internal override void ManageMemberInfo()
           {
 
               NumOfBaseMembers = NumOfWheels * 2 + 2;
               base.ManageMemberInfo();
               AddWheels();
-              m_MemberInfoStr.Add("A license type");
-              m_MemberInfoStr.Add("An engine Velocity");
+              m_MemberInfoStr.Add("a license type");
+              m_MemberInfoStr.Add("an engine Velocity");
               
           }
-
 
           public override string ToString()
           {
@@ -36,14 +35,14 @@ namespace Ex03.GarageLogic
               return bikeStr.ToString();
 
           }
-          //****************Validation Methods******************//  
-          public override bool TryAssignMember(int i_NumOfField, string i_InputStr)
+ 
+          public override bool TryAssignMember(int i_NumOfField, string i_InputStr,out string io_ErrorMsg)
           {
                bool isMemberValid = false;
-
+               io_ErrorMsg = null;
                if (i_NumOfField<NumOfBaseMembers)
                {
-                   isMemberValid = base.TryAssignMember(i_NumOfField, i_InputStr);
+                   isMemberValid = base.TryAssignMember(i_NumOfField, i_InputStr,out io_ErrorMsg);
                }
                else
                {
@@ -52,6 +51,12 @@ namespace Ex03.GarageLogic
 
                        case 0:
                            isMemberValid = License.TryParse(i_InputStr,out m_BikeLicense);
+                           if(isMemberValid == false)
+                           {
+                            io_ErrorMsg = string.Format(
+                                "Allowed types:{0}",
+                                License.GetPossibleLicenseTypes());
+                           }
                            break;
                         
                        case 1:
@@ -62,6 +67,10 @@ namespace Ex03.GarageLogic
                            {
                                AssignEngineVelocity(i_InputStr);
                            }
+                           else
+                           {
+                               io_ErrorMsg = "The value must be positive and below 2500";
+                           }
                            break;
                }
 
@@ -71,18 +80,12 @@ namespace Ex03.GarageLogic
 
           }
 
-
-
           public bool IsEngineVelocityValid(float i_EngineVelocity)
           {
-               return i_EngineVelocity > 0;
+               return i_EngineVelocity > 0 && i_EngineVelocity<2500;
           }
 
-          // New- update in flow chart
-          //****************Assigning Methods******************//  
-
-
-          void AssignEngineVelocity(string i_EngineVelocity)
+          public void AssignEngineVelocity(string i_EngineVelocity)
           {
 
                if (int.TryParse(i_EngineVelocity, out int io_EngineVelocity) == false)
@@ -92,7 +95,7 @@ namespace Ex03.GarageLogic
                else if (IsEngineVelocityValid(io_EngineVelocity) == false)
                {
                     // Assuming maximal velocity of engine since not given 
-                    throw new ValueOutOfRangeException(10000, 0);
+                    throw new ValueOutOfRangeException(2500, 0);
                }
                else
                {
@@ -101,10 +104,7 @@ namespace Ex03.GarageLogic
 
           }
 
-          //****************Properties******************//  
-         
-
-          public int EngineVelocity
+          internal int EngineVelocity
           {
                get
                {

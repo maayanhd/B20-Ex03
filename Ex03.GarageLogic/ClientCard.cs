@@ -69,7 +69,7 @@ namespace Ex03.GarageLogic
             {
                 if(IsNameValid(value)==false)
                 {
-                    throw new ArgumentException();
+                    throw new FormatException("The name must contain letters only");
                 }
                 m_OwnerName = value;
             }
@@ -94,13 +94,11 @@ namespace Ex03.GarageLogic
 
             set
             {
-                int phoneNum;
-
-                if(int.TryParse(value, out phoneNum) == false)
+                if(int.TryParse(value, out int phoneNum) == false)
                 {
                     throw new FormatException("The phone number must consist of digits only");
                 }
-                else if(value.Length == 10)
+                if(value.Length == 10)
                 {
                     throw new ArgumentException("The phone number should be only 10 characters");
                 }

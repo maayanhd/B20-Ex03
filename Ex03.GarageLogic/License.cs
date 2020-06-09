@@ -19,7 +19,18 @@ namespace Ex03.GarageLogic
             AA,
             B
         }
+        public static string GetPossibleLicenseTypes()
+        {
+            StringBuilder typeStr = new StringBuilder();
 
+            foreach (string type in Enum.GetNames(typeof(eLicenseType)))
+            {
+                typeStr.Append(string.Format(" {0}", type));
+
+            }
+
+            return typeStr.ToString();
+        }
         public static bool TryParse(string i_LicenseType,out License o_License)
         {
             bool isValid = false;

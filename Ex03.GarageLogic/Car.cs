@@ -26,24 +26,22 @@ namespace Ex03.GarageLogic
                carStr.AppendLine(string.Format("Number of doors: {0}", NumOfDoors.ToString()));
                return carStr.ToString();
           }
-          public override void ManageMemberInfo()
+          internal override void ManageMemberInfo()
           {
                NumOfBaseMembers = NumOfWheels * 2 + 2;
                base.ManageMemberInfo();
                AddWheels();
-               m_MemberInfoStr.Add("A color");
-               m_MemberInfoStr.Add("Number of doors");
+               m_MemberInfoStr.Add("a color");
+               m_MemberInfoStr.Add("number of doors");
           }
-
-
-          //****************Validation Methods******************//  
-          public override bool TryAssignMember(int i_NumOfField, string i_InputStr)
+ 
+          public override bool TryAssignMember(int i_NumOfField, string i_InputStr,out string io_ErrorMsg)
           {
                bool isMemberValid = false;
-
+               io_ErrorMsg = null;
                if (i_NumOfField < NumOfBaseMembers)
                {
-                    isMemberValid = base.TryAssignMember(i_NumOfField, i_InputStr);
+                    isMemberValid = base.TryAssignMember(i_NumOfField, i_InputStr,out io_ErrorMsg);
                }
                else
                {
@@ -51,6 +49,12 @@ namespace Ex03.GarageLogic
                     {
                          case 0:
                               isMemberValid = Color.TryParse(i_InputStr, out m_CarColor);
+                              if(isMemberValid == false)
+                              {
+                                  io_ErrorMsg = string.Format(
+                                      "Allowed colors:{0}",
+                                      Color.GetPossibleColorsStr());
+                              }
                               break;
                          case 1:
                               isMemberValid = int.TryParse(i_InputStr, out int io_NumOfDoors) == true
@@ -59,6 +63,10 @@ namespace Ex03.GarageLogic
                               if (isMemberValid == true)
                               {
                                    AssignNumOfDoors(i_InputStr);
+                              }
+                              else
+                              {
+                                  io_ErrorMsg = "A car must have: 2,3,4 or 5 doors";
                               }
                               break;
 
@@ -77,11 +85,6 @@ namespace Ex03.GarageLogic
                return i_NumOfDoors <= 5 && i_NumOfDoors >= 2;
           }
 
-          //****************Enumerations******************//  
-
-
-          // New- update in flow chart
-          //****************Assigning Methods******************//  
           public void AssignNumOfDoors(string i_NumOfDoors)
           {
                int numOfDoors = 0;
@@ -91,7 +94,7 @@ namespace Ex03.GarageLogic
                }
                else if (IsNumOfDoorsValid(numOfDoors) == false)
                {
-                    throw new ValueOutOfRangeException(2, 5);
+                    throw new ValueOutOfRangeException(5, 2);
                }
                else
                {
@@ -100,7 +103,6 @@ namespace Ex03.GarageLogic
 
           }
 
-          //****************Properties******************//  
 
           public Color CarColor
           {

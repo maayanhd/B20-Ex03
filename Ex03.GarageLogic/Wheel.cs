@@ -16,7 +16,6 @@ namespace Ex03.GarageLogic
               m_MaximalWheelPressure = i_MaxPressure;
           }
           
-          //****************Properties******************//  
           public string Manufacturor
           {
                get
@@ -26,12 +25,20 @@ namespace Ex03.GarageLogic
 
                set
                {
-                    m_Manufacturer = value;
+                   if (IsManufactorerValid(value) == true)
+                   {
+                       m_Manufacturer = value;
+                   }
+                   else
+                   {
+                       throw new FormatException("The Manufacturer should consist only letters");
+                   }
+
                }
 
           }
 
-          public float CurrentWheelPressure
+          internal float CurrentWheelPressure
           {
                get
                {
@@ -67,7 +74,6 @@ namespace Ex03.GarageLogic
 
           }
 
-          //****************Validations Methods******************//  
           public bool IsManufactorerValid(string i_Manufacorer)
           {
                bool isValid = false;
@@ -87,12 +93,16 @@ namespace Ex03.GarageLogic
 
           }
 
+          public float GetAmountOfPressurePossibleToInflate()
+          {
+              return MaximalWheelPressure - CurrentWheelPressure;
+          }
+
           public bool IsAirPressureIsValid(float i_AirPressure)
           {
               return i_AirPressure <= m_MaximalWheelPressure - m_CurrentWheelPressure && i_AirPressure>=0;
           }
 
-          //****************Functionality******************//  
           public void InflateToMaximum()
           {
             Inflate(m_MaximalWheelPressure-m_CurrentWheelPressure);
@@ -106,43 +116,11 @@ namespace Ex03.GarageLogic
               }
               else
               {
-                  throw new ValueOutOfRangeException(m_MaximalWheelPressure - m_CurrentWheelPressure,0);
+                  throw new ValueOutOfRangeException(m_MaximalWheelPressure - m_CurrentWheelPressure,0,"");
               }
 
           }
-          
-          // New- update in flow chart
-          //****************Assigning Methods******************//  
 
-          void AssignManufacturer(string i_Manufacturer)
-          {
-               if (IsManufactorerValid(i_Manufacturer) == true)
-               {
-                    Manufacturor = i_Manufacturer;
-               }
-               else
-               {
-                    throw new FormatException("The Manufacturer should consist only letters");
-               }
-
-          }
-
-          void AssignCurrentWheelPressure(string i_CurrentAirPressure)
-          {
-               if (float.TryParse(i_CurrentAirPressure, out float io_CurrentAirPressure) == false)
-               {
-                    throw new FormatException("The value must be a number");
-               }
-               else if (IsAirPressureIsValid(io_CurrentAirPressure) == false)
-               {
-                    throw new ValueOutOfRangeException(MaximalWheelPressure, 0);
-               }
-               else
-               {
-                    CurrentWheelPressure = io_CurrentAirPressure;
-               }
-
-          }
 
      }
 

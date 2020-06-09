@@ -8,14 +8,17 @@ namespace Ex03.GarageLogic
      {
           private float m_MaxValue;
           private float m_MinValue;
-
-          public ValueOutOfRangeException(float i_MaxValue, float i_MinValue)
+          public ValueOutOfRangeException(float i_MaxValue, float i_MinValue,string i_ErrorMsg) :base(i_ErrorMsg)
           {
+
                m_MaxValue = i_MaxValue;
                m_MinValue = i_MinValue;
           }
-
-          //****************Properties******************//  
+          public ValueOutOfRangeException(float i_MaxValue, float i_MinValue)
+          {
+              m_MaxValue = i_MaxValue;
+              m_MinValue = i_MinValue;
+          }
 
           public float MaxValue
           {
@@ -56,13 +59,3 @@ namespace Ex03.GarageLogic
      }
 
 }
-
-
-//1. המשתמש מחליט איזה סוג רכב הוא רוצה ואת מספר הרישוי שלו
-//2. פונים למחלקה המיוחדת הזו ומפעילים את המתודה ומבקשים ממנה מופע.
-//3. המתודה נותנת מופע לפי סוג הרכב שביקשנו ממנה ליצור
-//4. מבקשים מהמשתמש להזין את הנתונים לגבי הרכב.
-//וכו'
-
-// sending to a method for parsing 
-// call methods that returns boolean variables for logic test- logic class 

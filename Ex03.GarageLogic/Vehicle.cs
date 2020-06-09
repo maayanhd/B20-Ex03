@@ -26,13 +26,13 @@ namespace Ex03.GarageLogic
                r_Wheels = new List<Wheel>();
           }
 
-          public virtual void ManageMemberInfo()
+          internal virtual void ManageMemberInfo()
           {
-               m_MemberInfoStr.Add("A model");
+               m_MemberInfoStr.Add("a model");
                manageEngineMemberInfoStr();
           }
 
-          public void manageEngineMemberInfoStr()
+          internal void manageEngineMemberInfoStr()
           {
                GasEngine gasEngine = m_Engine as GasEngine;
                Battery battery = m_Engine as Battery;
@@ -68,11 +68,11 @@ namespace Ex03.GarageLogic
                return vehicleStr.ToString();
           }
 
-          public virtual bool TryAssignMember(int i_NumOfField, string i_InputStr)
+          public virtual bool TryAssignMember(int i_NumOfField, string i_InputStr, out string io_ErrorMsg)
           {
                bool isMemberValid = false;
                int io_IndexOfWheelBasedOnField = i_NumOfField;
-
+               io_ErrorMsg = null;
                i_NumOfField = GetIndexOfWheelToValidate(i_NumOfField, ref io_IndexOfWheelBasedOnField);
 
                switch (i_NumOfField)
@@ -83,6 +83,10 @@ namespace Ex03.GarageLogic
                          {
                               Model = i_InputStr;
                          }
+                         else
+                         {
+                             io_ErrorMsg = "The model must contain letters or digits only";
+                         }
                          break;
                     case 1:
                          isMemberValid = float.TryParse(i_InputStr, out float io_AmountOfMaterial) == true ? m_Engine.IsAmountsOfSourcePowerMaterialValid(io_AmountOfMaterial) : false;
@@ -91,6 +95,12 @@ namespace Ex03.GarageLogic
                               MyEngine.InitializeAmountOfEnergy(io_AmountOfMaterial,this);
 
                          }
+                         else
+                         {
+                             io_ErrorMsg = string.Format(
+                                 "The value must be positive and below: {0}",
+                                 m_Engine.GetAmountOfSourcePowerMaterialPossible().ToString());
+                         }
                          break;
                     case 2:
                          isMemberValid = Wheels[io_IndexOfWheelBasedOnField].IsManufactorerValid(i_InputStr);
@@ -98,12 +108,22 @@ namespace Ex03.GarageLogic
                          {
                               Wheels[io_IndexOfWheelBasedOnField].Manufacturor = i_InputStr;
                          }
+                         else
+                         {
+                             io_ErrorMsg = "The value must contain letter only";
+                         }
                          break;
                     case 3:
                          isMemberValid = float.TryParse(i_InputStr, out float o_AirPressure) == true ? Wheels[io_IndexOfWheelBasedOnField].IsAirPressureIsValid(o_AirPressure) : false;
                          if (isMemberValid == true)
                          {
                               Wheels[io_IndexOfWheelBasedOnField].Inflate(o_AirPressure);
+                         }
+                         else
+                         {
+                             io_ErrorMsg = string.Format(
+                                 "The value must be positive and below: {0}",
+                                 Wheels[io_IndexOfWheelBasedOnField].GetAmountOfPressurePossibleToInflate().ToString());
                          }
                          break;
 
@@ -113,7 +133,7 @@ namespace Ex03.GarageLogic
 
           }
 
-          public int GetIndexOfWheelToValidate(int i_CaseNum, ref int io_NumOfWheelBasedOnField)
+          internal int GetIndexOfWheelToValidate(int i_CaseNum, ref int io_NumOfWheelBasedOnField)
           {
                if (i_CaseNum >= 2 && i_CaseNum < NumOfBaseMembers)
                {
@@ -122,13 +142,6 @@ namespace Ex03.GarageLogic
                }
 
                return i_CaseNum;
-          }
-
-          //****************Validations Methods******************//  
-
-          public bool IsEnergyLeftValid(float i_EnergyLeftInPercents)
-          {
-               return i_EnergyLeftInPercents <= 100 && i_EnergyLeftInPercents >= 0;
           }
 
           public bool IsModelValid(string i_Model)
@@ -151,8 +164,7 @@ namespace Ex03.GarageLogic
 
           }
 
-          //***********Override of Object Methods*********//  
-          public void AddWheels()
+          internal void AddWheels()
           {
                for (int i = 0; i < NumOfWheels; i++)
                {
@@ -187,26 +199,6 @@ namespace Ex03.GarageLogic
 
                return isEqual;
           }
-
-          public void AssignCurrentWheelPressure(string i_CurrentAirPressure, int i_IndexOfWheel)
-          {
-
-               if (float.TryParse(i_CurrentAirPressure, out float io_CurrentAirPressure) == false)
-               {
-                    throw new FormatException("The value must be a number");
-               }
-               else if (Wheels[i_IndexOfWheel].IsAirPressureIsValid(io_CurrentAirPressure) == false)
-               {
-                    throw new ValueOutOfRangeException(Wheels[i_IndexOfWheel].MaximalWheelPressure, 0);
-               }
-               else
-               {
-                    Wheels[i_IndexOfWheel].CurrentWheelPressure = io_CurrentAirPressure;
-               }
-
-          }
-
-          //****************Properties******************//  
 
           public string LicenseNum
           {

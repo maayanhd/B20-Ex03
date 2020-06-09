@@ -9,7 +9,7 @@ namespace Ex03.ConsoleUI
 {
      static public class UI
      {
-          internal static void OpenGarageForBusiness()
+          public static void OpenGarageForBusiness()
           {
                Garage currentGarage = new Garage();
                bool closeApp = false;
@@ -87,7 +87,7 @@ namespace Ex03.ConsoleUI
         public static void RefuelVehicle(Garage io_Garage)
         {
             string licenseNumToWatch = GetLicenseNumStr();
-            if (io_Garage.Clients.TryGetValue(licenseNumToWatch, out ClientCard client) == true)
+            if (io_Garage.TryToFindClient(licenseNumToWatch, out ClientCard client) == true)
             {
                 Vehicle vehicleToRefuel = client.VehicleInGarage;
                 if(vehicleToRefuel.MyEngine is GasEngine)
@@ -182,7 +182,7 @@ namespace Ex03.ConsoleUI
             else
             {
                 Garage.eVehicleStat filter = Garage.GetStatusFromInt(optionNum - 2);
-                PrintListOfStrings(i_Garage.VehicleStatus[filter]);
+                PrintListOfStrings(i_Garage.GetClientsByStatus(filter));
             }
 
         }
@@ -332,23 +332,25 @@ namespace Ex03.ConsoleUI
             int attemptsLeft = 2;
             o_Client = null;
 
-            while(isFound == false && attemptsLeft > 0)
+            while(isFound == false)
             {
-                string licenseNumToWatch = GetLicenseNumStr();
-                isFound = i_Garage.Clients.TryGetValue(licenseNumToWatch, out o_Client);
-                if(isFound == false)
+                if(attemptsLeft >= 0)
                 {
-                    if(attemptsLeft > 0)
+                    string licenseNumToWatch = GetLicenseNumStr();
+                    isFound = i_Garage.TryToFindClient(licenseNumToWatch, out o_Client);
+                    if(isFound == false)
                     {
-                        Console.WriteLine(string.Format(
+                        Console.WriteLine(
                             "Vehicle not found, attempts left:{0}"
-                            , attemptsLeft--));
-                    }
-                    else
-                    {
-                        Console.WriteLine("Vehicle not found, no attempts left, going back to the menu");
+                            , attemptsLeft--);
                     }
                 }
+                else
+                {
+                    Console.WriteLine("Vehicle not found, no attempts left, going back to the menu");
+                    break;
+                }
+                
             }
 
             return isFound;
@@ -384,17 +386,16 @@ namespace Ex03.ConsoleUI
             return isValid;
 
         }
-        internal static void AddVehicle(Garage io_Garage)
+        public static void AddVehicle(Garage io_Garage)
           {
               Console.WriteLine("Please choose the type of vehicle you would like to enter the garage:" + Environment.NewLine);
 
                int numOption     = GetTypeOption();
                string licenseNum = GetLicenseNumStr();
                
-               if (io_Garage.IsVehicleExistsInGarage(licenseNum) == true)
+               if (io_Garage.TryToFindClient(licenseNum,out ClientCard newClient) == true)
                {
                    Console.WriteLine("The Vehicle is already in the garage");
-                   ClientCard newClient = io_Garage.Clients[licenseNum];
                    newClient.Status = Garage.eVehicleStat.InRepair;
                }
                else
@@ -408,12 +409,12 @@ namespace Ex03.ConsoleUI
                        bool fieldIsValid = false;
                        while(fieldIsValid == false)
                        {
-                           Console.WriteLine(string.Format("Please enter {0}", vehicleToAdd.MemberInfoStrings[i]));
+                           Console.WriteLine("Please enter {0}", vehicleToAdd.MemberInfoStrings[i]);
                            string inputStr = Console.ReadLine();
-                           fieldIsValid = vehicleToAdd.TryAssignMember(i, inputStr);
+                           fieldIsValid = vehicleToAdd.TryAssignMember(i, inputStr,out string errorMessage);
                            if(fieldIsValid == false)
                            {
-                               Console.WriteLine("Wrong input, please try again");
+                               Console.WriteLine(errorMessage);
                            }
                        }
                    }
@@ -463,7 +464,7 @@ namespace Ex03.ConsoleUI
 
         }
 
-          internal static int GetTypeOption()
+          public static int GetTypeOption()
           {
               string choosedOption = null;
               bool inputIsValid = false;
@@ -482,7 +483,7 @@ namespace Ex03.ConsoleUI
               return int.Parse(choosedOption);
           }
 
-          internal static string GetLicenseNumStr()
+          public static string GetLicenseNumStr()
           {
                string licenseNumStr = null;
                bool isLicenseNumberValid = false;
@@ -499,15 +500,14 @@ namespace Ex03.ConsoleUI
 
           }
 
-          internal static void PrintVehicleTypeMenu(string[] VehicleTypeStrings)
+          public static void PrintVehicleTypeMenu(string[] VehicleTypeStrings)
           {
                int optionNum = 1;
                foreach (string typeOfVehicle in VehicleTypeStrings)
                {
-                    Console.WriteLine(string.Format("{0}. {1}{2}",
+                    Console.WriteLine("{0}. {1}",
                          optionNum++,
-                         typeOfVehicle,
-                         Environment.NewLine));
+                         typeOfVehicle);
                }
 
           }
