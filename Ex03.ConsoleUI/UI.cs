@@ -387,7 +387,7 @@ namespace Ex03.ConsoleUI
             if (i_Garage.TryToFindClient(licenseNum, out ClientCard newClient) == true)
             {
                 Console.WriteLine("The Vehicle is already in the garage");
-                newClient.Status = Garage.eVehicleStat.InRepair;
+                i_Garage.ChangeVehicleStatus(newClient, Garage.eVehicleStat.InRepair);
             }
             else
             {
