@@ -33,13 +33,13 @@ namespace Ex03.GarageLogic
             return bikeStr.ToString();
         }
 
-        public override bool TryAssignMember(int i_NumOfField, string i_InputStr, out string io_ErrorMsg)
+        public override bool TryAssignMember(int i_NumOfField, string i_InputStr, out string o_ErrorMsg)
         {
             bool isMemberValid = false;
-            io_ErrorMsg = null;
+            o_ErrorMsg = null;
             if (i_NumOfField < NumOfBaseMembers)
             {
-                isMemberValid = base.TryAssignMember(i_NumOfField, i_InputStr, out io_ErrorMsg);
+                isMemberValid = base.TryAssignMember(i_NumOfField, i_InputStr, out o_ErrorMsg);
             }
             else
             {
@@ -49,7 +49,7 @@ namespace Ex03.GarageLogic
                         isMemberValid = License.TryParse(i_InputStr, out m_BikeLicense);
                         if (isMemberValid == false)
                         {
-                            io_ErrorMsg = string.Format(
+                            o_ErrorMsg = string.Format(
                                 "Allowed types:{0}",
                                 License.GetPossibleLicenseTypes());
                         }
@@ -57,8 +57,8 @@ namespace Ex03.GarageLogic
                         break;
 
                     case 1:
-                        isMemberValid = float.TryParse(i_InputStr, out float io_EngineVelocity) == true
-                                            ? IsEngineVelocityValid(io_EngineVelocity)
+                        isMemberValid = float.TryParse(i_InputStr, out float engineVelocity) == true
+                                            ? IsEngineVelocityValid(engineVelocity)
                                             : false;
                         if (isMemberValid == true)
                         {
@@ -66,7 +66,7 @@ namespace Ex03.GarageLogic
                         }
                         else
                         {
-                            io_ErrorMsg = "The value must be positive and below 2500";
+                            o_ErrorMsg = "The value must be positive and below 2500";
                         }
 
                         break;
@@ -83,18 +83,18 @@ namespace Ex03.GarageLogic
 
         public void AssignEngineVelocity(string i_EngineVelocity)
         {
-            if (int.TryParse(i_EngineVelocity, out int io_EngineVelocity) == false)
+            if (int.TryParse(i_EngineVelocity, out int engineVelocity) == false)
             {
                 throw new FormatException("The Engine should be a whole number");
             }
 
-            if (IsEngineVelocityValid(io_EngineVelocity) == false)
+            if (IsEngineVelocityValid(engineVelocity) == false)
             {
                 // Assuming maximal velocity of engine since not given 
                 throw new ValueOutOfRangeException(2500, 0);
             }
 
-            EngineVelocity = io_EngineVelocity;
+            EngineVelocity = engineVelocity;
         }
 
         internal int EngineVelocity

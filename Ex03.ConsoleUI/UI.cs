@@ -19,7 +19,7 @@ namespace Ex03.ConsoleUI
             }
         }
 
-        public static void Menu(Garage io_Garage, out bool io_CloseApp)
+        public static void Menu(Garage i_Garage, out bool io_CloseApp)
         {
             io_CloseApp = false;
             string optionStr = null;
@@ -40,7 +40,7 @@ namespace Ex03.ConsoleUI
                 inputIsValid = IsOptionValid(optionStr, 8);
                 if (inputIsValid == true)
                 {
-                    ExecuteChoosedOption(int.Parse(optionStr), io_Garage, out io_CloseApp);
+                    ExecuteChoosedOption(int.Parse(optionStr), i_Garage, out io_CloseApp);
                 }
                 else
                 {
@@ -49,31 +49,31 @@ namespace Ex03.ConsoleUI
             }
         }
 
-        public static void ExecuteChoosedOption(int i_Option, Garage io_Garage, out bool io_CloseApp)
+        public static void ExecuteChoosedOption(int i_Option, Garage i_Garage, out bool io_CloseApp)
         {
             io_CloseApp = false;
             switch (i_Option)
             {
                 case 1:
-                    AddVehicle(io_Garage);
+                    AddVehicle(i_Garage);
                     break;
                 case 2:
-                    ShowGarageDataBase(io_Garage);
+                    ShowGarageDataBase(i_Garage);
                     break;
                 case 3:
-                    ChangeVehicleStatus(io_Garage);
+                    ChangeVehicleStatus(i_Garage);
                     break;
                 case 4:
-                    InflateVehicleWheels(io_Garage);
+                    InflateVehicleWheels(i_Garage);
                     break;
                 case 5:
-                    RefuelVehicle(io_Garage);
+                    RefuelVehicle(i_Garage);
                     break;
                 case 6:
-                    ChargeVehiclesBattery(io_Garage);
+                    ChargeVehiclesBattery(i_Garage);
                     break;
                 case 7:
-                    ShowVehicleData(io_Garage);
+                    ShowVehicleData(i_Garage);
                     break;
                 case 8:
                     io_CloseApp = true;
@@ -81,10 +81,10 @@ namespace Ex03.ConsoleUI
             }
         }
 
-        public static void RefuelVehicle(Garage io_Garage)
+        public static void RefuelVehicle(Garage i_Garage)
         {
             string licenseNumToWatch = GetLicenseNumStr();
-            if(io_Garage.TryToFindClient(licenseNumToWatch, out ClientCard client) == true)
+            if(i_Garage.TryToFindClient(licenseNumToWatch, out ClientCard client) == true)
             {
                 Vehicle vehicleToRefuel = client.VehicleInGarage;
                 if(vehicleToRefuel.MyEngine is GasEngine)
@@ -116,7 +116,9 @@ namespace Ex03.ConsoleUI
                 isValid = i_EngineToRefuel.IsAmountsOfSourcePowerMaterialValid(amountOfFuel);
                 if (isValid == false)
                 {
-                    Console.WriteLine("Cannot add fuel more than the gas tank can hold, max value: {0}L",i_EngineToRefuel.GetAmountOfSourcePowerMaterialPossible().ToString());
+                    Console.WriteLine(
+                        "Cannot add fuel more than the gas tank can hold, max value: {0}L",
+                        i_EngineToRefuel.GetAmountOfSourcePowerMaterialPossible().ToString());
                 }
             }
 
@@ -224,9 +226,9 @@ namespace Ex03.ConsoleUI
             return isValid;
         }
 
-        public static void ChargeVehiclesBattery(Garage io_Garage)
+        public static void ChargeVehiclesBattery(Garage i_Garage)
         {
-            if (FindClientInGarage(io_Garage, out ClientCard clientToWatch) == true)
+            if (FindClientInGarage(i_Garage, out ClientCard clientToWatch) == true)
             {
                 Vehicle vehicleToCharge = clientToWatch.VehicleInGarage;
                 if (vehicleToCharge.MyEngine is Battery)
@@ -252,9 +254,11 @@ namespace Ex03.ConsoleUI
                 Console.WriteLine("Please enter amount of minutes to load");
                 minutesToCharge = GetFloatFromUser();
                 isValid = i_BatteryToCharge.IsAmountsOfSourcePowerMaterialValid(minutesToCharge / 60);
-                if (isValid == false)
+                if(isValid == false)
                 {
-                    Console.WriteLine("Cannot charge more than the capacity of the battery, max value: {0} minutes",(i_BatteryToCharge.GetAmountOfSourcePowerMaterialPossible()*60).ToString());
+                    Console.WriteLine(
+                        "Cannot charge more than the capacity of the battery, max value: {0} minutes",
+                        (i_BatteryToCharge.GetAmountOfSourcePowerMaterialPossible() * 60).ToString());
                 }
             }
 
@@ -279,9 +283,9 @@ namespace Ex03.ConsoleUI
             return floatToReturn;
         }
 
-        public static void InflateVehicleWheels(Garage io_Garage)
+        public static void InflateVehicleWheels(Garage i_Garage)
         {
-            if (FindClientInGarage(io_Garage, out ClientCard clientToWatch) == true)
+            if (FindClientInGarage(i_Garage, out ClientCard clientToWatch) == true)
             {
                 Vehicle currentVehicle = clientToWatch.VehicleInGarage;
                 foreach (Wheel wheel in currentVehicle.Wheels)
@@ -293,10 +297,10 @@ namespace Ex03.ConsoleUI
             }
         }
 
-        public static void ChangeVehicleStatus(Garage io_Garage)
+        public static void ChangeVehicleStatus(Garage i_Garage)
         {
             bool inputIsValid = false;
-            if (FindClientInGarage(io_Garage, out ClientCard clientToWatch) == true)
+            if (FindClientInGarage(i_Garage, out ClientCard clientToWatch) == true)
             {
                 while (inputIsValid == false)
                 {
@@ -312,7 +316,7 @@ namespace Ex03.ConsoleUI
                     }
                     else
                     {
-                        io_Garage.ChangeVehicleStatus(clientToWatch, Garage.GetStatusFromInt(int.Parse(optionStr) - 1));
+                        i_Garage.ChangeVehicleStatus(clientToWatch, Garage.GetStatusFromInt(int.Parse(optionStr) - 1));
                     }
                 }
             }
@@ -373,14 +377,14 @@ namespace Ex03.ConsoleUI
             return isValid;
         }
 
-        public static void AddVehicle(Garage io_Garage)
+        public static void AddVehicle(Garage i_Garage)
         {
             Console.WriteLine("Please choose the type of vehicle you would like to enter the garage:");
 
             int numOption = GetTypeOption();
             string licenseNum = GetLicenseNumStr();
 
-            if (io_Garage.TryToFindClient(licenseNum, out ClientCard newClient) == true)
+            if (i_Garage.TryToFindClient(licenseNum, out ClientCard newClient) == true)
             {
                 Console.WriteLine("The Vehicle is already in the garage");
                 newClient.Status = Garage.eVehicleStat.InRepair;
@@ -408,7 +412,7 @@ namespace Ex03.ConsoleUI
 
                 ownerName = GetNameFromUser();
                 ownerPhoneNum = GetPhoneNumberFromUser();
-                io_Garage.AddVehicleToGarage(new ClientCard(vehicleToAdd, ownerName, ownerPhoneNum));
+                i_Garage.AddVehicleToGarage(new ClientCard(vehicleToAdd, ownerName, ownerPhoneNum));
                 Console.WriteLine("The Vehicle successfully added to the garage ");
             }
         }

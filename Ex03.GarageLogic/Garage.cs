@@ -46,11 +46,11 @@ namespace Ex03.GarageLogic
                return statusToReturn;
           }
 
-          public void ChangeVehicleStatus(ClientCard io_ClientToChange, eVehicleStat i_StatusToSet)
+          public void ChangeVehicleStatus(ClientCard i_ClientToChange, eVehicleStat i_StatusToSet)
           {
-               VehicleStatus[io_ClientToChange.Status].Remove(io_ClientToChange.VehicleInGarage.LicenseNum);
-               VehicleStatus[i_StatusToSet].Add(io_ClientToChange.VehicleInGarage.LicenseNum);
-               io_ClientToChange.Status = i_StatusToSet;
+               VehicleStatus[i_ClientToChange.Status].Remove(i_ClientToChange.VehicleInGarage.LicenseNum);
+               VehicleStatus[i_StatusToSet].Add(i_ClientToChange.VehicleInGarage.LicenseNum);
+               i_ClientToChange.Status = i_StatusToSet;
           }
 
           public void AddVehicleToGarage(ClientCard i_VehicleToAdd)

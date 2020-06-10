@@ -66,11 +66,11 @@ namespace Ex03.GarageLogic
             return vehicleStr.ToString();
         }
 
-        public virtual bool TryAssignMember(int i_NumOfField, string i_InputStr, out string io_ErrorMsg)
+        public virtual bool TryAssignMember(int i_NumOfField, string i_InputStr, out string o_ErrorMsg)
         {
             bool isMemberValid = false;
             int indexOfWheelBasedOnField = i_NumOfField;
-            io_ErrorMsg = null;
+            o_ErrorMsg = null;
             i_NumOfField = GetIndexOfWheelToValidate(i_NumOfField, ref indexOfWheelBasedOnField);
 
             switch (i_NumOfField)
@@ -83,19 +83,19 @@ namespace Ex03.GarageLogic
                     }
                     else
                     {
-                        io_ErrorMsg = "The model must contain letters or digits only";
+                        o_ErrorMsg = "The model must contain letters or digits only";
                     }
 
                     break;
                 case 1:
-                    isMemberValid = float.TryParse(i_InputStr, out float io_AmountOfMaterial) == true ? r_Engine.IsAmountsOfSourcePowerMaterialValid(io_AmountOfMaterial) : false;
+                    isMemberValid = float.TryParse(i_InputStr, out float amountOfMaterial) == true ? r_Engine.IsAmountsOfSourcePowerMaterialValid(amountOfMaterial) : false;
                     if (isMemberValid == true)
                     {
-                        MyEngine.InitializeAmountOfEnergy(io_AmountOfMaterial, this);
+                        MyEngine.InitializeAmountOfEnergy(amountOfMaterial, this);
                     }
                     else
                     {
-                        io_ErrorMsg = string.Format(
+                        o_ErrorMsg = string.Format(
                             "The value must be positive and below {0}",
                             r_Engine.GetAmountOfSourcePowerMaterialPossible().ToString());
                     }
@@ -109,7 +109,7 @@ namespace Ex03.GarageLogic
                     }
                     else
                     {
-                        io_ErrorMsg = "The value must contain letter only";
+                        o_ErrorMsg = "The value must contain letter only";
                     }
 
                     break;
@@ -121,7 +121,7 @@ namespace Ex03.GarageLogic
                     }
                     else
                     {
-                        io_ErrorMsg = string.Format(
+                        o_ErrorMsg = string.Format(
                             "The value must be positive and below {0}",
                             Wheels[indexOfWheelBasedOnField].GetAmountOfPressurePossibleToInflate().ToString());
                     }

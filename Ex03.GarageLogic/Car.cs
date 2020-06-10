@@ -33,13 +33,13 @@ namespace Ex03.GarageLogic
             m_MemberInfoStr.Add("number of doors");
         }
 
-        public override bool TryAssignMember(int i_NumOfField, string i_InputStr, out string io_ErrorMsg)
+        public override bool TryAssignMember(int i_NumOfField, string i_InputStr, out string o_ErrorMsg)
         {
             bool isMemberValid = false;
-            io_ErrorMsg = null;
+            o_ErrorMsg = null;
             if (i_NumOfField < NumOfBaseMembers)
             {
-                isMemberValid = base.TryAssignMember(i_NumOfField, i_InputStr, out io_ErrorMsg);
+                isMemberValid = base.TryAssignMember(i_NumOfField, i_InputStr, out o_ErrorMsg);
             }
             else
             {
@@ -49,15 +49,15 @@ namespace Ex03.GarageLogic
                         isMemberValid = Color.TryParse(i_InputStr, out m_CarColor);
                         if (isMemberValid == false)
                         {
-                            io_ErrorMsg = string.Format(
+                            o_ErrorMsg = string.Format(
                                 "Allowed colors:{0}",
                                 Color.GetPossibleColorsStr());
                         }
 
                         break;
                     case 1:
-                        isMemberValid = int.TryParse(i_InputStr, out int io_NumOfDoors) == true
-                                            ? IsNumOfDoorsValid(io_NumOfDoors)
+                        isMemberValid = int.TryParse(i_InputStr, out int numOfDoors) == true
+                                            ? IsNumOfDoorsValid(numOfDoors)
                                             : false;
                         if (isMemberValid == true)
                         {
@@ -65,7 +65,7 @@ namespace Ex03.GarageLogic
                         }
                         else
                         {
-                            io_ErrorMsg = "A car must have: 2,3,4 or 5 doors";
+                            o_ErrorMsg = "A car must have: 2,3,4 or 5 doors";
                         }
 
                         break;

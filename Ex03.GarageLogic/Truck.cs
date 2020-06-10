@@ -48,13 +48,13 @@ namespace Ex03.GarageLogic
             m_MemberInfoStr.Add("carrying size of the truck");
         }
 
-        public override bool TryAssignMember(int i_NumOfField, string i_InputStr, out string io_ErrorMsg)
+        public override bool TryAssignMember(int i_NumOfField, string i_InputStr, out string o_ErrorMsg)
         {
             bool isMemberValid = false;
-            io_ErrorMsg = null;
+            o_ErrorMsg = null;
             if (i_NumOfField < NumOfBaseMembers)
             {
-                isMemberValid = base.TryAssignMember(i_NumOfField, i_InputStr, out io_ErrorMsg);
+                isMemberValid = base.TryAssignMember(i_NumOfField, i_InputStr, out o_ErrorMsg);
             }
 
             switch (i_NumOfField - NumOfBaseMembers)
@@ -68,19 +68,19 @@ namespace Ex03.GarageLogic
                     }
                     else
                     {
-                        io_ErrorMsg = "Your answer must be either: Yes or No";
+                        o_ErrorMsg = "Your answer must be either: Yes or No";
                     }
 
                     break;
                 case 1:
-                    isMemberValid = float.TryParse(i_InputStr, out float io_CarryingSize) == true ? IsCarryingSizeValid(io_CarryingSize) : false;
+                    isMemberValid = float.TryParse(i_InputStr, out float carryingSize) == true ? IsCarryingSizeValid(carryingSize) : false;
                     if (isMemberValid == true)
                     {
                         AssignCarryingSize(i_InputStr);
                     }
                     else
                     {
-                        io_ErrorMsg = "The value must be a positive number";
+                        o_ErrorMsg = "The value must be a positive number";
                     }
 
                     break;
@@ -103,13 +103,13 @@ namespace Ex03.GarageLogic
 
         public void AssignCarryingSize(string i_CarryingSize)
         {
-            if (float.TryParse(i_CarryingSize, out float io_CarryingSize) == false)
+            if (float.TryParse(i_CarryingSize, out float carryingSize) == false)
             {
                 throw new FormatException("The Carrying size should be a decimal number");
             }
             else
             {
-                CarryingSize = io_CarryingSize;
+                CarryingSize = carryingSize;
             }
         }
 

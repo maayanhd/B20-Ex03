@@ -28,17 +28,17 @@ namespace Ex03.GarageLogic
             return batteryStr.ToString();
         }
 
-        public void Reload(float i_HoursToCharge, Vehicle io_VehicleToCharge)
+        public void Reload(float i_HoursToCharge, Vehicle i_VehicleToCharge)
         {
-            InitializeAmountOfEnergy(i_HoursToCharge, io_VehicleToCharge);
+            InitializeAmountOfEnergy(i_HoursToCharge, i_VehicleToCharge);
         }
 
-        internal override void InitializeAmountOfEnergy(float i_AmountOfInitialEnergy, Vehicle io_CurrentVehicle)
+        internal override void InitializeAmountOfEnergy(float i_AmountOfInitialEnergy, Vehicle i_CurrentVehicle)
         {
             if (IsAmountsOfSourcePowerMaterialValid(i_AmountOfInitialEnergy))
             {
                 RemainingBatteryLifeInHours += i_AmountOfInitialEnergy;
-                UpdateEnergyLeftInPercents(io_CurrentVehicle);
+                UpdateEnergyLeftInPercents(i_CurrentVehicle);
             }
             else
             {
@@ -76,7 +76,6 @@ namespace Ex03.GarageLogic
                         0,
                         "Amount of source power not in limit");
                 }
-
             }
         }
 

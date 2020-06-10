@@ -33,7 +33,7 @@ namespace Ex03.GarageLogic
             return gasEngineStr.ToString();
         }
 
-        public void ReFuel(float i_FuelToAdd, Fuel i_FuelToFill, Vehicle io_VehicleToRefuel)
+        public void ReFuel(float i_FuelToAdd, Fuel i_FuelToFill, Vehicle i_VehicleToRefuel)
         {
             if (i_FuelToFill.FuelType != MyFuel.FuelType)
             {
@@ -41,7 +41,7 @@ namespace Ex03.GarageLogic
             }
             else
             {
-                InitializeAmountOfEnergy(i_FuelToAdd, io_VehicleToRefuel);
+                InitializeAmountOfEnergy(i_FuelToAdd, i_VehicleToRefuel);
             }
         }
 
@@ -82,7 +82,7 @@ namespace Ex03.GarageLogic
 
             set
             {
-                if(value<=MaximumAmountOfFuelInLitters)
+                if(value <= MaximumAmountOfFuelInLitters)
                 {
                     m_CurrentAmountOfFuelInLitters = value;
                 }
