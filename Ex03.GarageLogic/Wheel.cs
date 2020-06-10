@@ -118,7 +118,7 @@ namespace Ex03.GarageLogic
 
               set
               {
-                  if (IsAirPressureIsValid(value))
+                  if (CurrentWheelPressure<=MaximalWheelPressure)
                   {
                       m_CurrentWheelPressure = value;
                   }
