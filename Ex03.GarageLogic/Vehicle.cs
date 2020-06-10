@@ -102,7 +102,7 @@ namespace Ex03.GarageLogic
 
                     break;
                 case 2:
-                    isMemberValid = Wheels[indexOfWheelBasedOnField].IsManufactorerValid(i_InputStr);
+                    isMemberValid = Wheels[indexOfWheelBasedOnField].IsManufacturerValid(i_InputStr);
                     if (isMemberValid == true)
                     {
                         Wheels[indexOfWheelBasedOnField].Manufacturor = i_InputStr;

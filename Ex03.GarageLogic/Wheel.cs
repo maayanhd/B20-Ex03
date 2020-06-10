@@ -32,7 +32,7 @@ namespace Ex03.GarageLogic
               return strToReturn.ToString();
           }
 
-          public bool IsManufactorerValid(string i_Manufacorer)
+          public bool IsManufacturerValid(string i_Manufacorer)
           {
                bool isValid = false;
 
@@ -98,7 +98,7 @@ namespace Ex03.GarageLogic
 
               set
               {
-                  if (IsManufactorerValid(value) == true)
+                  if (IsManufacturerValid(value) == true)
                   {
                       m_Manufacturer = value;
                   }
