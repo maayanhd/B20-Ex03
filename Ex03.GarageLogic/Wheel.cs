@@ -15,39 +15,6 @@ namespace Ex03.GarageLogic
               m_CurrentWheelPressure = 0;
               m_MaximalWheelPressure = i_MaxPressure;
           }
-          
-          public string Manufacturor
-          {
-               get
-               {
-                    return m_Manufacturer;
-               }
-
-               set
-               {
-                   if (IsManufactorerValid(value) == true)
-                   {
-                       m_Manufacturer = value;
-                   }
-                   else
-                   {
-                       throw new FormatException("The Manufacturer should consist only letters");
-                   }
-               }
-          }
-
-          internal float CurrentWheelPressure
-          {
-               get
-               {
-                    return m_CurrentWheelPressure;
-               }
-
-               set
-               {
-                   m_CurrentWheelPressure = value;
-               }
-          }
 
           public override string ToString()
           {
@@ -63,19 +30,6 @@ namespace Ex03.GarageLogic
                       CurrentWheelPressure,
                       MaximalWheelPressure));
               return strToReturn.ToString();
-          }
-
-          public float MaximalWheelPressure
-          {
-               get
-               {
-                    return m_MaximalWheelPressure;
-               }
-
-               set
-               {
-                    m_MaximalWheelPressure = value;
-               }
           }
 
           public bool IsManufactorerValid(string i_Manufacorer)
@@ -121,5 +75,58 @@ namespace Ex03.GarageLogic
                   throw new ValueOutOfRangeException(m_MaximalWheelPressure - m_CurrentWheelPressure, 0);
               }
           }
-     }
+
+          internal float MaximalWheelPressure
+          {
+              get
+              {
+                  return m_MaximalWheelPressure;
+              }
+
+              set
+              {
+                  m_MaximalWheelPressure = value;
+              }
+          }
+
+          public string Manufacturor
+          {
+              get
+              {
+                  return m_Manufacturer;
+              }
+
+              set
+              {
+                  if (IsManufactorerValid(value) == true)
+                  {
+                      m_Manufacturer = value;
+                  }
+                  else
+                  {
+                      throw new FormatException("The Manufacturer should consist only letters");
+                  }
+              }
+          }
+
+          public float CurrentWheelPressure
+          {
+              get
+              {
+                  return m_CurrentWheelPressure;
+              }
+
+              set
+              {
+                  if (IsAirPressureIsValid(value))
+                  {
+                      m_CurrentWheelPressure = value;
+                  }
+                  else
+                  {
+                      throw new ValueOutOfRangeException(MaximalWheelPressure - CurrentWheelPressure, 0);
+                  }
+              }
+          }
+    }
 }

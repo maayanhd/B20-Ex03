@@ -87,15 +87,14 @@ namespace Ex03.GarageLogic
             {
                 throw new FormatException("The Engine should be a whole number");
             }
-            else if (IsEngineVelocityValid(io_EngineVelocity) == false)
+
+            if (IsEngineVelocityValid(io_EngineVelocity) == false)
             {
                 // Assuming maximal velocity of engine since not given 
                 throw new ValueOutOfRangeException(2500, 0);
             }
-            else
-            {
-                EngineVelocity = io_EngineVelocity;
-            }
+
+            EngineVelocity = io_EngineVelocity;
         }
 
         internal int EngineVelocity

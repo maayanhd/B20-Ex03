@@ -7,13 +7,13 @@ namespace Ex03.GarageLogic
     public class GasEngine : Engine
     {
         private readonly string r_CurrentAmountInfoStr;
-        private readonly Fuel m_Fuel;
+        private readonly Fuel r_Fuel;
         private float m_CurrentAmountOfFuelInLitters;
         private float m_MaximumAmountOfFuelInLitters;
 
         public GasEngine(float i_MaximumAmountOfFuelInLitters, Fuel i_Fuel)
         {
-            m_Fuel = i_Fuel;
+            r_Fuel = i_Fuel;
             m_MaximumAmountOfFuelInLitters = i_MaximumAmountOfFuelInLitters;
             r_CurrentAmountInfoStr = "current amount of fuel in litters";
         }
@@ -82,11 +82,21 @@ namespace Ex03.GarageLogic
 
             set
             {
-                m_CurrentAmountOfFuelInLitters = value;
+                if(IsAmountsOfSourcePowerMaterialValid(value))
+                {
+                    m_CurrentAmountOfFuelInLitters = value;
+                }
+                else
+                {
+                    throw new ValueOutOfRangeException(
+                        MaximumAmountOfFuelInLitters - CurrentAmountOfFuelInLitters,
+                        0,
+                        "Amount of source power not in limit");
+                }
             }
         }
 
-        public float MaximumAmountOfFuelInLitters
+        internal float MaximumAmountOfFuelInLitters
         {
             get
             {
@@ -103,11 +113,11 @@ namespace Ex03.GarageLogic
         {
             get
             {
-                return m_Fuel;
+                return r_Fuel;
             }
         }
 
-        public string CurrentAmountInfoStr
+        internal string CurrentAmountInfoStr
         {
             get
             {

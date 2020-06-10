@@ -8,6 +8,14 @@ namespace Ex03.GarageLogic
     {
         private eFuelType m_EFuelType;
 
+        public enum eFuelType
+        {
+            Soler,
+            Octan95,
+            Octan96,
+            Octan98
+        }
+
         public static bool TryParse(string i_FuelTypeStr, out Fuel o_Fuel)
         {
             o_Fuel = null;
@@ -28,18 +36,6 @@ namespace Ex03.GarageLogic
         public Fuel(eFuelType i_EFuelType)
         {
             FuelType = i_EFuelType;
-        }
-
-        public Fuel()
-        {
-        }
-
-        public enum eFuelType
-        {
-            Soler,
-            Octan95,
-            Octan96,
-            Octan98
         }
 
         public eFuelType FuelType

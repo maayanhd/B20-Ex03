@@ -53,11 +53,6 @@ namespace Ex03.GarageLogic
                io_ClientToChange.Status = i_StatusToSet;
           }
 
-          public bool IsVehicleExistsInGarage(string i_LicenseNumber)
-          {
-               return Clients.ContainsKey(i_LicenseNumber) == true;
-          }
-
           public void AddVehicleToGarage(ClientCard i_VehicleToAdd)
           {
                if (Clients.ContainsKey(i_VehicleToAdd.VehicleInGarage.LicenseNum) == false)
@@ -74,9 +69,8 @@ namespace Ex03.GarageLogic
 
           public bool TryToFindClient(string i_LicenseNum, out ClientCard o_Client)
           {
-               o_Client = null;
-               bool isFound = Clients.TryGetValue(i_LicenseNum, out o_Client);
-               return isFound;
+              bool isFound = Clients.TryGetValue(i_LicenseNum, out o_Client);
+              return isFound;
           }
 
           public Dictionary<string, ClientCard> Clients

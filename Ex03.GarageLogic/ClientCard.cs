@@ -21,18 +21,15 @@ namespace Ex03.GarageLogic
 
         public static bool IsNameValid(string i_Name)
         {
-            bool isValid = false;
+            bool isValid = true;
             if(i_Name.Length > 0)
             {
                 foreach(char ch in i_Name)
                 {
                     if(char.IsLetter(ch) == false)
                     {
+                        isValid = false;
                         break;
-                    }
-                    else
-                    {
-                        isValid = true;
                     }
                 }
             }
@@ -43,37 +40,6 @@ namespace Ex03.GarageLogic
         public static bool IsPhoneNumberValid(string i_PhoneNum)
         {
             return i_PhoneNum.Length == 10 && int.TryParse(i_PhoneNum, out int phoneNum) == true;
-        }
-
-        public Vehicle VehicleInGarage
-        {
-            get
-            {
-                return m_VehicleInGarage;
-            }
-
-            set
-            {
-                m_VehicleInGarage = value;
-            }
-        }
-
-        public string Owner
-        {
-            get
-            {
-                return m_OwnerName;
-            }
-
-            set
-            {
-                if(IsNameValid(value) == false)
-                {
-                    throw new FormatException("The name must contain letters only");
-                }
-
-                m_OwnerName = value;
-            }
         }
 
         public override string ToString()
@@ -107,6 +73,37 @@ namespace Ex03.GarageLogic
                 }
 
                 m_OwnerPhoneNumber = value;
+            }
+        }
+
+        public string Owner
+        {
+            get
+            {
+                return m_OwnerName;
+            }
+
+            set
+            {
+                if (IsNameValid(value) == false)
+                {
+                    throw new FormatException("The name must contain letters only");
+                }
+
+                m_OwnerName = value;
+            }
+        }
+
+        public Vehicle VehicleInGarage
+        {
+            get
+            {
+                return m_VehicleInGarage;
+            }
+
+            set
+            {
+                m_VehicleInGarage = value;
             }
         }
 

@@ -53,7 +53,7 @@
       <Compartment Name="Properties" Collapsed="true" />
     </Compartments>
     <TypeIdentifier>
-      <HashCode>AyAAABEAAgAIUABEgAAAAAAAAIIAgIAQQBgAACADAAA=</HashCode>
+      <HashCode>AyAAABEAAgAIUABEgAACAAAAAIIAgIAQQBgAACADAAA=</HashCode>
       <FileName>Vehicle.cs</FileName>
     </TypeIdentifier>
   </Class>
@@ -71,7 +71,7 @@
       </Path>
     </InheritanceLine>
     <TypeIdentifier>
-      <HashCode>AAAABAAgAAACAAAEQBAAAgAEAQABAAAIAEEAAAQAAAA=</HashCode>
+      <HashCode>AAAABAAgAAACAAAEQBAAAgAEAQABAAAICEAAAAQAAAA=</HashCode>
       <FileName>GasEngine.cs</FileName>
     </TypeIdentifier>
   </Class>
@@ -85,7 +85,7 @@
       </Enum>
     </NestedTypes>
     <TypeIdentifier>
-      <HashCode>AAoAAQAABAAAAAAAACAAAAAAAoAQAAAAAgAAAAAEAAA=</HashCode>
+      <HashCode>AAoAAQAABAAAAAAAACAAAAAAAoAQAAAAAgAAAAAAAAA=</HashCode>
       <FileName>Garage.cs</FileName>
     </TypeIdentifier>
   </Class>

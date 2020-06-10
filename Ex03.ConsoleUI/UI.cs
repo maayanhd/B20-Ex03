@@ -9,8 +9,6 @@ namespace Ex03.ConsoleUI
 {
     public static class UI
     {
-        private static int field;
-
         public static void OpenGarageForBusiness()
         {
             Garage currentGarage = new Garage();
@@ -233,8 +231,7 @@ namespace Ex03.ConsoleUI
                 Vehicle vehicleToCharge = clientToWatch.VehicleInGarage;
                 if (vehicleToCharge.MyEngine is Battery)
                 {
-                    float hoursToCharge = 0;
-                    hoursToCharge = GetMinutesToChargeFromUser((Battery)vehicleToCharge.MyEngine);
+                    float hoursToCharge = GetMinutesToChargeFromUser((Battery)vehicleToCharge.MyEngine);
                     (vehicleToCharge.MyEngine as Battery).Reload(hoursToCharge, vehicleToCharge);
                     Console.WriteLine("Charged successfully");
                 }
@@ -298,7 +295,6 @@ namespace Ex03.ConsoleUI
 
         public static void ChangeVehicleStatus(Garage io_Garage)
         {
-            string optionStr = null;
             bool inputIsValid = false;
             if (FindClientInGarage(io_Garage, out ClientCard clientToWatch) == true)
             {
@@ -308,7 +304,7 @@ namespace Ex03.ConsoleUI
                     Console.WriteLine("1.In repair ");
                     Console.WriteLine("2.Repaired ");
                     Console.WriteLine("3.Paid");
-                    optionStr = Console.ReadLine();
+                    string optionStr = Console.ReadLine();
                     inputIsValid = IsOptionValid(optionStr, 3);
                     if (inputIsValid == false)
                     {

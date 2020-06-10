@@ -14,7 +14,6 @@ namespace Ex03.GarageLogic
             m_CarColor = new Color();
             m_NumOfWheels = 4;
             ManageMemberInfo();
-            m_Engine = i_Engine;
         }
 
         public override string ToString()
@@ -127,12 +126,7 @@ namespace Ex03.GarageLogic
         {
             get
             {
-                return m_Engine;
-            }
-
-            set
-            {
-                m_Engine = value;
+                return r_Engine;
             }
         }
     }
