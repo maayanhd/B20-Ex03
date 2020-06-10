@@ -20,7 +20,7 @@ namespace Ex03.GarageLogic
         {
             NumOfBaseMembers = (NumOfWheels * 2) + 2;
             base.ManageMemberInfo();
-            AddWheels();
+            AddWheels(30);
             m_MemberInfoStr.Add("a license type");
             m_MemberInfoStr.Add("an engine Velocity");
         }

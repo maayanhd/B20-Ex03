@@ -161,11 +161,11 @@ namespace Ex03.GarageLogic
             return isValid;
         }
 
-        internal void AddWheels()
+        internal void AddWheels(int i_MaxWheelPressure)
         {
             for (int i = 0; i < NumOfWheels; i++)
             {
-                Wheels.Add(new Wheel(32));
+                Wheels.Add(new Wheel(i_MaxWheelPressure));
                 m_MemberInfoStr.Add(string.Format(
                     "{0} wheel's manufacturer",
                     i + 1));

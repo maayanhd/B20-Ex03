@@ -116,7 +116,7 @@ namespace Ex03.ConsoleUI
                 isValid = i_EngineToRefuel.IsAmountsOfSourcePowerMaterialValid(amountOfFuel);
                 if (isValid == false)
                 {
-                    Console.WriteLine("Cannot add fuel more than the gas tank can hold");
+                    Console.WriteLine("Cannot add fuel more than the gas tank can hold, max value: {0}L",i_EngineToRefuel.GetAmountOfSourcePowerMaterialPossible().ToString());
                 }
             }
 
@@ -254,7 +254,7 @@ namespace Ex03.ConsoleUI
                 isValid = i_BatteryToCharge.IsAmountsOfSourcePowerMaterialValid(minutesToCharge / 60);
                 if (isValid == false)
                 {
-                    Console.WriteLine("Cannot charge more than the capacity of the battery");
+                    Console.WriteLine("Cannot charge more than the capacity of the battery, max value: {0} minutes",(i_BatteryToCharge.GetAmountOfSourcePowerMaterialPossible()*60).ToString());
                 }
             }
 

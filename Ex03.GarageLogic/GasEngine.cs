@@ -41,16 +41,16 @@ namespace Ex03.GarageLogic
             }
             else
             {
-                InitializeAmountOfEnergy(i_FuelToAdd + CurrentAmountOfFuelInLitters, io_VehicleToRefuel);
+                InitializeAmountOfEnergy(i_FuelToAdd, io_VehicleToRefuel);
             }
         }
 
-        internal override void InitializeAmountOfEnergy(float i_AmountOfInitialEnergy, Vehicle io_CurrentVehicle)
+        internal override void InitializeAmountOfEnergy(float i_AmountOfInitialEnergy, Vehicle i_CurrentVehicle)
         {
             if (IsAmountsOfSourcePowerMaterialValid(i_AmountOfInitialEnergy))
             {
-                CurrentAmountOfFuelInLitters = i_AmountOfInitialEnergy;
-                UpdateEnergyLeftInPercents(io_CurrentVehicle);
+                CurrentAmountOfFuelInLitters += i_AmountOfInitialEnergy;
+                UpdateEnergyLeftInPercents(i_CurrentVehicle);
             }
             else
             {
@@ -82,7 +82,7 @@ namespace Ex03.GarageLogic
 
             set
             {
-                if(IsAmountsOfSourcePowerMaterialValid(value))
+                if(value<=MaximumAmountOfFuelInLitters)
                 {
                     m_CurrentAmountOfFuelInLitters = value;
                 }

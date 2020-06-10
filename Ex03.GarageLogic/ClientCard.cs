@@ -21,16 +21,17 @@ namespace Ex03.GarageLogic
 
         public static bool IsNameValid(string i_Name)
         {
-            bool isValid = true;
+            bool isValid = false;
             if(i_Name.Length > 0)
             {
                 foreach(char ch in i_Name)
                 {
                     if(char.IsLetter(ch) == false)
                     {
-                        isValid = false;
                         break;
                     }
+
+                    isValid = true;
                 }
             }
 

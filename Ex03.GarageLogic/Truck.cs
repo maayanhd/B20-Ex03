@@ -43,7 +43,7 @@ namespace Ex03.GarageLogic
         {
             NumOfBaseMembers = (NumOfWheels * 2) + 2;
             base.ManageMemberInfo();
-            AddWheels();
+            AddWheels(28);
             m_MemberInfoStr.Add("whether the truck carrying dangerous materials");
             m_MemberInfoStr.Add("carrying size of the truck");
         }
@@ -60,9 +60,8 @@ namespace Ex03.GarageLogic
             switch (i_NumOfField - NumOfBaseMembers)
             {
                 case 0:
-                    isMemberValid = i_InputStr.Equals("Yes") || i_InputStr.Equals("No")
-                                                             || i_InputStr.Equals("yes")
-                                                             || i_InputStr.Equals("no");
+                    isMemberValid = i_InputStr.Equals("Yes") || i_InputStr.Equals("No");
+
                     if (isMemberValid == true)
                     {
                         AssignIsCarryingDangerousMaterials(i_InputStr);

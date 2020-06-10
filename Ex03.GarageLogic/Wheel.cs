@@ -26,7 +26,7 @@ namespace Ex03.GarageLogic
                       Manufacturor));
               strToReturn.AppendLine(
                   string.Format(
-                      "Current wheel pressure: {0} from {1} possible",
+                      "Current wheel pressure: {0} out of {1} possible",
                       CurrentWheelPressure,
                       MaximalWheelPressure));
               return strToReturn.ToString();

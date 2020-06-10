@@ -28,7 +28,7 @@ namespace Ex03.GarageLogic
         {
             NumOfBaseMembers = (NumOfWheels * 2) + 2;
             base.ManageMemberInfo();
-            AddWheels();
+            AddWheels(32);
             m_MemberInfoStr.Add("a color");
             m_MemberInfoStr.Add("number of doors");
         }
